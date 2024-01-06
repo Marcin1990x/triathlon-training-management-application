@@ -2,7 +2,6 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingUnit.TrainingEntity;
 
 import java.util.List;
 
@@ -14,10 +13,11 @@ public class TrainingPlanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String name;
+
     private TrainingType trainingType;
 
-    @ManyToOne
-    private TrainingEntity trainingUnit;
+    private String description;
 
     @OneToMany
     private List<StageEntity> stage;

@@ -9,4 +9,6 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("WEIGHT")
 public class WeightStageEntity extends StageEntity{
 
+    //weight stage specific fields
+
 }

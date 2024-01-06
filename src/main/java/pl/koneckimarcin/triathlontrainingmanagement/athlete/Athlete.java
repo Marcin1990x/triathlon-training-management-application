@@ -1,40 +1,41 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
-import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingUnit.TrainingDayEntity;
 
 import java.util.List;
 
-@Entity
-@Table(name = "athlete")
-public class AthleteEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Athlete {
 
     private String firstName;
 
     private String lastName;
 
-    @OneToMany
     private List<TrainingDayEntity> trainingUnit;
 
-    @OneToMany
     private List<TrainingRealizationEntity> trainingRealization;
 
-    public Athlete mapToAthlete() {
-
-        Athlete athlete = new Athlete();
-
-        athlete.setFirstName(this.firstName);
-        athlete.setLastName(this.lastName);
-        athlete.setTrainingUnit(this.trainingUnit);
-        athlete.setTrainingRealization(this.trainingRealization);
-
-        return athlete;
+    public Athlete() {
     }
+
+    public Athlete(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public AthleteEntity mapToAthleteEntity() {
+
+        AthleteEntity athleteEntity = new AthleteEntity();
+
+        athleteEntity.setFirstName(this.firstName);
+        athleteEntity.setLastName(this.lastName);
+        athleteEntity.setTrainingUnit(this.trainingUnit);
+        athleteEntity.setTrainingRealization(this.trainingRealization);
+
+        return athleteEntity;
+    }
+
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -50,10 +51,6 @@ public class AthleteEntity {
 
     public void setTrainingRealization(List<TrainingRealizationEntity> trainingRealization) {
         this.trainingRealization = trainingRealization;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFirstName() {

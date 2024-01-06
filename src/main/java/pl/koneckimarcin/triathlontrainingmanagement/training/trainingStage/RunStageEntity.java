@@ -9,5 +9,6 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("RUN")
 public class RunStageEntity extends StageEntity {
 
-
+    //run stage specifid fields
+    private int paceInSecondsPerKm;
 }

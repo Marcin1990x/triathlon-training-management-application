@@ -9,4 +9,7 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("BIKE")
 public class BikeStageEntity extends StageEntity {
 
+    //bike stage specific fields
+    private int power;
+
 }

@@ -2,7 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestEmptyFieldsException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import java.util.ArrayList;
@@ -56,17 +56,21 @@ public class AthleteService {
 
     public Athlete addAthlete(Athlete athlete) {
 
-        if(!isFirstOrLastNameEmpty(athlete.getFirstName(), athlete.getLastName())) {
+        if(!isFirstOrLastNameNullOrEmpty(athlete.getFirstName(), athlete.getLastName())) {
             AthleteEntity athleteEntity = athlete.mapToAthleteEntity();
             return athleteRepository.save(athleteEntity).mapToAthlete();
         } else {
-            throw new BadRequestEmptyFieldsException(List.of("firstname", "lastname"));
+            throw new BadRequestNonValidFieldsException(List.of("firstname", "lastname"));
         }
 
     }
-    private boolean isFirstOrLastNameEmpty(String firstName, String lastName) {
+    private boolean isFirstOrLastNameNullOrEmpty(String firstName, String lastName) {
 
-        return firstName.equals("") || lastName.equals("");
+        if(firstName == null || lastName == null) {
+            return true;
+        } else {
+            return firstName.equals("") || lastName.equals("");
+        }
     }
 
     public void deleteAthleteEntityById(long id) {

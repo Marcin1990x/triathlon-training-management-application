@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -109,6 +110,24 @@ public class AthleteServiceTest {
 
         athleteService.addAthlete(athlete);
         assertThat(athleteRepository.findAll(), hasSize(1));
+    }
+    @Test
+    void shouldThrowAnExceptionSaveNewAthleteNonValidObject() {
+
+        String errorMessage = "This fields can not be empty: [firstname, lastname]";
+
+        Athlete athlete = new Athlete();
+        athlete.setFirstName("New");
+        Athlete athlete1 = new Athlete();
+        athlete1.setFirstName("New");
+        athlete1.setLastName("");
+
+        BadRequestNonValidFieldsException exception = assertThrows(BadRequestNonValidFieldsException.class,
+                () -> athleteService.addAthlete(athlete));
+        assertEquals(errorMessage, exception.getMessage());
+
+        assertThrows(BadRequestNonValidFieldsException.class,
+                () -> athleteService.addAthlete(athlete1));
     }
 
     @Test

@@ -47,14 +47,14 @@ public class AthleteServiceTest {
     @Test
     void isAthleteEntityNullCheck() {
 
-        assertTrue(athleteService.checkIfAthleteEntityIsNotNull(1));
-        assertFalse(athleteService.checkIfAthleteEntityIsNotNull(0));
+        assertTrue(athleteService.checkIfIsNotNull(1));
+        assertFalse(athleteService.checkIfIsNotNull(0));
     }
 
     @Test
     void shouldReturnAllAthletes() {
 
-        List<Athlete> athletes = athleteService.getAllAthletes();
+        List<Athlete> athletes = athleteService.getAll();
 
         assertThat(athletes, hasSize(2));
         Assertions.assertEquals("Nowak", athletes.get(0).getLastName());
@@ -64,7 +64,7 @@ public class AthleteServiceTest {
     @Test
     void shouldReturnAthleteEntityById() {
 
-        AthleteEntity athleteEntity = athleteService.findAthleteEntityById(1);
+        AthleteEntity athleteEntity = athleteService.findById(1);
         assertNotNull(athleteEntity);
         assertEquals("Bob", athleteEntity.getFirstName());
         assertEquals("Nowak", athleteEntity.getLastName());
@@ -77,7 +77,7 @@ public class AthleteServiceTest {
         assertFalse(athleteRepository.findById(nonValidId).isPresent());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> athleteService.findAthleteEntityById(nonValidId));
+                () -> athleteService.findById(nonValidId));
         assertEquals("AthleteEntity not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
@@ -108,7 +108,7 @@ public class AthleteServiceTest {
 
         Athlete athlete = new Athlete("New", "Athlete");
 
-        athleteService.addAthlete(athlete);
+        athleteService.addNew(athlete);
         assertThat(athleteRepository.findAll(), hasSize(1));
     }
     @Test
@@ -123,11 +123,11 @@ public class AthleteServiceTest {
         athlete1.setLastName("");
 
         BadRequestNonValidFieldsException exception = assertThrows(BadRequestNonValidFieldsException.class,
-                () -> athleteService.addAthlete(athlete));
+                () -> athleteService.addNew(athlete));
         assertEquals(errorMessage, exception.getMessage());
 
         assertThrows(BadRequestNonValidFieldsException.class,
-                () -> athleteService.addAthlete(athlete1));
+                () -> athleteService.addNew(athlete1));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class AthleteServiceTest {
         assertTrue(athleteRepository.findById(id).isPresent());
         assertThat(athleteRepository.findAll(), hasSize(2));
 
-        athleteService.deleteAthleteEntityById(id);
+        athleteService.deleteById(id);
 
         assertThat(athleteRepository.findAll(), hasSize(1));
         assertFalse(athleteRepository.findById(id).isPresent());
@@ -152,7 +152,7 @@ public class AthleteServiceTest {
         assertFalse(athleteRepository.findById(nonValidId).isPresent());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> athleteService.deleteAthleteEntityById(nonValidId));
+                () -> athleteService.deleteById(nonValidId));
         assertEquals("AthleteEntity not found with id : '" + nonValidId + "'", exception.getMessage());
     }
     @AfterEach

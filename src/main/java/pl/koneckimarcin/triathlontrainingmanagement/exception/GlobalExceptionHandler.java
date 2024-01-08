@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 exception.getMessage(),
                 webRequest.getDescription(false),
-                "ATHLETE_NOT_FOUND"
+                exception.getResourceName().toUpperCase() +  "_NOT_FOUND"
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }

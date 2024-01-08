@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "athlete")
-public class AthleteEntity {
+public class AthleteEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class AthleteEntity {
     private String lastName;
 
     @OneToMany
-    private List<TrainingDayEntity> trainingUnit;
+    private List<TrainingDayEntity> trainingDay;
 
     @OneToMany
     private List<TrainingRealizationEntity> trainingRealization;
@@ -30,7 +30,7 @@ public class AthleteEntity {
 
         athlete.setFirstName(this.firstName);
         athlete.setLastName(this.lastName);
-        athlete.setTrainingUnit(this.trainingUnit);
+        athlete.setTrainingUnit(this.trainingDay);
         athlete.setTrainingRealization(this.trainingRealization);
 
         return athlete;
@@ -44,8 +44,8 @@ public class AthleteEntity {
         this.lastName = lastName;
     }
 
-    public void setTrainingUnit(List<TrainingDayEntity> trainingUnit) {
-        this.trainingUnit = trainingUnit;
+    public void setTrainingDay(List<TrainingDayEntity> trainingDay) {
+        this.trainingDay = trainingDay;
     }
 
     public void setTrainingRealization(List<TrainingRealizationEntity> trainingRealization) {
@@ -64,8 +64,8 @@ public class AthleteEntity {
         return lastName;
     }
 
-    public List<TrainingDayEntity> getTrainingUnit() {
-        return trainingUnit;
+    public List<TrainingDayEntity> getTrainingDay() {
+        return trainingDay;
     }
 
     public List<TrainingRealizationEntity> getTrainingRealization() {

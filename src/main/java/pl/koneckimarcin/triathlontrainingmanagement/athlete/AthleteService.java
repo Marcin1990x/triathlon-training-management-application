@@ -2,6 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.koneckimarcin.triathlontrainingmanagement.EntityService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
@@ -10,20 +11,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AthleteService {
+public class AthleteService implements EntityService<AthleteEntity, Athlete> {
 
     @Autowired
     private AthleteRepository athleteRepository;
 
-    public boolean checkIfAthleteEntityIsNotNull(long id) {
+    public boolean checkIfIsNotNull(long id) {
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
         if(athleteEntity.isPresent()) {
             return true;
         }
         return false;
     }
-
-    public List<Athlete> getAllAthletes() {
+    public List<Athlete> getAll() {
 
         List<AthleteEntity> athleteEntities = athleteRepository.findAll();
         List<Athlete> athletes = new ArrayList<>();
@@ -33,7 +33,7 @@ public class AthleteService {
         }
         return athletes;
     }
-    public AthleteEntity findAthleteEntityById(long id) {
+    public AthleteEntity findById(long id) {
 
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
 
@@ -54,7 +54,7 @@ public class AthleteService {
         }
     }
 
-    public Athlete addAthlete(Athlete athlete) {
+    public Athlete addNew(Athlete athlete) {
 
         if(!isFirstOrLastNameNullOrEmpty(athlete.getFirstName(), athlete.getLastName())) {
             AthleteEntity athleteEntity = athlete.mapToAthleteEntity();
@@ -62,7 +62,6 @@ public class AthleteService {
         } else {
             throw new BadRequestNonValidFieldsException(List.of("firstname", "lastname"));
         }
-
     }
     private boolean isFirstOrLastNameNullOrEmpty(String firstName, String lastName) {
 
@@ -73,9 +72,9 @@ public class AthleteService {
         }
     }
 
-    public void deleteAthleteEntityById(long id) {
+    public void deleteById(long id) {
 
-        if(checkIfAthleteEntityIsNotNull(id)) {
+        if(checkIfIsNotNull(id)) {
             athleteRepository.deleteById(id);
         } else {
             throw new ResourceNotFoundException("AthleteEntity", "id", String.valueOf(id));

@@ -29,7 +29,7 @@ public class Athlete {
 
         athleteEntity.setFirstName(this.firstName);
         athleteEntity.setLastName(this.lastName);
-        athleteEntity.setTrainingUnit(this.trainingUnit);
+        athleteEntity.setTrainingDay(this.trainingUnit);
         athleteEntity.setTrainingRealization(this.trainingRealization);
 
         return athleteEntity;

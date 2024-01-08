@@ -2,43 +2,40 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.koneckimarcin.triathlontrainingmanagement.EntityController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/athlete")
-public class AthleteController {
+public class AthleteController implements EntityController <AthleteEntity, Athlete> {
 
     @Autowired
     AthleteService athleteService;
 
-    @GetMapping
-    public List<Athlete> getAllAthletes() {
+    public List<Athlete> getAll() {
 
-        return athleteService.getAllAthletes();
+        return athleteService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public AthleteEntity getAthleteEntityById(@PathVariable long id) {
+    public AthleteEntity getById(@PathVariable long id) {
 
-        return athleteService.findAthleteEntityById(id);
+        return athleteService.findById(id);
     }
 
     @GetMapping("/lastName")
-    public Athlete getAthleteByLastName(@RequestParam String lastName) {
+    public Athlete getByLastName(@RequestParam String lastName) {
 
         return athleteService.findAthleteByLastName(lastName);
     }
 
-    @PostMapping
-    public Athlete addAthlete(@RequestBody Athlete athlete) {
+    public Athlete addNew(@RequestBody Athlete athlete) {
 
-        return athleteService.addAthlete(athlete);
+        return athleteService.addNew(athlete);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteAthleteEntityById(@PathVariable long id) {
+    public void deleteById(@PathVariable long id) {
 
-        athleteService.deleteAthleteEntityById(id);
+        athleteService.deleteById(id);
     }
 }

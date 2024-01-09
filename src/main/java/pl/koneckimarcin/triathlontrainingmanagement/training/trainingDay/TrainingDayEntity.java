@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingUnit;
+package pl.koneckimarcin.triathlontrainingmanagement.training.trainingDay;
 
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
@@ -22,4 +22,5 @@ public class TrainingDayEntity {
 
     @OneToMany
     private Set<TrainingRealizationEntity> trainingRealization;
+
 }

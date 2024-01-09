@@ -13,13 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -54,29 +52,19 @@ public class CoachControllerTest {
     }
 
     @Test
-    void getAllCoachesHttpRequest() throws Exception {
+    void getCoachByIdHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/coach"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andDo(print());
-    }
-
-    @Test
-    void getCoachEntityByIdHttpRequest() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/coach/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/coaches/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Coach")))
                 .andExpect(jsonPath("$.lastName", is("Best")));
 
         // nonValid id
-        mockMvc.perform(MockMvcRequestBuilders.get("/coach/{id}", 3))
+        mockMvc.perform(MockMvcRequestBuilders.get("/coaches/{id}", 3))
                 .andExpect(status().is(404))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", is("CoachEntity not found with id : '3'")));
+                .andExpect(jsonPath("$.message", is("Coach not found with id : '3'")));
     }
 
     @Test
@@ -86,7 +74,7 @@ public class CoachControllerTest {
 
         Coach coach = new Coach("New", "Coach");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/coach")
+        mockMvc.perform(MockMvcRequestBuilders.post("/coaches")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(coach)))
                 .andExpect(status().isOk())
@@ -98,7 +86,7 @@ public class CoachControllerTest {
         Coach coachNonValid = new Coach();
         coachNonValid.setFirstName("Created");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/coach")
+        mockMvc.perform(MockMvcRequestBuilders.post("/coaches")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(coachNonValid)))
                 .andExpect(status().is(400));
@@ -109,16 +97,27 @@ public class CoachControllerTest {
     @Test
     void deleteCoachEntityByIdHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/coach/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/coaches/{id}", 1))
                 .andExpect(status().isOk());
 
         assertThat(coachRepository.findAll(), hasSize(1));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/coach/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/coaches/{id}", 1))
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$.message", is("CoachEntity not found with id : '1'")));
+                .andExpect(jsonPath("$.message", is("Coach not found with id : '1'")));
 
         assertThat(coachRepository.findAll(), hasSize(1));
+    }
+    @Test
+    void addNewTrainingPlanToCoachHttpRequest() throws Exception {
+
+        TrainingPlan trainingPlan = new TrainingPlan();
+        trainingPlan.setDescription("New training plan");
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/training-plans", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(trainingPlan)))
+                .andExpect(status().isOk());
     }
 
     @AfterEach

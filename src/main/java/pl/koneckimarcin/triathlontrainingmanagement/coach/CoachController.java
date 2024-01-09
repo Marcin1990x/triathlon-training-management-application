@@ -1,38 +1,34 @@
 package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.koneckimarcin.triathlontrainingmanagement.EntityController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
 @RestController
-@RequestMapping("/coach")
-public class CoachController implements EntityController<CoachEntity, Coach> {
+@RequestMapping("/coaches")
+public class CoachController {
 
     @Autowired
     private CoachService coachService;
 
-    @Override
-    public List<Coach> getAll() {
-        return coachService.getAll();
-    }
-
-    @Override
-    public CoachEntity getById(long id) {
+    @GetMapping("{id}")
+    public Coach getById(@PathVariable Long id) {
         return coachService.findById(id);
     }
 
-    @Override
-    public Coach addNew(Coach coach) {
+    @PostMapping
+    public Coach addNew(@RequestBody Coach coach) {
 
         return coachService.addNew(coach);
     }
-
-    @Override
-    public void deleteById(long id) {
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable Long id) {
 
         coachService.deleteById(id);
+    }
+    @PutMapping("{id}/training-plans")
+    public Coach addNewTrainingPlan(@PathVariable Long id, @RequestBody TrainingPlan trainingPlan) {
+
+        return coachService.addNewTrainingPlan(id, trainingPlan);
     }
 }

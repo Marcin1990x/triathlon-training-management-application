@@ -1,16 +1,11 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
-import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 import java.util.List;
 
-@Entity
-@Table(name = "training_plan")
-public class TrainingPlanEntity {
+public class TrainingPlan {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -19,8 +14,32 @@ public class TrainingPlanEntity {
 
     private String description;
 
-    @OneToMany
     private List<StageEntity> stage;
+
+    public TrainingPlanEntity mapToTrainingPlanEntity() {
+
+        TrainingPlanEntity trainingPlanEntity = new TrainingPlanEntity();
+
+        trainingPlanEntity.setId(this.id);
+        trainingPlanEntity.setName(this.name);
+        trainingPlanEntity.setTrainingType(this.trainingType);
+        trainingPlanEntity.setDescription(this.getDescription());
+        trainingPlanEntity.setStage(this.getStage()); // todo: not entity
+
+        return trainingPlanEntity;
+    }
+    public static TrainingPlan fromTrainingPlanEntity(TrainingPlanEntity trainingPlanEntity) {
+
+        TrainingPlan trainingPlan = new TrainingPlan();
+
+        trainingPlan.setId(trainingPlanEntity.getId());
+        trainingPlan.setName(trainingPlanEntity.getName());
+        trainingPlan.setTrainingType(trainingPlanEntity.getTrainingType());
+        trainingPlan.setDescription(trainingPlanEntity.getDescription());
+        trainingPlan.setStage(trainingPlanEntity.getStage()); // todo: not entity
+
+        return trainingPlan;
+    }
 
     public Long getId() {
         return id;

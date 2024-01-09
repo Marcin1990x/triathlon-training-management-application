@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,27 +45,17 @@ public class CoachServiceTest {
     @Test
     void isCoachEntityNullCheck() {
 
-        assertTrue(coachService.checkIfIsNotNull(1));
-        assertFalse(coachService.checkIfIsNotNull(0));
+        assertTrue(coachService.checkIfIsNotNull(1L));
+        assertFalse(coachService.checkIfIsNotNull(0L));
     }
 
     @Test
-    void shouldReturnAllCoaches() {
+    void shouldReturnCoachById() {
 
-        List<Coach> coaches = coachService.getAll();
-
-        assertThat(coaches, hasSize(2));
-        assertEquals("Best", coaches.get(0).getLastName());
-        assertEquals("Worst", coaches.get(1).getLastName());
-    }
-
-    @Test
-    void shouldReturnCoachEntityById() {
-
-        CoachEntity coachEntity = coachService.findById(1);
-        assertNotNull(coachEntity);
-        assertEquals("Coach", coachEntity.getFirstName());
-        assertEquals("Best", coachEntity.getLastName());
+        Coach coach = coachService.findById(1L);
+        assertNotNull(coach);
+        assertEquals("Coach", coach.getFirstName());
+        assertEquals("Best", coach.getLastName());
     }
 
     @Test
@@ -79,7 +67,7 @@ public class CoachServiceTest {
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> coachService.findById(nonValidId));
-        assertEquals("CoachEntity not found with id : '" + nonValidId + "'", exception.getMessage());
+        assertEquals("Coach not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
     @Test
@@ -135,7 +123,7 @@ public class CoachServiceTest {
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> coachService.deleteById(nonValidId));
-        assertEquals("CoachEntity not found with id : '" + nonValidId + "'", exception.getMessage());
+        assertEquals("Coach not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
     @AfterEach

@@ -2,8 +2,10 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "coach")
@@ -11,7 +13,7 @@ public class CoachEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String firstName;
 
@@ -20,18 +22,14 @@ public class CoachEntity {
     @OneToMany
     private List<AthleteEntity> athletes;
 
-    public Coach mapToCoach() {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TrainingPlanEntity> trainingPlanEntities;
 
-        Coach coach = new Coach();
-
-        coach.setFirstName(this.firstName);
-        coach.setLastName(this.lastName);
-        coach.setAthletes(this.athletes);
-
-        return coach;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -57,5 +55,12 @@ public class CoachEntity {
 
     public void setAthletes(List<AthleteEntity> athletes) {
         this.athletes = athletes;
+    }
+
+    public Set<TrainingPlanEntity> getTrainingPlans() {
+        return trainingPlanEntities;
+    }
+    public void setTrainingPlans(Set<TrainingPlanEntity> trainingPlanEntities) {
+        this.trainingPlanEntities = trainingPlanEntities;
     }
 }

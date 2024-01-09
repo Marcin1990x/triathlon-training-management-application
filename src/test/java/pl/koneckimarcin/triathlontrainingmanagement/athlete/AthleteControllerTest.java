@@ -51,44 +51,19 @@ public class AthleteControllerTest {
     }
 
     @Test
-    void getAllAthletesHttpRequest() throws Exception {
+    void getAthleteByIdHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/athlete"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)));
-    }
-
-    @Test
-    void getAthleteEntityByIdHttpRequest() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/athlete/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Bob")))
                 .andExpect(jsonPath("$.lastName", is("Nowak")));
 
         // nonValid id
-        mockMvc.perform(MockMvcRequestBuilders.get("/athlete/{id}", 3))
+        mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}", 3))
                 .andExpect(status().is(404))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", is("AthleteEntity not found with id : '3'")));
-    }
-
-    @Test
-    void getAthleteByLastNameHttpRequest() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/athlete/lastName")
-                        .param("lastName", "Nowak"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.lastName", is("Nowak")));
-        // nonValid lastName
-        mockMvc.perform(MockMvcRequestBuilders.get("/athlete/lastName")
-                        .param("lastName", "New"))
-                .andExpect(status().is(404))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", is("Athlete not found with lastname : 'New'")));
+                .andExpect(jsonPath("$.message", is("Athlete not found with id : '3'")));
     }
 
     @Test
@@ -98,7 +73,7 @@ public class AthleteControllerTest {
 
         Athlete athlete = new Athlete("New", "Athlete");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/athlete")
+        mockMvc.perform(MockMvcRequestBuilders.post("/athletes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(athlete)))
                 .andExpect(status().isOk())
@@ -110,7 +85,7 @@ public class AthleteControllerTest {
         Athlete athleteNonValid = new Athlete();
         athleteNonValid.setFirstName("Created");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/athlete")
+        mockMvc.perform(MockMvcRequestBuilders.post("/athletes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(athleteNonValid)))
                 .andExpect(status().is(400));
@@ -119,16 +94,16 @@ public class AthleteControllerTest {
     }
 
     @Test
-    void deleteAthleteEntityByIdHttpRequest() throws Exception {
+    void deleteAthleteByIdHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/athlete/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/athletes/{id}", 1))
                 .andExpect(status().isOk());
 
         assertThat(athleteRepository.findAll(), hasSize(1));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/athlete/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/athletes/{id}", 1))
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$.message", is("AthleteEntity not found with id : '1'")));
+                .andExpect(jsonPath("$.message", is("Athlete not found with id : '1'")));
 
         assertThat(athleteRepository.findAll(), hasSize(1));
     }

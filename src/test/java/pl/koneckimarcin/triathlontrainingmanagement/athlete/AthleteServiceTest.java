@@ -1,7 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -44,6 +41,7 @@ public class AthleteServiceTest {
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddAthlete2);
     }
+
     @Test
     void isAthleteEntityNullCheck() {
 
@@ -52,25 +50,16 @@ public class AthleteServiceTest {
     }
 
     @Test
-    void shouldReturnAllAthletes() {
+    void shouldReturnAthleteById() {
 
-        List<Athlete> athletes = athleteService.getAll();
-
-        assertThat(athletes, hasSize(2));
-        Assertions.assertEquals("Nowak", athletes.get(0).getLastName());
-        Assertions.assertEquals("Kowalski", athletes.get(1).getLastName());
+        Athlete athlete = athleteService.findById(1L);
+        assertNotNull(athlete);
+        assertEquals("Bob", athlete.getFirstName());
+        assertEquals("Nowak", athlete.getLastName());
     }
 
     @Test
-    void shouldReturnAthleteEntityById() {
-
-        AthleteEntity athleteEntity = athleteService.findById(1);
-        assertNotNull(athleteEntity);
-        assertEquals("Bob", athleteEntity.getFirstName());
-        assertEquals("Nowak", athleteEntity.getLastName());
-    }
-    @Test
-    void shouldThrowAnExceptionFindByIdAthleteEntityIdNonValid() {
+    void shouldThrowAnExceptionFindByIdAthleteIdNonValid() {
 
         long nonValidId = 3L;
 
@@ -78,27 +67,7 @@ public class AthleteServiceTest {
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> athleteService.findById(nonValidId));
-        assertEquals("AthleteEntity not found with id : '" + nonValidId + "'", exception.getMessage());
-    }
-
-    @Test
-    void shouldReturnAthleteByLastName() {
-
-        String lastName = "Nowak";
-
-        Athlete athlete = athleteService.findAthleteByLastName(lastName);
-
-        assertNotNull(athlete);
-        assertEquals("Nowak", athlete.getLastName());
-    }
-    @Test
-    void shouldThrowAnExceptionFindByLastNameAthleteEntityIdNonValid() {
-
-        String nonValidLastname = "Test";
-
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> athleteService.findAthleteByLastName(nonValidLastname));
-        assertEquals("Athlete not found with lastname : '" + nonValidLastname + "'", exception.getMessage());
+        assertEquals("Athlete not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
     @Test
@@ -111,6 +80,7 @@ public class AthleteServiceTest {
         athleteService.addNew(athlete);
         assertThat(athleteRepository.findAll(), hasSize(1));
     }
+
     @Test
     void shouldThrowAnExceptionSaveNewAthleteNonValidObject() {
 
@@ -131,7 +101,7 @@ public class AthleteServiceTest {
     }
 
     @Test
-    void shouldDeleteAthleteEntityById() {
+    void shouldDeleteAthleteById() {
 
         long id = 1L;
 
@@ -145,7 +115,7 @@ public class AthleteServiceTest {
     }
 
     @Test
-    void shouldThrowAnExceptionDeleteByIdAthleteEntityIdNonValid() {
+    void shouldThrowAnExceptionDeleteByIdAthleteIdNonValid() {
 
         long nonValidId = 3L;
 
@@ -153,8 +123,9 @@ public class AthleteServiceTest {
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> athleteService.deleteById(nonValidId));
-        assertEquals("AthleteEntity not found with id : '" + nonValidId + "'", exception.getMessage());
+        assertEquals("Athlete not found with id : '" + nonValidId + "'", exception.getMessage());
     }
+
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteAthlete);

@@ -1,5 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 import java.util.List;
@@ -8,8 +10,10 @@ public class TrainingPlan {
 
     private Long id;
 
+    @NotEmpty(message = "TrainingPlan name should not be empty")
     private String name;
 
+    @NotNull(message = "TrainingPlan type can not be empty")
     private TrainingType trainingType;
 
     private String description;
@@ -28,6 +32,7 @@ public class TrainingPlan {
 
         return trainingPlanEntity;
     }
+
     public static TrainingPlan fromTrainingPlanEntity(TrainingPlanEntity trainingPlanEntity) {
 
         TrainingPlan trainingPlan = new TrainingPlan();

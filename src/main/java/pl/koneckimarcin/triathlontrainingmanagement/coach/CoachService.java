@@ -2,6 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
@@ -35,7 +36,7 @@ public class CoachService {
     }
 
     public Coach addNew(Coach coach) {
-        if (!isFirstOrLastNameNullOrEmpty(coach.getFirstName(), coach.getLastName())) {
+        if (!isFirstOrLastNameNullOrEmpty(coach.getFirstName(), coach.getLastName())) { // todo: replace with Validation
 
             CoachEntity coachEntity = coach.mapToCoachEntity();
             CoachEntity savedCoachEntity = coachRepository.save(coachEntity);
@@ -61,11 +62,12 @@ public class CoachService {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
     }
+
     public Coach addNewTrainingPlan(Long coachId, TrainingPlan trainingPlan) {
 
         Coach coachToUpdate;
 
-        if(checkIfIsNotNull(coachId)) {
+        if (checkIfIsNotNull(coachId)) {
             Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
             coachToUpdate = Coach.fromCoachEntity(coachEntity.get());
             coachToUpdate.getTrainingPlans().add(trainingPlan);

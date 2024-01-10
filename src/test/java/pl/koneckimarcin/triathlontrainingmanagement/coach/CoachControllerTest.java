@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test-coach.properties")
+@Transactional
 public class CoachControllerTest {
 
     @Autowired
@@ -95,7 +97,7 @@ public class CoachControllerTest {
     }
 
     @Test
-    void deleteCoachEntityByIdHttpRequest() throws Exception {
+    void deleteCoachEntityByIdHttpRequestValidAndNonValidId() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/coaches/{id}", 1))
                 .andExpect(status().isOk());
@@ -108,6 +110,7 @@ public class CoachControllerTest {
 
         assertThat(coachRepository.findAll(), hasSize(1));
     }
+
     @Test
     void addNewTrainingPlanToCoachHttpRequest() throws Exception {
 
@@ -115,8 +118,8 @@ public class CoachControllerTest {
         trainingPlan.setDescription("New training plan");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/training-plans", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(trainingPlan)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(trainingPlan)))
                 .andExpect(status().isOk());
     }
 

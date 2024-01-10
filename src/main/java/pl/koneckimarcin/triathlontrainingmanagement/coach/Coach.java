@@ -1,11 +1,12 @@
 package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,11 +14,12 @@ public class Coach {
 
     private Long id;
 
+    @NotNull
     private String firstName;
-
+    @NotNull
     private String lastName;
 
-    private List<Athlete> athletes = new ArrayList<>();
+    private Set<Athlete> athletes = new HashSet<>();
 
     private Set<TrainingPlan> trainingPlans = new HashSet<>();
 
@@ -35,7 +37,7 @@ public class Coach {
         coachEntity.setId(this.id);
         coachEntity.setFirstName(this.firstName);
         coachEntity.setLastName(this.lastName);
-        coachEntity.setAthletes(this.athletes.stream().map(Athlete::mapToAthleteEntity).toList());
+        coachEntity.setAthletes(this.athletes.stream().map(Athlete::mapToAthleteEntity).collect(Collectors.toSet()));
         coachEntity.setTrainingPlans
                 (this.trainingPlans.stream().map(TrainingPlan::mapToTrainingPlanEntity).collect(Collectors.toSet()));
 
@@ -48,7 +50,7 @@ public class Coach {
         coach.setId(coachEntity.getId());
         coach.setFirstName(coachEntity.getFirstName());
         coach.setLastName(coachEntity.getLastName());
-        coach.setAthletes(coachEntity.getAthletes().stream().map(Athlete::fromAthleteEntity).toList());
+        coach.setAthletes(coachEntity.getAthletes().stream().map(Athlete::fromAthleteEntity).collect(Collectors.toSet()));
 
         return coach;
     }
@@ -77,11 +79,11 @@ public class Coach {
         this.lastName = lastName;
     }
 
-    public List<Athlete> getAthletes() {
+    public Set<Athlete> getAthletes() {
         return athletes;
     }
 
-    public void setAthletes(List<Athlete> athletes) {
+    public void setAthletes(Set<Athlete> athletes) {
         this.athletes = athletes;
     }
 

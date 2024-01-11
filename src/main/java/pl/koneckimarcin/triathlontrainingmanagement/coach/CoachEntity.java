@@ -18,7 +18,7 @@ public class CoachEntity {
 
     private String lastName;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_id")
     private Set<AthleteEntity> athletes;
 

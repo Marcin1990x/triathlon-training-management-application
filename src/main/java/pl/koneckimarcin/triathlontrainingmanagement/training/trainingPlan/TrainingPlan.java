@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
+import java.sql.Date;
 import java.util.List;
 
 public class TrainingPlan {
@@ -18,6 +19,8 @@ public class TrainingPlan {
 
     private String description;
 
+    private Date plannedDate;
+
     private List<StageEntity> stage;
 
     public TrainingPlanEntity mapToTrainingPlanEntity() {
@@ -28,6 +31,7 @@ public class TrainingPlan {
         trainingPlanEntity.setName(this.name);
         trainingPlanEntity.setTrainingType(this.trainingType);
         trainingPlanEntity.setDescription(this.getDescription());
+        trainingPlanEntity.setPlannedDate(this.plannedDate);
         trainingPlanEntity.setStage(this.getStage()); // todo: not entity
 
         return trainingPlanEntity;
@@ -41,6 +45,7 @@ public class TrainingPlan {
         trainingPlan.setName(trainingPlanEntity.getName());
         trainingPlan.setTrainingType(trainingPlanEntity.getTrainingType());
         trainingPlan.setDescription(trainingPlanEntity.getDescription());
+        trainingPlan.setPlannedDate(trainingPlanEntity.getPlannedDate());
         trainingPlan.setStage(trainingPlanEntity.getStage()); // todo: not entity
 
         return trainingPlan;
@@ -76,6 +81,14 @@ public class TrainingPlan {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getPlannedDate() {
+        return plannedDate;
+    }
+
+    public void setPlannedDate(Date plannedDate) {
+        this.plannedDate = plannedDate;
     }
 
     public List<StageEntity> getStage() {

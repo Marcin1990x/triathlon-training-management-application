@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -15,9 +16,12 @@ public class TrainingPlanEntity {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private TrainingType trainingType;
 
     private String description;
+
+    private Date plannedDate;
 
     @OneToMany
     private List<StageEntity> stage;
@@ -52,6 +56,14 @@ public class TrainingPlanEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getPlannedDate() {
+        return plannedDate;
+    }
+
+    public void setPlannedDate(Date plannedDate) {
+        this.plannedDate = plannedDate;
     }
 
     public List<StageEntity> getStage() {

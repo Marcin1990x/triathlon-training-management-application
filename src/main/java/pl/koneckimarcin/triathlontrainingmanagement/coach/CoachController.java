@@ -3,7 +3,6 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 
 @RestController
@@ -32,10 +31,9 @@ public class CoachController {
 
         coachService.deleteById(id);
     }
+    @PutMapping("/{coachId}/athletes/{athleteId}")
+    public Coach addAthleteToCoach(@PathVariable Long coachId, @PathVariable Long athleteId) {
 
-    @PutMapping("{id}/training-plans")
-    public Coach addNewTrainingPlan(@PathVariable Long id, @Valid @RequestBody TrainingPlan trainingPlan) {
-
-        return coachService.addNewTrainingPlan(id, trainingPlan);
+        return coachService.addAthleteToCoach(coachId, athleteId);
     }
 }

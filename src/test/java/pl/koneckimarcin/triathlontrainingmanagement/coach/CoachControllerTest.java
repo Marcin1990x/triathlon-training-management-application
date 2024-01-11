@@ -14,7 +14,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -43,12 +42,18 @@ public class CoachControllerTest {
     private String sqlAddCoach;
     @Value("${sql.script.create.coach2}")
     private String sqlAddCoach2;
+    @Value("${sql.script.create.athlete}")
+    private String sqlAddAthlete;
 
     @Value("${sql.script.delete.coach}")
     private String sqlDeleteCoach;
+    @Value("${sql.script.delete.athlete}")
+    private String sqlDeleteAthlete;
+
 
     @BeforeEach
     void setup() {
+        jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddCoach2);
     }
@@ -112,19 +117,17 @@ public class CoachControllerTest {
     }
 
     @Test
-    void addNewTrainingPlanToCoachHttpRequest() throws Exception {
+    void addAthleteToCoachHttpRequest() throws Exception {
 
-        TrainingPlan trainingPlan = new TrainingPlan();
-        trainingPlan.setDescription("New training plan");
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/training-plans", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(trainingPlan)))
+        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/athletes/{id}", 1, 1))
                 .andExpect(status().isOk());
+
+        assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(1));
     }
 
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteCoach);
+        jdbc.execute(sqlDeleteAthlete);
     }
 }

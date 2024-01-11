@@ -1,14 +1,14 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import jakarta.persistence.*;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingDay.TrainingDayEntity;
 
 import java.util.List;
 
 @Entity
 @Table(name = "athlete")
-public class AthleteEntity{
+public class AthleteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,11 @@ public class AthleteEntity{
     private String lastName;
 
     @OneToMany
-    private List<TrainingDayEntity> trainingDay;
+    private List<TrainingRealizationEntity> trainingRealization;
 
     @OneToMany
-    private List<TrainingRealizationEntity> trainingRealization;
+    @JoinColumn(name = "athlete_id")
+    private List<TrainingPlanEntity> trainingPlans;
 
     public Long getId() {
         return id;
@@ -48,19 +49,19 @@ public class AthleteEntity{
         this.lastName = lastName;
     }
 
-    public List<TrainingDayEntity> getTrainingDay() {
-        return trainingDay;
-    }
-
-    public void setTrainingDay(List<TrainingDayEntity> trainingDay) {
-        this.trainingDay = trainingDay;
-    }
-
     public List<TrainingRealizationEntity> getTrainingRealization() {
         return trainingRealization;
     }
 
     public void setTrainingRealization(List<TrainingRealizationEntity> trainingRealization) {
         this.trainingRealization = trainingRealization;
+    }
+
+    public List<TrainingPlanEntity> getTrainingPlans() {
+        return trainingPlans;
+    }
+
+    public void setTrainingPlans(List<TrainingPlanEntity> trainingPlans) {
+        this.trainingPlans = trainingPlans;
     }
 }

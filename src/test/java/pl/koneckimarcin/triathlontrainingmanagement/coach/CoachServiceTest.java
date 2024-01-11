@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
@@ -27,19 +28,26 @@ public class CoachServiceTest {
     private CoachService coachService;
     @Autowired
     private CoachRepository coachRepository;
+    @Autowired
+    private AthleteRepository athleteRepository;
 
     @Value("${sql.script.create.coach}")
     private String sqlAddCoach;
+    @Value("${sql.script.create.athlete}")
+    private String sqlAddAthlete;
     @Value("${sql.script.create.coach2}")
     private String sqlAddCoach2;
 
     @Value("${sql.script.delete.coach}")
     private String sqlDeleteCoach;
+    @Value("${sql.script.delete.athlete}")
+    private String sqlDeleteAthlete;
 
     @BeforeEach
     void setup() {
         jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddCoach2);
+        jdbc.execute(sqlAddAthlete);
     }
 
     @Test
@@ -125,9 +133,20 @@ public class CoachServiceTest {
                 () -> coachService.deleteById(nonValidId));
         assertEquals("Coach not found with id : '" + nonValidId + "'", exception.getMessage());
     }
+    @Test
+    void shouldAddAthleteToCoach() {
+
+        assertTrue(coachRepository.findById(1L).isPresent());
+        assertTrue(athleteRepository.findById(1L).isPresent());
+
+        coachService.addAthleteToCoach(1L, 1L);
+
+        assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(1));
+    }
 
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteCoach);
+        jdbc.execute(sqlDeleteAthlete);
     }
 }

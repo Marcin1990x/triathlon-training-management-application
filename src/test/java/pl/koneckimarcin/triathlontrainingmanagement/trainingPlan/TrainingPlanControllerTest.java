@@ -1,5 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.trainingPlan;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingType;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -42,6 +46,9 @@ public class TrainingPlanControllerTest {
     @Autowired
     private CoachRepository coachRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Value("${sql.script.create.coach}")
     private String sqlAddCoach;
     @Value("${sql.script.create.training-plan}")
@@ -50,12 +57,19 @@ public class TrainingPlanControllerTest {
     @Value("${sql.script.delete.coach}")
     private String sqlDeleteCoach;
     @Value("${sql.script.delete.training-plan}")
-    private String sqlDeletePlan;
+    private String sqlDeleteTrainingPlan;
+
+    private TrainingPlan trainingPlan;
 
     @BeforeEach
     void setup() {
         jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddPlan);
+
+        trainingPlan = new TrainingPlan();
+        trainingPlan.setDescription("New training plan");
+        trainingPlan.setName("Test plan");
+        trainingPlan.setTrainingType(TrainingType.SWIM);
     }
 
     @Test
@@ -76,9 +90,25 @@ public class TrainingPlanControllerTest {
         assertThat(trainingPlanRepository.findAll(), hasSize(0));
     }
 
+    @Test
+    void addNewTrainingPlanToCoachHttpRequest() throws Exception {
+
+        jdbc.execute(sqlDeleteTrainingPlan);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/coaches/{id}/training-plans", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(trainingPlan)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Test plan")))
+                .andExpect(jsonPath("$.trainingType", is("SWIM")));
+
+        assertThat(trainingPlanRepository.findByTrainingType(TrainingType.SWIM), hasSize(1));
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+    }
+
     @AfterEach
     void clean() {
-        jdbc.execute(sqlDeletePlan);
+        jdbc.execute(sqlDeleteTrainingPlan);
         jdbc.execute(sqlDeleteCoach);
 
     }

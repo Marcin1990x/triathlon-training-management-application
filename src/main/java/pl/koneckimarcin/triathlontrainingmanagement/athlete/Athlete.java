@@ -1,9 +1,10 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingDay.TrainingDayEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Athlete {
 
@@ -13,9 +14,9 @@ public class Athlete {
 
     private String lastName;
 
-    private List<TrainingDayEntity> trainingDay;
-
     private List<TrainingRealizationEntity> trainingRealization;
+
+    private List<TrainingPlan> trainingPlans;
 
     public Athlete() {
     }
@@ -32,8 +33,9 @@ public class Athlete {
         athleteEntity.setId(this.id);
         athleteEntity.setFirstName(this.firstName);
         athleteEntity.setLastName(this.lastName);
-        athleteEntity.setTrainingDay(this.trainingDay);
         athleteEntity.setTrainingRealization(this.trainingRealization);
+        athleteEntity.setTrainingPlans(this.trainingPlans
+                .stream().map(TrainingPlan::mapToTrainingPlanEntity).collect(Collectors.toList()));
 
         return athleteEntity;
     }
@@ -45,8 +47,9 @@ public class Athlete {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
-        athlete.setTrainingDay(athleteEntity.getTrainingDay());
         athlete.setTrainingRealization(athleteEntity.getTrainingRealization());
+        athlete.setTrainingPlans(athleteEntity.getTrainingPlans()
+                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList()));
 
         return athlete;
     }
@@ -75,19 +78,19 @@ public class Athlete {
         this.lastName = lastName;
     }
 
-    public List<TrainingDayEntity> getTrainingDay() {
-        return trainingDay;
-    }
-
-    public void setTrainingDay(List<TrainingDayEntity> trainingDay) {
-        this.trainingDay = trainingDay;
-    }
-
     public List<TrainingRealizationEntity> getTrainingRealization() {
         return trainingRealization;
     }
 
     public void setTrainingRealization(List<TrainingRealizationEntity> trainingRealization) {
         this.trainingRealization = trainingRealization;
+    }
+
+    public List<TrainingPlan> getTrainingPlans() {
+        return trainingPlans;
+    }
+
+    public void setTrainingPlans(List<TrainingPlan> trainingPlans) {
+        this.trainingPlans = trainingPlans;
     }
 }

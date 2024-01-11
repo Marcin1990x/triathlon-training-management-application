@@ -2,10 +2,11 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,12 @@ public class CoachService {
 
     @Autowired
     private CoachRepository coachRepository;
+
+    @Autowired
+    private AthleteRepository athleteRepository;
+
+    @Autowired
+    private AthleteService athleteService;
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
@@ -62,20 +69,22 @@ public class CoachService {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
     }
+    public Coach addAthleteToCoach(Long coachId, Long athleteId) {
 
-    public Coach addNewTrainingPlan(Long coachId, TrainingPlan trainingPlan) {
+        if(checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
 
-        Coach coachToUpdate;
+            AthleteEntity athlete = athleteRepository.findById(athleteId).get();
 
-        if (checkIfIsNotNull(coachId)) {
-            Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
-            coachToUpdate = Coach.fromCoachEntity(coachEntity.get());
-            coachToUpdate.getTrainingPlans().add(trainingPlan);
+            CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
+            coachToUpdate.getAthletes().add(athlete);
 
-            coachRepository.save(coachToUpdate.mapToCoachEntity());
+            return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
         } else {
-            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+            if(!checkIfIsNotNull(coachId)) {
+                throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+            } else {
+                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+            }
         }
-        return coachToUpdate;
     }
 }

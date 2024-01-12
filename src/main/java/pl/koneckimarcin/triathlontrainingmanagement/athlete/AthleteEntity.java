@@ -21,7 +21,7 @@ public class AthleteEntity {
     @OneToMany
     private List<TrainingRealizationEntity> trainingRealization;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "athlete_id")
     private List<TrainingPlanEntity> trainingPlans;
 

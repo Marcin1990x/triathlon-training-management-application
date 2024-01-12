@@ -1,6 +1,8 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
 import jakarta.persistence.*;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 import java.sql.Date;
@@ -18,12 +20,14 @@ public class TrainingPlanEntity {
 
     @Enumerated(EnumType.STRING)
     private TrainingType trainingType;
+    @Enumerated(EnumType.STRING)
+    private TrainingPlanStatus trainingPlanStatus;
 
     private String description;
 
     private Date plannedDate;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<StageEntity> stage;
 
     public Long getId() {
@@ -44,6 +48,14 @@ public class TrainingPlanEntity {
 
     public TrainingType getTrainingType() {
         return trainingType;
+    }
+
+    public TrainingPlanStatus getTrainingPlanStatus() {
+        return trainingPlanStatus;
+    }
+
+    public void setTrainingPlanStatus(TrainingPlanStatus trainingPlanStatus) {
+        this.trainingPlanStatus = trainingPlanStatus;
     }
 
     public void setTrainingType(TrainingType trainingType) {
@@ -72,5 +84,18 @@ public class TrainingPlanEntity {
 
     public void setStage(List<StageEntity> stage) {
         this.stage = stage;
+    }
+
+    @Override
+    public String toString() {
+        return "TrainingPlanEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", trainingType=" + trainingType +
+                ", trainingPlanStatus=" + trainingPlanStatus +
+                ", description='" + description + '\'' +
+                ", plannedDate=" + plannedDate +
+                ", stage=" + stage +
+                '}';
     }
 }

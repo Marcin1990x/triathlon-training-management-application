@@ -10,9 +10,12 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TrainingPlanService {
@@ -41,6 +44,16 @@ public class TrainingPlanService {
         return false;
     }
 
+    public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {
+
+        if (athleteService.checkIfIsNotNull(id)) {
+
+            return athleteRepository.findById(id).get().getTrainingPlans().stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
+        } else {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        }
+    }
+
     public void deleteById(Long id) {
 
         if (checkIfIsNotNull(id)) {
@@ -66,42 +79,47 @@ public class TrainingPlanService {
         }
     }
 
-    public void addTrainingPlanToAthlete(Long athleteId, Long trainingPlanId, Date date) { //todo: to finish
+    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date date) {
 
-//        if (athleteService.checkIfIsNotNull(athleteId) && checkIfIsNotNull(trainingPlanId)) {
-//            if (isDateCorrect(date)) {
-//
-//                TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(trainingPlanId).get();
-//
-//                TrainingPlanEntity trainingPlanAssigned = new TrainingPlanEntity();
-//                trainingPlanAssigned.setId(0L);
-//                trainingPlanAssigned.setTrainingType(trainingPlan.getTrainingType());
-//                trainingPlanAssigned.setPlannedDate(date);
-//                trainingPlanAssigned.setStage(trainingPlan.getStage());
-//                trainingPlanAssigned.setTrainingType(trainingPlan.getTrainingType());
-//                trainingPlanAssigned.setName(trainingPlan.getName());
-//                trainingPlanAssigned.setDescription(trainingPlan.getDescription());
-//
-//                trainingPlanRepository.save(trainingPlanAssigned);
-//
-//                AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-//                athlete.getTrainingPlans().add(trainingPlanAssigned);
-//
-//                athleteRepository.save(athlete);
-//            } else {
-//                throw new EnumConstantNotPresentException(TrainingType.class, "sds waaaaaat!?");
-//            }
-//        } else {
-//            if (!checkIfIsNotNull(trainingPlanId)) {
-//                throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(trainingPlanId));
-//            } else {
-//                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-//            }
-//        }
+        if (athleteService.checkIfIsNotNull(athleteId) && checkIfIsNotNull(trainingPlanId)) {
+            if (isDateCorrect(date)) {
+
+                TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(trainingPlanId).get();
+                TrainingPlanEntity copiedPlan = copyTrainingPlanEntity(trainingPlan);
+                copiedPlan.setPlannedDate(date);
+                copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
+
+                trainingPlanRepository.save(copiedPlan);
+
+                AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+                athlete.getTrainingPlans().add(copiedPlan);
+                athleteRepository.save(athlete);
+
+                return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
+            } else {
+                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId)); // todo: fix this
+            }
+        } else {
+            if (!checkIfIsNotNull(trainingPlanId)) {
+                throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(trainingPlanId));
+            } else {
+                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+            }
+        }
     }
 
     private boolean isDateCorrect(Date date) {
 
-        return !date.toString().isEmpty();
+        return date.toString().length() == 10; // check sql pattern
+    }
+
+    private TrainingPlanEntity copyTrainingPlanEntity(TrainingPlanEntity original) {
+
+        TrainingPlanEntity copy = new TrainingPlanEntity();
+        copy.setTrainingType(original.getTrainingType());
+        copy.setDescription(original.getDescription());
+        copy.setName(original.getName());
+
+        return copy;
     }
 }

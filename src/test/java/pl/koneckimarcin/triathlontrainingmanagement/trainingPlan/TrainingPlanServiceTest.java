@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.util.Assert;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+
+import java.sql.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -36,13 +38,22 @@ public class TrainingPlanServiceTest {
     @Autowired
     private CoachRepository coachRepository;
 
+    @Autowired
+    private AthleteRepository athleteRepository;
+
     @Value("${sql.script.create.coach}")
     private String sqlAddCoach;
+    @Value("${sql.script.create.athlete}")
+    private String sqlAddAthlete;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddPlan;
+    @Value("${sql.script.create.training-plan2}")
+    private String sqlAddPlan2;
 
     @Value("${sql.script.delete.coach}")
     private String sqlDeleteCoach;
+    @Value("${sql.script.delete.athlete}")
+    private String sqlDeleteAthlete;
     @Value("${sql.script.delete.training-plan}")
     private String sqlDeletePlan;
 
@@ -50,8 +61,10 @@ public class TrainingPlanServiceTest {
 
     @BeforeEach
     void setup() {
+        jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddPlan);
+        jdbc.execute(sqlAddPlan2);
 
         trainingPlan = new TrainingPlan();
         trainingPlan.setDescription("New training plan");
@@ -62,15 +75,24 @@ public class TrainingPlanServiceTest {
     // todo: test checkNull
 
     @Test
+    void shouldGetTrainingPlansByAthleteId() {
+
+        assertTrue(athleteRepository.findById(1L).isPresent());
+
+        trainingPlanService.getTrainingPlansByAthleteId(1L);
+        assertThat(trainingPlanService.getTrainingPlansByAthleteId(1L), hasSize(1));
+    }
+
+    @Test
     void shouldDeleteTrainingPlanByIdAndFromCoachSet() {
 
-        assertTrue(trainingPlanRepository.findById(1L).isPresent());
+        assertTrue(trainingPlanRepository.findById(10L).isPresent());
         assertTrue(coachRepository.findById(1L).isPresent());
 
-        trainingPlanService.deleteById(1L);
+        trainingPlanService.deleteById(10L);
 
-        assertFalse(trainingPlanRepository.findById(1L).isPresent());
-        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(0));
+        assertFalse(trainingPlanRepository.findById(10L).isPresent());
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
     }
 
     @Test
@@ -88,13 +110,11 @@ public class TrainingPlanServiceTest {
     @Test
     void shouldAddNewTrainingPlanToCoach() {
 
-        jdbc.execute(sqlDeletePlan);
-
         assertTrue(coachRepository.findById(1L).isPresent());
 
         trainingPlanService.addNewTrainingPlanToCoach(1L, trainingPlan);
 
-        assertThat(trainingPlanRepository.findAll(), hasSize(1));
+        assertThat(trainingPlanRepository.findAll(), hasSize(3));
         assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
     }
 
@@ -104,15 +124,27 @@ public class TrainingPlanServiceTest {
         assertFalse(coachRepository.findById(2L).isPresent());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> trainingPlanService.addNewTrainingPlanToCoach(2L,  trainingPlan));
+                () -> trainingPlanService.addNewTrainingPlanToCoach(2L, trainingPlan));
 
         assertEquals("Coach not found with id : '2'", exception.getMessage());
+    }
+    @Test
+    void shouldAddTrainingPlanToAthleteWithDate() {
+
+        assertTrue(trainingPlanRepository.findById(10L).isPresent());
+        assertTrue(athleteRepository.findById(1L).isPresent());
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+
+        trainingPlanService.addTrainingPlanToAthleteWithDate(1L, 11L, new Date(2024, 1, 20));
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(2));
     }
 
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeletePlan);
         jdbc.execute(sqlDeleteCoach);
+        jdbc.execute(sqlDeleteAthlete);
 
     }
 }

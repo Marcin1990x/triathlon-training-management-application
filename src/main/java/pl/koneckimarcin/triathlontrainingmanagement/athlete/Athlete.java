@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class Athlete {
 
     private List<TrainingRealizationEntity> trainingRealization;
 
-    private List<TrainingPlan> trainingPlans;
+    private List<TrainingPlan> trainingPlans = new ArrayList<>();
 
     public Athlete() {
     }

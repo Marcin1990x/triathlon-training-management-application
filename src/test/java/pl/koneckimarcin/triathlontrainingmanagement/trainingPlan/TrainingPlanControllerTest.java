@@ -13,16 +13,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,12 +41,12 @@ public class TrainingPlanControllerTest {
 
     @Autowired
     private TrainingPlanService trainingPlanService;
-
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
-
     @Autowired
     private CoachRepository coachRepository;
+    @Autowired
+    private AthleteRepository athleteRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -53,18 +55,27 @@ public class TrainingPlanControllerTest {
     private String sqlAddCoach;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddPlan;
+    @Value("${sql.script.create.training-plan2}")
+    private String sqlAddPlan2;
+    @Value("${sql.script.create.athlete}")
+    private String sqlAddAthlete;
+
 
     @Value("${sql.script.delete.coach}")
     private String sqlDeleteCoach;
     @Value("${sql.script.delete.training-plan}")
     private String sqlDeleteTrainingPlan;
+    @Value("${sql.script.delete.athlete}")
+    private String sqlDeleteAthlete;
 
     private TrainingPlan trainingPlan;
 
     @BeforeEach
     void setup() {
+        jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddPlan);
+        jdbc.execute(sqlAddPlan2);
 
         trainingPlan = new TrainingPlan();
         trainingPlan.setDescription("New training plan");
@@ -73,27 +84,34 @@ public class TrainingPlanControllerTest {
     }
 
     @Test
+    void getTrainingPlansByAthleteIdHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}/training-plans",1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].description", is("testplan")));
+    }
+
+    @Test
     void deleteTrainingPlanByIdHttpRequestValidAndNonValidId() throws Exception {
 
-        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(2));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/training-plans/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/training-plans/{id}", 10))
                 .andExpect(status().isOk());
 
         assertFalse(trainingPlanRepository.findById(1L).isPresent());
-        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(0));
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
         //non valid id
-        mockMvc.perform(MockMvcRequestBuilders.delete("/training-plans/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/training-plans/{id}", 10))
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$.message", is("TrainingPlan not found with id : '1'")));
+                .andExpect(jsonPath("$.message", is("TrainingPlan not found with id : '10'")));
 
-        assertThat(trainingPlanRepository.findAll(), hasSize(0));
+        assertThat(trainingPlanRepository.findAll(), hasSize(1));
     }
 
     @Test
     void addNewTrainingPlanToCoachHttpRequest() throws Exception {
-
-        jdbc.execute(sqlDeleteTrainingPlan);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/coaches/{id}/training-plans", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -102,14 +120,23 @@ public class TrainingPlanControllerTest {
                 .andExpect(jsonPath("$.name", is("Test plan")))
                 .andExpect(jsonPath("$.trainingType", is("SWIM")));
 
-        assertThat(trainingPlanRepository.findByTrainingType(TrainingType.SWIM), hasSize(1));
+        assertThat(trainingPlanRepository.findByTrainingType(TrainingType.SWIM), hasSize(2));
         assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
     }
+    @Test
+    void addTrainingPlanToAthleteWithDateHttpRequestExpectSetDateAndStatusPlanned() throws Exception {
 
+        mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-plans/{id}",1 ,11)
+                .param("plannedDate", "2024-01-20"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.trainingPlanStatus", is("PLANNED")))
+                .andExpect(jsonPath("$.plannedDate", is("2024-01-20")));
+    }
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteTrainingPlan);
         jdbc.execute(sqlDeleteCoach);
+        jdbc.execute(sqlDeleteAthlete);
 
     }
 }

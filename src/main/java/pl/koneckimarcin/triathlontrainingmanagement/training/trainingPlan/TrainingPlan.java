@@ -2,6 +2,8 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 import java.sql.Date;
@@ -17,6 +19,8 @@ public class TrainingPlan {
     @NotNull(message = "TrainingPlan type can not be empty")
     private TrainingType trainingType;
 
+    private TrainingPlanStatus trainingPlanStatus;
+
     private String description;
 
     private Date plannedDate;
@@ -30,6 +34,7 @@ public class TrainingPlan {
         trainingPlanEntity.setId(this.id);
         trainingPlanEntity.setName(this.name);
         trainingPlanEntity.setTrainingType(this.trainingType);
+        trainingPlanEntity.setTrainingPlanStatus(this.trainingPlanStatus);
         trainingPlanEntity.setDescription(this.getDescription());
         trainingPlanEntity.setPlannedDate(this.plannedDate);
         trainingPlanEntity.setStage(this.getStage()); // todo: not entity
@@ -44,6 +49,7 @@ public class TrainingPlan {
         trainingPlan.setId(trainingPlanEntity.getId());
         trainingPlan.setName(trainingPlanEntity.getName());
         trainingPlan.setTrainingType(trainingPlanEntity.getTrainingType());
+        trainingPlan.setTrainingPlanStatus(trainingPlanEntity.getTrainingPlanStatus());
         trainingPlan.setDescription(trainingPlanEntity.getDescription());
         trainingPlan.setPlannedDate(trainingPlanEntity.getPlannedDate());
         trainingPlan.setStage(trainingPlanEntity.getStage()); // todo: not entity
@@ -73,6 +79,14 @@ public class TrainingPlan {
 
     public void setTrainingType(TrainingType trainingType) {
         this.trainingType = trainingType;
+    }
+
+    public TrainingPlanStatus getTrainingPlanStatus() {
+        return trainingPlanStatus;
+    }
+
+    public void setTrainingPlanStatus(TrainingPlanStatus trainingPlanStatus) {
+        this.trainingPlanStatus = trainingPlanStatus;
     }
 
     public String getDescription() {

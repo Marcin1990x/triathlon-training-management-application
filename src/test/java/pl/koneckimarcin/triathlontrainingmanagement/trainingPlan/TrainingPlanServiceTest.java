@@ -81,7 +81,6 @@ public class TrainingPlanServiceTest {
 
         assertTrue(athleteRepository.findById(1L).isPresent());
 
-        trainingPlanService.getTrainingPlansByAthleteId(1L);
         assertThat(trainingPlanService.getTrainingPlansByAthleteId(1L), hasSize(1));
     }
 

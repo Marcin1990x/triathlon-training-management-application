@@ -18,7 +18,7 @@ public class AthleteEntity {
 
     private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "athlete_id")
     private List<TrainingRealizationEntity> trainingRealization;
 

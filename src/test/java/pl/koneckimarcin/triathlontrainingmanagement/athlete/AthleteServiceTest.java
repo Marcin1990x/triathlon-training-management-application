@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,17 +27,24 @@ public class AthleteServiceTest {
     private AthleteService athleteService;
     @Autowired
     private AthleteRepository athleteRepository;
+    @Autowired
+    private CoachRepository coachRepository;
 
     @Value("${sql.script.create.athlete}")
     private String sqlAddAthlete;
     @Value("${sql.script.create.athlete2}")
     private String sqlAddAthlete2;
+    @Value("${sql.script.create.coach}")
+    private String sqlAddCoach;
 
     @Value("${sql.script.delete.athlete}")
     private String sqlDeleteAthlete;
+    @Value("${sql.script.delete.coach}")
+    private String sqlDeleteCoach;
 
     @BeforeEach
     void setup() {
+        jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddAthlete2);
     }
@@ -52,10 +59,17 @@ public class AthleteServiceTest {
     @Test
     void shouldReturnAthleteById() {
 
-        Athlete athlete = athleteService.findById(1L);
+        Athlete athlete = athleteService.getById(1L);
         assertNotNull(athlete);
         assertEquals("Bob", athlete.getFirstName());
         assertEquals("Nowak", athlete.getLastName());
+    }
+
+    @Test
+    void shouldReturnAthletesByCoachId() {
+
+        assertTrue(coachRepository.findById(10L).isPresent());
+        assertThat(athleteService.getAthletesByCoachId(10L), hasSize(2));
     }
 
     @Test
@@ -66,7 +80,7 @@ public class AthleteServiceTest {
         assertFalse(athleteRepository.findById(nonValidId).isPresent());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> athleteService.findById(nonValidId));
+                () -> athleteService.getById(nonValidId));
         assertEquals("Athlete not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
@@ -79,25 +93,6 @@ public class AthleteServiceTest {
 
         athleteService.addNew(athlete);
         assertThat(athleteRepository.findAll(), hasSize(1));
-    }
-
-    @Test
-    void shouldThrowAnExceptionSaveNewAthleteNonValidObject() {
-
-        String errorMessage = "This fields can not be empty: [firstname, lastname]";
-
-        Athlete athlete = new Athlete();
-        athlete.setFirstName("New");
-        Athlete athlete1 = new Athlete();
-        athlete1.setFirstName("New");
-        athlete1.setLastName("");
-
-        BadRequestNonValidFieldsException exception = assertThrows(BadRequestNonValidFieldsException.class,
-                () -> athleteService.addNew(athlete));
-        assertEquals(errorMessage, exception.getMessage());
-
-        assertThrows(BadRequestNonValidFieldsException.class,
-                () -> athleteService.addNew(athlete1));
     }
 
     @Test
@@ -129,5 +124,6 @@ public class AthleteServiceTest {
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteAthlete);
+        jdbc.execute(sqlDeleteCoach);
     }
 }

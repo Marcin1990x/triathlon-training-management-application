@@ -1,14 +1,13 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.util.List;
 
 @RestController
-public class TrainingPlanController implements TrainingPlanOperations{
+public class TrainingPlanController implements TrainingPlanOperations {
 
     @Autowired
     private TrainingPlanService trainingPlanService;
@@ -19,18 +18,17 @@ public class TrainingPlanController implements TrainingPlanOperations{
         return trainingPlanService.getTrainingPlansByAthleteId(id);
     }
 
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
 
         trainingPlanService.deleteById(id);
     }
 
-    public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @Valid @RequestBody TrainingPlan trainingPlan) {
+    public TrainingPlan addNewTrainingPlan(Long id, TrainingPlan trainingPlan) {
 
         return trainingPlanService.addNewTrainingPlanToCoach(id, trainingPlan);
     }
 
-    public TrainingPlan addTrainingPlanToAthleteWithDate(
-            @PathVariable Long athleteId, @PathVariable Long trainingPlanId, @RequestParam Date plannedDate) {
+    public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date plannedDate) {
 
         return trainingPlanService.addTrainingPlanToAthleteWithDate(athleteId, trainingPlanId, plannedDate);
     }

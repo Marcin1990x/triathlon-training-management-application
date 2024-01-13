@@ -11,12 +11,14 @@ import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -135,10 +137,25 @@ public class TrainingPlanServiceTest {
         assertTrue(athleteRepository.findById(1L).isPresent());
         assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
 
-        trainingPlanService.addTrainingPlanToAthleteWithDate(1L, 11L, new Date(2024, 1, 20));
+        Date date = Date.valueOf(LocalDate.now());
+
+        trainingPlanService.addTrainingPlanToAthleteWithDate(1L, 11L, date);
 
         assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(2));
     }
+    @Test
+    void shouldThrowAnExceptionWhenAddTrainingPlanToAthleteWithInvalidDate() {
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+
+        Date date = Date.valueOf(LocalDate.of(2023, 10, 10));
+
+        assertThrows(WrongDateException.class, () ->
+                trainingPlanService.addTrainingPlanToAthleteWithDate(1L, 11L, date));
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+    }
+
 
     @AfterEach
     void clean() {

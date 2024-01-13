@@ -1,18 +1,23 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AthleteService {
 
     @Autowired
     private AthleteRepository athleteRepository;
+
+    @Autowired
+    private CoachRepository coachRepository;
 
     public boolean checkIfIsNotNull(long id) {
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
@@ -22,7 +27,7 @@ public class AthleteService {
         return false;
     }
 
-    public Athlete findById(Long id) {
+    public Athlete getById(Long id) {
 
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
 
@@ -33,26 +38,22 @@ public class AthleteService {
         }
     }
 
-    public Athlete addNew(Athlete athlete) {
+    public Set<Athlete> getAthletesByCoachId(Long id) {
 
-        if (!isFirstOrLastNameNullOrEmpty(athlete.getFirstName(), athlete.getLastName())) {
-
-            AthleteEntity athleteEntity = athlete.mapToAthleteEntity();
-            AthleteEntity savedAthleteEntity = athleteRepository.save(athleteEntity);
-
-            return Athlete.fromAthleteEntity(savedAthleteEntity);
+        if (coachRepository.findById(id).isPresent()) {
+            return coachRepository.findById(id).get().getAthletes().stream().map(Athlete::fromAthleteEntity).collect(Collectors.toSet());
         } else {
-            throw new BadRequestNonValidFieldsException(List.of("firstname", "lastname"));
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
     }
 
-    private boolean isFirstOrLastNameNullOrEmpty(String firstName, String lastName) {
+    public Athlete addNew(@Valid Athlete athlete) {
 
-        if (firstName == null || lastName == null) {
-            return true;
-        } else {
-            return firstName.equals("") || lastName.equals("");
-        }
+
+        AthleteEntity athleteEntity = athlete.mapToAthleteEntity();
+        AthleteEntity savedAthleteEntity = athleteRepository.save(athleteEntity);
+
+        return Athlete.fromAthleteEntity(savedAthleteEntity);
     }
 
     public void deleteById(long id) {

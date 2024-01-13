@@ -137,6 +137,5 @@ public class TrainingPlanControllerTest {
         jdbc.execute(sqlDeleteTrainingPlan);
         jdbc.execute(sqlDeleteCoach);
         jdbc.execute(sqlDeleteAthlete);
-
     }
 }

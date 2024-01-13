@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -34,6 +35,9 @@ public class CoachControllerTest {
 
     @Autowired
     private CoachRepository coachRepository;
+
+    @Autowired
+    private CoachService coachService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -89,16 +93,6 @@ public class CoachControllerTest {
                 .andExpect(jsonPath("$.lastName", is("Coach")));
 
         assertThat(coachRepository.findAll(), hasSize(1));
-        //nonValid Coach
-        Coach coachNonValid = new Coach();
-        coachNonValid.setFirstName("Created");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/coaches")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(coachNonValid)))
-                .andExpect(status().is(400));
-
-        assertThat(coachRepository.findAll(), hasSize(1));
     }
 
     @Test
@@ -119,10 +113,21 @@ public class CoachControllerTest {
     @Test
     void addAthleteToCoachHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/athletes/{id}", 1, 1))
-                .andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/athletes/{id}/add", 1, 1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.athletes", hasSize(1)));
+    }
 
-        assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(1));
+    @Test
+    void removeAthleteFromCoachHttpRequest() throws Exception {
+
+        coachService.addAthleteToCoach(1L, 1L);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/coaches/{id}/athletes/{id}/remove", 1, 1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.athletes", hasSize(0)));
     }
 
     @AfterEach

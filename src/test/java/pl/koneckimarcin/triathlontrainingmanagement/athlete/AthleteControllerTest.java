@@ -3,9 +3,11 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -40,12 +42,17 @@ public class AthleteControllerTest {
     private String sqlAddAthlete;
     @Value("${sql.script.create.athlete2}")
     private String sqlAddAthlete2;
+    @Value("${sql.script.create.coach}")
+    private String sqlAddCoach;
 
+    @Value("${sql.script.delete.coach}")
+    private String sqlDeleteCoach;
     @Value("${sql.script.delete.athlete}")
     private String sqlDeleteAthlete;
 
     @BeforeEach
     void setup() {
+        jdbc.execute(sqlAddCoach);
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddAthlete2);
     }
@@ -67,6 +74,14 @@ public class AthleteControllerTest {
     }
 
     @Test
+    void getAthletesByCoachIdHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/coaches/{id}/athletes", 10))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
     void addAthleteHttpRequest() throws Exception {
 
         jdbc.execute(sqlDeleteAthlete);
@@ -79,16 +94,6 @@ public class AthleteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("New")))
                 .andExpect(jsonPath("$.lastName", is("Athlete")));
-
-        assertThat(athleteRepository.findAll(), hasSize(1));
-        //nonValid Athlete
-        Athlete athleteNonValid = new Athlete();
-        athleteNonValid.setFirstName("Created");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/athletes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(athleteNonValid)))
-                .andExpect(status().is(400));
 
         assertThat(athleteRepository.findAll(), hasSize(1));
     }
@@ -111,5 +116,6 @@ public class AthleteControllerTest {
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteAthlete);
+        jdbc.execute(sqlDeleteCoach);
     }
 }

@@ -1,30 +1,33 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @RestController
-@RequestMapping("/athletes")
-public class AthleteController {
+public class AthleteController implements AthleteOperations {
 
     @Autowired
     AthleteService athleteService;
 
+    public Athlete getById(Long id) {
 
-    @GetMapping("{id}")
-    public Athlete getById(@PathVariable Long id) {
-
-        return athleteService.findById(id);
+        return athleteService.getById(id);
     }
 
-    @PostMapping
-    public Athlete addNew(@RequestBody Athlete athlete) {
+    @Override
+    public Set<Athlete> getAthletesByCoachId(Long id) {
+
+        return athleteService.getAthletesByCoachId(id);
+    }
+
+    public Athlete addNew(Athlete athlete) {
 
         return athleteService.addNew(athlete);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(Long id) {
 
         athleteService.deleteById(id);
     }

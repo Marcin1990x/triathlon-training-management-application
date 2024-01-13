@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -90,25 +89,6 @@ public class CoachServiceTest {
     }
 
     @Test
-    void shouldThrowAnExceptionSaveNewCoachNonValidObject() {
-
-        String errorMessage = "This fields can not be empty: [firstname, lastname]";
-
-        Coach coach = new Coach();
-        coach.setFirstName("New");
-        Coach coach1 = new Coach();
-        coach1.setFirstName("New");
-        coach1.setLastName("");
-
-        BadRequestNonValidFieldsException exception = assertThrows(BadRequestNonValidFieldsException.class,
-                () -> coachService.addNew(coach));
-        assertEquals(errorMessage, exception.getMessage());
-
-        assertThrows(BadRequestNonValidFieldsException.class,
-                () -> coachService.addNew(coach1));
-    }
-
-    @Test
     void shouldDeleteCoachEntityById() {
 
         long id = 1L;
@@ -133,6 +113,7 @@ public class CoachServiceTest {
                 () -> coachService.deleteById(nonValidId));
         assertEquals("Coach not found with id : '" + nonValidId + "'", exception.getMessage());
     }
+
     @Test
     void shouldAddAthleteToCoach() {
 
@@ -142,6 +123,18 @@ public class CoachServiceTest {
         coachService.addAthleteToCoach(1L, 1L);
 
         assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(1));
+    }
+    @Test
+    void shouldRemoveAthleteFromCoachSet() {
+
+        assertTrue(coachRepository.findById(1L).isPresent());
+        assertTrue(athleteRepository.findById(1L).isPresent());
+
+        coachService.addAthleteToCoach(1L, 1L);
+        assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(1));
+
+        coachService.removeAthleteFromCoach(1L, 1L);
+        assertThat(coachRepository.findById(1L).get().getAthletes(), hasSize(0));
     }
 
     @AfterEach

@@ -1,5 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
@@ -10,9 +11,11 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,7 +66,7 @@ public class TrainingPlanService {
         }
     }
 
-    public TrainingPlan addNewTrainingPlanToCoach(Long coachId, TrainingPlan trainingPlan) {
+    public TrainingPlan addNewTrainingPlanToCoach(Long coachId,@Valid TrainingPlan trainingPlan) {
 
         Coach coach;
 
@@ -97,7 +100,7 @@ public class TrainingPlanService {
 
                 return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
             } else {
-                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId)); // todo: fix this
+                throw new WrongDateException(date.toString());
             }
         } else {
             if (!checkIfIsNotNull(trainingPlanId)) {
@@ -110,7 +113,9 @@ public class TrainingPlanService {
 
     private boolean isDateCorrect(Date date) {
 
-        return date.toString().length() == 10; // check sql pattern
+        Date now = Date.valueOf(LocalDate.now());
+
+        return !date.before(now);
     }
 
     private TrainingPlanEntity copyTrainingPlanEntity(TrainingPlanEntity original) {

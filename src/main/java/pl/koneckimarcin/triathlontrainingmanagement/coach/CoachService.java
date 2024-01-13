@@ -1,15 +1,15 @@
 package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteService;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.BadRequestNonValidFieldsException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CoachService {
@@ -42,24 +42,11 @@ public class CoachService {
         }
     }
 
-    public Coach addNew(Coach coach) {
-        if (!isFirstOrLastNameNullOrEmpty(coach.getFirstName(), coach.getLastName())) { // todo: replace with Validation
+    public Coach addNew(@Valid Coach coach) {
 
-            CoachEntity coachEntity = coach.mapToCoachEntity();
-            CoachEntity savedCoachEntity = coachRepository.save(coachEntity);
-            return Coach.fromCoachEntity(savedCoachEntity);
-        } else {
-            throw new BadRequestNonValidFieldsException(List.of("firstname", "lastname"));
-        }
-    }
-
-    private boolean isFirstOrLastNameNullOrEmpty(String firstName, String lastName) {
-
-        if (firstName == null || lastName == null) {
-            return true;
-        } else {
-            return firstName.equals("") || lastName.equals("");
-        }
+        CoachEntity coachEntity = coach.mapToCoachEntity();
+        CoachEntity savedCoachEntity = coachRepository.save(coachEntity);
+        return Coach.fromCoachEntity(savedCoachEntity);
     }
 
     public void deleteById(Long id) {
@@ -69,9 +56,10 @@ public class CoachService {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
     }
+
     public Coach addAthleteToCoach(Long coachId, Long athleteId) {
 
-        if(checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
+        if (checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
 
             AthleteEntity athlete = athleteRepository.findById(athleteId).get();
 
@@ -80,7 +68,31 @@ public class CoachService {
 
             return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
         } else {
-            if(!checkIfIsNotNull(coachId)) {
+            if (!checkIfIsNotNull(coachId)) {
+                throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+            } else {
+                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+            }
+        }
+    }
+
+    public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {
+
+        if (checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
+
+            CoachEntity coach = coachRepository.findById(coachId).get();
+            Set<AthleteEntity> athletes = coach.getAthletes();
+
+            athletes.removeIf(athlete -> athlete.getId() == athleteId);
+
+            coachRepository.save(coach);
+
+            //todo: remove also training-plans with coachId?
+
+            return Coach.fromCoachEntity(coach);
+
+        } else {
+            if (!checkIfIsNotNull(coachId)) {
                 throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
             } else {
                 throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));

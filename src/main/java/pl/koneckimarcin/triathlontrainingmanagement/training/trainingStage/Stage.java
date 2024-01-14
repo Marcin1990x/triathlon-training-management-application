@@ -1,16 +1,8 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
-import jakarta.persistence.*;
+public class Stage {
 
-@Entity
-@Table(name = "stage")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "stage_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class StageEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private long distanceInMeters;
 

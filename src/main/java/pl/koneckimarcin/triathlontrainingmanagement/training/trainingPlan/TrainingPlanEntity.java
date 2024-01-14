@@ -27,8 +27,9 @@ public class TrainingPlanEntity {
 
     private Date plannedDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<StageEntity> stage;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "training_plan_id")
+    private List<StageEntity> stages;
 
     public Long getId() {
         return id;
@@ -78,12 +79,12 @@ public class TrainingPlanEntity {
         this.plannedDate = plannedDate;
     }
 
-    public List<StageEntity> getStage() {
-        return stage;
+    public List<StageEntity> getStages() {
+        return stages;
     }
 
-    public void setStage(List<StageEntity> stage) {
-        this.stage = stage;
+    public void setStages(List<StageEntity> stages) {
+        this.stages = stages;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class TrainingPlanEntity {
                 ", trainingPlanStatus=" + trainingPlanStatus +
                 ", description='" + description + '\'' +
                 ", plannedDate=" + plannedDate +
-                ", stage=" + stage +
+                ", stage=" + stages +
                 '}';
     }
 }

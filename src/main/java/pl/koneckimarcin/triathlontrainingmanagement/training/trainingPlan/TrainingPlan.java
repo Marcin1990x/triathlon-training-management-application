@@ -37,7 +37,7 @@ public class TrainingPlan {
         trainingPlanEntity.setTrainingPlanStatus(this.trainingPlanStatus);
         trainingPlanEntity.setDescription(this.getDescription());
         trainingPlanEntity.setPlannedDate(this.plannedDate);
-        trainingPlanEntity.setStage(this.getStage()); // todo: not entity
+        trainingPlanEntity.setStages(this.getStage()); // todo: not entity
 
         return trainingPlanEntity;
     }
@@ -52,7 +52,7 @@ public class TrainingPlan {
         trainingPlan.setTrainingPlanStatus(trainingPlanEntity.getTrainingPlanStatus());
         trainingPlan.setDescription(trainingPlanEntity.getDescription());
         trainingPlan.setPlannedDate(trainingPlanEntity.getPlannedDate());
-        trainingPlan.setStage(trainingPlanEntity.getStage()); // todo: not entity
+        trainingPlan.setStage(trainingPlanEntity.getStages()); // todo: not entity
 
         return trainingPlan;
     }

@@ -6,11 +6,12 @@ public class BikeStage extends Stage {
 
     private int power;
 
-    public BikeStageEntity mapToBikeStageEntity() {
+    public BikeStageEntity mapToStageEntity() {
 
         BikeStageEntity bikeStageEntity = new BikeStageEntity();
 
         bikeStageEntity.setId(this.getId());
+        bikeStageEntity.setSequence(this.getSequence());
         bikeStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         bikeStageEntity.setTimeInSeconds(this.getTimeInSeconds());
         bikeStageEntity.setHeartRate(this.getHeartRate());
@@ -25,6 +26,7 @@ public class BikeStage extends Stage {
         BikeStage bikeStage = new BikeStage();
 
         bikeStage.setId(bikeStageEntity.getId());
+        bikeStage.setSequence(bikeStageEntity.getSequence());
         bikeStage.setDistanceInMeters(bikeStageEntity.getDistanceInMeters());
         bikeStage.setTimeInSeconds(bikeStageEntity.getTimeInSeconds());
         bikeStage.setHeartRate(bikeStageEntity.getHeartRate());

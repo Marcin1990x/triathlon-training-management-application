@@ -1,6 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "stage")
@@ -11,6 +12,9 @@ public abstract class StageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Min(1)
+    private int sequence;
 
     private long distanceInMeters;
 
@@ -26,6 +30,14 @@ public abstract class StageEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
     }
 
     public long getDistanceInMeters() {

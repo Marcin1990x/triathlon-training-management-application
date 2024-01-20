@@ -7,20 +7,18 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundEx
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BikeStageService implements StageService<BikeStage> {
+public class BikeStageService {
 
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
     @Autowired
     private TrainingPlanService trainingPlanService;
 
-    @Override
     public List<BikeStage> getStagesForTrainingPlanById(Long id) {
 
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
@@ -33,7 +31,6 @@ public class BikeStageService implements StageService<BikeStage> {
         }
     }
 
-    @Override
     public BikeStage addNewStageToTrainingPlan(Long id, @Valid BikeStage bikeStage) {
 
         if (trainingPlanService.checkIfIsNotNull(id)) {

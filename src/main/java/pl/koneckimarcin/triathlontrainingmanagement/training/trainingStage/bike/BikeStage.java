@@ -6,7 +6,7 @@ public class BikeStage extends Stage {
 
     private int power;
 
-    public BikeStageEntity mapToStageEntity() {
+    public BikeStageEntity mapToBikeStageEntity() {
 
         BikeStageEntity bikeStageEntity = new BikeStageEntity();
 
@@ -42,5 +42,12 @@ public class BikeStage extends Stage {
 
     public void setPower(int power) {
         this.power = power;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "BikeStage{" +
+                "power=" + power +
+                '}';
     }
 }

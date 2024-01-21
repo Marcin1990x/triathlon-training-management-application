@@ -17,6 +17,7 @@ public class TrainingPlan {
     private String name;
 
     @NotNull(message = "TrainingPlan type can not be empty")
+    // todo: check if empty will pass
     private TrainingType trainingType;
 
     private TrainingPlanStatus trainingPlanStatus;

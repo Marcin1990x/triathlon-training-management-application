@@ -43,4 +43,11 @@ public class SwimStage extends Stage {
     public void setPaceInSeconds(int paceInSeconds) {
         this.paceInSeconds = paceInSeconds;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +  "SwimStage{" +
+                "paceInSeconds=" + paceInSeconds +
+                '}';
+    }
 }

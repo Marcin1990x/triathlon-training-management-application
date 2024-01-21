@@ -1,11 +1,14 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.IncompatibleTrainingTypeException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStageEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
@@ -45,8 +48,71 @@ public class StageServiceImpl implements StageService {
     }
 
     @Override
-    public Stage addNewStageToTrainingPlan(Long id, Stage stage) {
-        return null;
+    public Stage addNewBikeStageToTrainingPlan(Long id, @Valid BikeStage bikeStage) {
+
+        return addStageDependingOnType(id, bikeStage);
+    }
+
+    @Override
+    public Stage addNewRunStageToTrainingPlan(Long id, @Valid RunStage runStage) {
+
+        return addStageDependingOnType(id, runStage);
+    }
+
+    @Override
+    public Stage addNewSwimStageToTrainingPlan(Long id, SwimStage swimStage) {
+
+        return addStageDependingOnType(id, swimStage);
+    }
+
+    @Override
+    public Stage addNewWeightStageToTrainingPlan(Long id, WeightStage weightStage) {
+
+        return addStageDependingOnType(id, weightStage);
+    }
+
+    private Stage addStageDependingOnType(Long id, Stage stage) {
+
+        Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
+
+        if (trainingPlanEntity.isPresent()) {
+
+            TrainingType trainingType = trainingPlanEntity.get().getTrainingType();
+            List<StageEntity> stages = trainingPlanEntity.get().getStages();
+
+            if(stage instanceof BikeStage) {
+                if (trainingType == TrainingType.BIKE) {
+                    stages.add(((BikeStage) stage).mapToBikeStageEntity());
+                } else {
+                    throw new IncompatibleTrainingTypeException(stage, TrainingType.BIKE);
+                }
+            }
+            if(stage instanceof RunStage) {
+                if(trainingType == TrainingType.RUN) {
+                    stages.add(((RunStage) stage).mapToRunStageEntity());
+                } else {
+                    throw new IncompatibleTrainingTypeException(stage, TrainingType.RUN);
+                }
+            }
+            if(stage instanceof SwimStage) {
+                if(trainingType == TrainingType.SWIM) {
+                    stages.add(((SwimStage) stage).mapToSwimStageEntity());
+                } else {
+                    throw new IncompatibleTrainingTypeException(stage, TrainingType.SWIM);
+                }
+            }
+            if(stage instanceof WeightStage) {
+                if(trainingType == TrainingType.WEIGHT) {
+                    stages.add(((WeightStage) stage).mapToWeightStageEntity());
+                } else {
+                    throw new IncompatibleTrainingTypeException(stage, TrainingType.WEIGHT);
+                }
+            }
+            trainingPlanRepository.save(trainingPlanEntity.get());
+            return stage;
+        } else {
+            throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(id));
+        }
     }
 
     private List<Stage> getStagesForTrainingType(List<StageEntity> stageEntities) {

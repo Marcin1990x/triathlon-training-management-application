@@ -1,11 +1,22 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStage;
+
 import java.util.List;
 
 public interface StageService {
 
     public List<Stage> getStagesForTrainingPlanById(Long id);
 
-    public Stage addNewStageToTrainingPlan(Long id, Stage stage);
+    public Stage addNewBikeStageToTrainingPlan(Long id, BikeStage bikeStage);
+
+    public Stage addNewRunStageToTrainingPlan(Long id, RunStage runStage);
+
+    public Stage addNewSwimStageToTrainingPlan(Long id, SwimStage swimStage);
+
+    public Stage addNewWeightStageToTrainingPlan(Long id, WeightStage weightStage);
 
 }

@@ -31,4 +31,9 @@ public class WeightStage extends Stage {
 
         return weightStage;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "WeightStage{}";
+    }
 }

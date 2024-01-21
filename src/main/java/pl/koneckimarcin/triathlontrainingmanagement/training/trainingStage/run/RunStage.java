@@ -43,4 +43,11 @@ public class RunStage extends Stage {
     public void setPaceInSecondsPerKm(int paceInSecondsPerKm) {
         this.paceInSecondsPerKm = paceInSecondsPerKm;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "RunStage{" +
+                "paceInSecondsPerKm=" + paceInSecondsPerKm +
+                '}';
+    }
 }

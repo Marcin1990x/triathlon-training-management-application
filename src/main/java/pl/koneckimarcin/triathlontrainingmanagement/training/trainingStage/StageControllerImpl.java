@@ -2,6 +2,10 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStage;
 
 import java.util.List;
 
@@ -18,8 +22,27 @@ public class StageControllerImpl implements StageController {
     }
 
     @Override
-    public Stage addNewStageToTrainingPlan(Long id, Stage stage) {
-        return null;
+    public Stage addNewBikeStageToTrainingPlan(Long id, BikeStage bikeStage) {
+
+        return service.addNewBikeStageToTrainingPlan(id, bikeStage);
+    }
+
+    @Override
+    public Stage addNewRunStageToTrainingPlan(Long id, RunStage runStage) {
+
+        return service.addNewRunStageToTrainingPlan(id, runStage);
+    }
+
+    @Override
+    public Stage addNewSwimStageToTrainingPlan(Long id, SwimStage swimStage) {
+
+        return service.addNewSwimStageToTrainingPlan(id, swimStage);
+    }
+
+    @Override
+    public Stage addNewWeightStageToTrainingPlan(Long id, WeightStage weightStage) {
+
+        return service.addNewWeightStageToTrainingPlan(id, weightStage);
     }
 
 }

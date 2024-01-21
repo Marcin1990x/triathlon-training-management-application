@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 @Entity

@@ -22,4 +22,15 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(IncompatibleTrainingTypeException.class)
+    public ResponseEntity<ErrorDetails> handleIncompatibleTrainingTypeException(IncompatibleTrainingTypeException exception,
+                                                                        WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "Incompatible training type" // todo: is it ok?
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }

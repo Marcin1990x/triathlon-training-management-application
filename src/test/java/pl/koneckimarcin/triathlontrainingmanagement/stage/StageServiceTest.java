@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.IncompatibleTrainingTypeException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageServiceImpl;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -60,6 +64,35 @@ public class StageServiceTest {
 
         assertTrue(trainingPlanRepository.findById(10L).isPresent());
         assertThat(stageService.getStagesForTrainingPlanById(10L), hasSize(1));
+    }
+
+    @Test
+    void shouldAddNewStageForTrainingPlanById() {
+
+        BikeStage bikeStage = new BikeStage();
+        bikeStage.setSequence(1);
+        bikeStage.setPower(100);
+
+        assertTrue(trainingPlanRepository.findById(10L).isPresent());
+        stageService.addNewBikeStageToTrainingPlan(10L, bikeStage);
+    }
+
+    @Test
+    void shouldThrowIncompatibleTrainingTypeExceptionWhenAddNewStageForTrainingPlanById() {
+
+        String errorMessageWithType = " can be added only for training type: SWIM";
+
+        SwimStage swimStage = new SwimStage();
+        swimStage.setSequence(1);
+        swimStage.setPaceInSeconds(100);
+
+        assertTrue(trainingPlanRepository.findById(10L).isPresent());
+        assertSame(trainingPlanRepository.findById(10L).get().getTrainingType(), TrainingType.BIKE);
+
+        IncompatibleTrainingTypeException exception = assertThrows(IncompatibleTrainingTypeException.class,
+                () -> stageService.addNewSwimStageToTrainingPlan(10L, swimStage));
+
+        assertTrue(exception.getMessage().contains(swimStage + errorMessageWithType));
     }
 
     @AfterEach

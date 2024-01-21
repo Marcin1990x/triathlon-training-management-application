@@ -61,4 +61,16 @@ public class Stage {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Stage{" +
+                "id=" + id +
+                ", sequence=" + sequence +
+                ", distanceInMeters=" + distanceInMeters +
+                ", timeInSeconds=" + timeInSeconds +
+                ", heartRate=" + heartRate +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

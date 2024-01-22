@@ -130,7 +130,7 @@ public class TrainingPlanControllerTest {
                 .param("plannedDate", "2024-01-22"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.trainingPlanStatus", is("PLANNED")))
-                .andExpect(jsonPath("$.plannedDate", is("2024-01-20")));
+                .andExpect(jsonPath("$.plannedDate", is("2024-01-22")));
     }
     @AfterEach
     void clean() {

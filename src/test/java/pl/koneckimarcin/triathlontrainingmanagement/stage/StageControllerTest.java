@@ -14,12 +14,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -37,10 +39,15 @@ public class StageControllerTest {
     private TrainingPlanRepository trainingPlanRepository;
 
     @Autowired
+    private StageRepository stageRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Value("${sql.script.create.stage}")
     private String sqlAddStage;
+    @Value("${sql.script.create.stage1}")
+    private String sqlAddStage1;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddTrainingPlan;
     @Value("${sql.script.create.coach}")
@@ -92,6 +99,7 @@ public class StageControllerTest {
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
     }
+
     @Test
     void addNewStageToTrainingPlanHttpRequestIncompatibleTrainingType() throws Exception {
 
@@ -101,12 +109,35 @@ public class StageControllerTest {
         String errorMessageWithType = "This stage: " + swimStage + " can be added only for training type: SWIM";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/training-plans/{id}/stages=swim", 10)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(swimStage)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(swimStage)))
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.message", is(errorMessageWithType)));
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(1));
+    }
+    @Test
+    void deleteStageByIdHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/stages/{id}", 10))
+                .andExpect(status().isOk());
+
+        assertFalse(stageRepository.findById(10L).isPresent());
+    }
+
+    @Test
+    void deleteAllStagesFromTrainingPlanByIdHttpRequest() throws Exception {
+
+        jdbc.execute(sqlAddStage1);
+
+        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/training-plans/{id}/stages", 10))
+                .andExpect(status().isOk());
+
+        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
+        assertFalse(stageRepository.findById(10L).isPresent());
+        assertFalse(stageRepository.findById(11L).isPresent());
     }
 
     @AfterEach

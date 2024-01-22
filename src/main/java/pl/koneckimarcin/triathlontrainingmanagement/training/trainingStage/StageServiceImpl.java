@@ -25,13 +25,22 @@ import java.util.Optional;
 public class StageServiceImpl implements StageService {
 
     @Autowired
-    private StageRepository repository;
+    private StageRepository stageRepository;
 
     @Autowired
     private TrainingPlanRepository trainingPlanRepository;
 
     @Autowired
     private TrainingPlanService trainingPlanService;
+
+    @Override
+    public boolean checkIfIsNotNull(Long id) {
+        Optional<StageEntity> stageEntity = stageRepository.findById(id);
+        if (stageEntity.isPresent()) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public List<Stage> getStagesForTrainingPlanById(Long id) {
@@ -71,6 +80,30 @@ public class StageServiceImpl implements StageService {
         return addStageDependingOnType(id, weightStage);
     }
 
+    @Override
+    public void deleteStageById(Long id) {
+
+        if (checkIfIsNotNull(id)) {
+            stageRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Stage", "id", String.valueOf(id));
+        }
+    }
+
+    @Override
+    public void deleteAllStagesFromTrainingPlanById(Long id) {
+
+        Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
+
+        if(trainingPlanEntity.isPresent()){
+
+            trainingPlanEntity.get().getStages().clear();
+            trainingPlanRepository.save(trainingPlanEntity.get());
+        } else {
+            throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(id));
+        }
+    }
+
     private Stage addStageDependingOnType(Long id, Stage stage) {
 
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
@@ -80,29 +113,29 @@ public class StageServiceImpl implements StageService {
             TrainingType trainingType = trainingPlanEntity.get().getTrainingType();
             List<StageEntity> stages = trainingPlanEntity.get().getStages();
 
-            if(stage instanceof BikeStage) {
+            if (stage instanceof BikeStage) {
                 if (trainingType == TrainingType.BIKE) {
                     stages.add(((BikeStage) stage).mapToBikeStageEntity());
                 } else {
                     throw new IncompatibleTrainingTypeException(stage, TrainingType.BIKE);
                 }
             }
-            if(stage instanceof RunStage) {
-                if(trainingType == TrainingType.RUN) {
+            if (stage instanceof RunStage) {
+                if (trainingType == TrainingType.RUN) {
                     stages.add(((RunStage) stage).mapToRunStageEntity());
                 } else {
                     throw new IncompatibleTrainingTypeException(stage, TrainingType.RUN);
                 }
             }
-            if(stage instanceof SwimStage) {
-                if(trainingType == TrainingType.SWIM) {
+            if (stage instanceof SwimStage) {
+                if (trainingType == TrainingType.SWIM) {
                     stages.add(((SwimStage) stage).mapToSwimStageEntity());
                 } else {
                     throw new IncompatibleTrainingTypeException(stage, TrainingType.SWIM);
                 }
             }
-            if(stage instanceof WeightStage) {
-                if(trainingType == TrainingType.WEIGHT) {
+            if (stage instanceof WeightStage) {
+                if (trainingType == TrainingType.WEIGHT) {
                     stages.add(((WeightStage) stage).mapToWeightStageEntity());
                 } else {
                     throw new IncompatibleTrainingTypeException(stage, TrainingType.WEIGHT);

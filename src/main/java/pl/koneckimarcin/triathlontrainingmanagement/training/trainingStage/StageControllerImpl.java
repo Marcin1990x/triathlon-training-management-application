@@ -45,4 +45,16 @@ public class StageControllerImpl implements StageController {
         return service.addNewWeightStageToTrainingPlan(id, weightStage);
     }
 
+    @Override
+    public void deleteStageById(Long id) {
+
+        service.deleteStageById(id);
+    }
+
+    @Override
+    public void deleteAllStagesFromTrainingPlanById(Long id) {
+
+        service.deleteAllStagesFromTrainingPlanById(id);
+    }
+
 }

@@ -35,6 +35,8 @@ public class StageServiceTest {
 
     @Value("${sql.script.create.stage}")
     private String sqlAddStage;
+    @Value("${sql.script.create.stage1}")
+    private String sqlAddStage1;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddTrainingPlan;
     @Value("${sql.script.create.coach}")
@@ -93,6 +95,31 @@ public class StageServiceTest {
                 () -> stageService.addNewSwimStageToTrainingPlan(10L, swimStage));
 
         assertTrue(exception.getMessage().contains(swimStage + errorMessageWithType));
+    }
+
+    @Test
+    void shouldDeleteStageById() {
+
+        assertTrue(stageRepository.findById(10L).isPresent());
+
+        stageService.deleteStageById(10L);
+
+        assertFalse(stageRepository.findById(10L).isPresent());
+    }
+    @Test
+    void shouldDeleteAllStagesFromTrainingPlanById() {
+
+        jdbc.execute(sqlAddStage1);
+
+        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
+        assertTrue(stageRepository.findById(10L).isPresent());
+        assertTrue(stageRepository.findById(11L).isPresent());
+
+        stageService.deleteAllStagesFromTrainingPlanById(10L);
+
+        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
+        assertFalse(stageRepository.findById(10L).isPresent());
+        assertFalse(stageRepository.findById(11L).isPresent());
     }
 
     @AfterEach

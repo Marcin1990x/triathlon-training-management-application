@@ -13,9 +13,6 @@ public abstract class StageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Min(1)
-    private int sequence;
-
     private long distanceInMeters;
 
     private long timeInSeconds;
@@ -30,14 +27,6 @@ public abstract class StageEntity {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
     }
 
     public long getDistanceInMeters() {

@@ -4,8 +4,6 @@ public class Stage {
 
     private long id;
 
-    private int sequence;
-
     private long distanceInMeters;
 
     private long timeInSeconds;
@@ -20,14 +18,6 @@ public class Stage {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
     }
 
     public long getDistanceInMeters() {
@@ -66,7 +56,6 @@ public class Stage {
     public String toString() {
         return "Stage{" +
                 "id=" + id +
-                ", sequence=" + sequence +
                 ", distanceInMeters=" + distanceInMeters +
                 ", timeInSeconds=" + timeInSeconds +
                 ", heartRate=" + heartRate +

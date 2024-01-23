@@ -127,10 +127,10 @@ public class TrainingPlanControllerTest {
     void addTrainingPlanToAthleteWithDateHttpRequestExpectSetDateAndStatusPlanned() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-plans/{id}",1 ,11)
-                .param("plannedDate", "2024-01-22"))
+                .param("plannedDate", "2025-01-22"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.trainingPlanStatus", is("PLANNED")))
-                .andExpect(jsonPath("$.plannedDate", is("2024-01-22")));
+                .andExpect(jsonPath("$.plannedDate", is("2025-01-22")));
     }
     @AfterEach
     void clean() {

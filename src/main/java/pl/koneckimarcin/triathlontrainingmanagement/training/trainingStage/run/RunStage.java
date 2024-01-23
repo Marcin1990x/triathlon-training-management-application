@@ -14,7 +14,6 @@ public class RunStage extends Stage {
         runStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         runStageEntity.setTimeInSeconds(this.getTimeInSeconds());
         runStageEntity.setHeartRate(this.getHeartRate());
-        runStageEntity.setSequence(this.getSequence());
         runStageEntity.setDescription(this.getDescription());
         runStageEntity.setPaceInSecondsPerKm(this.getPaceInSecondsPerKm());
 
@@ -29,7 +28,6 @@ public class RunStage extends Stage {
         runStage.setDistanceInMeters(runStageEntity.getDistanceInMeters());
         runStage.setTimeInSeconds(runStageEntity.getTimeInSeconds());
         runStage.setHeartRate(runStageEntity.getHeartRate());
-        runStage.setSequence(runStageEntity.getSequence());
         runStage.setDescription(runStageEntity.getDescription());
         runStage.setPaceInSecondsPerKm(runStageEntity.getPaceInSecondsPerKm());
 

@@ -11,7 +11,6 @@ public class BikeStage extends Stage {
         BikeStageEntity bikeStageEntity = new BikeStageEntity();
 
         bikeStageEntity.setId(this.getId());
-        bikeStageEntity.setSequence(this.getSequence());
         bikeStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         bikeStageEntity.setTimeInSeconds(this.getTimeInSeconds());
         bikeStageEntity.setHeartRate(this.getHeartRate());
@@ -25,8 +24,7 @@ public class BikeStage extends Stage {
 
         BikeStage bikeStage = new BikeStage();
 
-        bikeStage.setId(bikeStageEntity.getId()*2);
-        bikeStage.setSequence(bikeStageEntity.getSequence());
+        bikeStage.setId(bikeStageEntity.getId());
         bikeStage.setDistanceInMeters(bikeStageEntity.getDistanceInMeters());
         bikeStage.setTimeInSeconds(bikeStageEntity.getTimeInSeconds());
         bikeStage.setHeartRate(bikeStageEntity.getHeartRate());

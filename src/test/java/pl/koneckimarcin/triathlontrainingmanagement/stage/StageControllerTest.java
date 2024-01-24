@@ -86,7 +86,6 @@ public class StageControllerTest {
     void addNewStageToTrainingPlanHttpRequest() throws Exception {
 
         BikeStage bikeStage = new BikeStage();
-        bikeStage.setSequence(1);
         bikeStage.setPower(100);
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(1));
@@ -95,8 +94,7 @@ public class StageControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bikeStage)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.power", is(100)))
-                .andExpect(jsonPath("$.sequence", is(1)));
+                .andExpect(jsonPath("$.power", is(100)));
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
     }
@@ -105,7 +103,6 @@ public class StageControllerTest {
     void addNewStageToTrainingPlanHttpRequestIncompatibleTrainingType() throws Exception {
 
         SwimStage swimStage = new SwimStage();
-        swimStage.setSequence(1);
 
         String errorMessageWithType = "This stage: " + swimStage + " can be added only for training type: SWIM";
 

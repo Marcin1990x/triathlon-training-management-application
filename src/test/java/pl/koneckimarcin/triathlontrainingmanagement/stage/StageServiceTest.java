@@ -72,7 +72,6 @@ public class StageServiceTest {
     void shouldAddNewStageForTrainingPlanById() {
 
         BikeStage bikeStage = new BikeStage();
-        bikeStage.setSequence(1);
         bikeStage.setPower(100);
 
         assertTrue(trainingPlanRepository.findById(10L).isPresent());
@@ -85,7 +84,6 @@ public class StageServiceTest {
         String errorMessageWithType = " can be added only for training type: SWIM";
 
         SwimStage swimStage = new SwimStage();
-        swimStage.setSequence(1);
         swimStage.setPaceInSeconds(100);
 
         assertTrue(trainingPlanRepository.findById(10L).isPresent());

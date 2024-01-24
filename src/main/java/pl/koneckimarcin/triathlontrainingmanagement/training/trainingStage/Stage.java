@@ -8,6 +8,8 @@ public class Stage {
 
     private long timeInSeconds;
 
+    private int sequence;
+
     private int heartRate;
 
     private String description;
@@ -34,6 +36,14 @@ public class Stage {
 
     public void setTimeInSeconds(long timeInSeconds) {
         this.timeInSeconds = timeInSeconds;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
     }
 
     public int getHeartRate() {

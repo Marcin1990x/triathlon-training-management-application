@@ -11,6 +11,7 @@ public class WeightStage extends Stage {
         weightStageEntity.setId(this.getId());
         weightStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         weightStageEntity.setTimeInSeconds(this.getTimeInSeconds());
+        weightStageEntity.setSequence(this.getSequence());
         weightStageEntity.setHeartRate(this.getHeartRate());
         weightStageEntity.setDescription(this.getDescription());
 
@@ -24,6 +25,7 @@ public class WeightStage extends Stage {
         weightStage.setId(weightStageEntity.getId());
         weightStage.setDistanceInMeters(weightStageEntity.getDistanceInMeters());
         weightStage.setTimeInSeconds(weightStageEntity.getTimeInSeconds());
+        weightStage.setSequence(weightStageEntity.getSequence());
         weightStage.setHeartRate(weightStageEntity.getHeartRate());
         weightStage.setDescription(weightStageEntity.getDescription());
 

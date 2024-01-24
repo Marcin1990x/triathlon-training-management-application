@@ -11,10 +11,13 @@ import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.IncompatibleTrainingTypeException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageServiceImpl;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -62,10 +65,18 @@ public class StageServiceTest {
     }
 
     @Test
-    void shouldReturnStagesForTrainingPlanById() {
+    void shouldReturnStagesForTrainingPlanByIdInCorrectOrder() {
+
+        jdbc.execute(sqlAddStage1);
 
         assertTrue(trainingPlanRepository.findById(10L).isPresent());
-        assertThat(stageService.getStagesForTrainingPlanById(10L), hasSize(1));
+
+        List<Stage> stages = stageService.getStagesForTrainingPlanById(10L);
+        assertThat(stages, hasSize(2));
+
+        stageService.swapStagesSequence(10L, 11L);
+        assertEquals(1, stages.get(0).getSequence());
+        assertEquals(2, stages.get(1).getSequence());
     }
 
     @Test

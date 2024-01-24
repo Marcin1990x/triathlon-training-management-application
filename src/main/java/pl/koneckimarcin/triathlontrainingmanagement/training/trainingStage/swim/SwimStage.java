@@ -13,6 +13,7 @@ public class SwimStage extends Stage {
         swimStageEntity.setId(this.getId());
         swimStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         swimStageEntity.setTimeInSeconds(this.getTimeInSeconds());
+        swimStageEntity.setSequence(this.getSequence());
         swimStageEntity.setHeartRate(this.getHeartRate());
         swimStageEntity.setDescription(this.getDescription());
         swimStageEntity.setPaceInSeconds(this.getPaceInSeconds());
@@ -27,6 +28,7 @@ public class SwimStage extends Stage {
         swimStage.setId(swimStageEntity.getId());
         swimStage.setDistanceInMeters(swimStageEntity.getDistanceInMeters());
         swimStage.setTimeInSeconds(swimStageEntity.getTimeInSeconds());
+        swimStage.setSequence(swimStageEntity.getSequence());
         swimStage.setHeartRate(swimStageEntity.getHeartRate());
         swimStage.setDescription(swimStageEntity.getDescription());
         swimStage.setPaceInSeconds(swimStageEntity.getPaceInSeconds());

@@ -13,6 +13,7 @@ public class BikeStage extends Stage {
         bikeStageEntity.setId(this.getId());
         bikeStageEntity.setDistanceInMeters(this.getDistanceInMeters());
         bikeStageEntity.setTimeInSeconds(this.getTimeInSeconds());
+        bikeStageEntity.setSequence(this.getSequence());
         bikeStageEntity.setHeartRate(this.getHeartRate());
         bikeStageEntity.setDescription(this.getDescription());
         bikeStageEntity.setPower(this.getPower());
@@ -27,6 +28,7 @@ public class BikeStage extends Stage {
         bikeStage.setId(bikeStageEntity.getId());
         bikeStage.setDistanceInMeters(bikeStageEntity.getDistanceInMeters());
         bikeStage.setTimeInSeconds(bikeStageEntity.getTimeInSeconds());
+        bikeStage.setSequence(bikeStage.getSequence());
         bikeStage.setHeartRate(bikeStageEntity.getHeartRate());
         bikeStage.setDescription(bikeStageEntity.getDescription());
         bikeStage.setPower(bikeStageEntity.getPower());

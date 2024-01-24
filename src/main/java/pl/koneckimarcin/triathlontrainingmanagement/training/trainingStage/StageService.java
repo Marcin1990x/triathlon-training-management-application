@@ -25,7 +25,4 @@ public interface StageService {
     public void deleteAllStagesFromTrainingPlanById(Long id);
 
     public void swapStagesSequence(Long firstStageId, Long secondStageId);
-
-
-
 }

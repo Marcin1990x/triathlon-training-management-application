@@ -104,6 +104,32 @@ public class StageServiceImpl implements StageService {
         }
     }
 
+    @Override
+    public void swapStagesSequence(Long firstStageId, Long secondStageId) {
+
+        swapSequenceAndSave(firstStageId, secondStageId);
+    }
+
+    private void swapSequenceAndSave(Long firstStageId, Long secondStageId) {
+
+        Optional <StageEntity> firstStage = stageRepository.findById(firstStageId);
+        Optional <StageEntity> secondStage = stageRepository.findById(secondStageId);
+
+        if(firstStage.isPresent()){
+            if(secondStage.isPresent()) {
+                int tempSequence = firstStage.get().getSequence();
+                firstStage.get().setSequence(secondStage.get().getSequence());
+                secondStage.get().setSequence(tempSequence);
+
+                stageRepository.save(firstStage.get());
+                stageRepository.save(secondStage.get());
+            } else {
+                throw new ResourceNotFoundException("Stage", "id", String.valueOf(secondStageId));
+            }
+        } else {
+            throw new ResourceNotFoundException("Stage", "id", String.valueOf(firstStageId));
+        }
+    }
     private Stage addStageDependingOnType(Long id, Stage stage) {
 
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);

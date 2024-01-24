@@ -29,6 +29,7 @@ public class TrainingPlanEntity {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "training_plan_id")
+    @OrderBy("sequence ASC")
     private List<StageEntity> stages;
 
     public Long getId() {

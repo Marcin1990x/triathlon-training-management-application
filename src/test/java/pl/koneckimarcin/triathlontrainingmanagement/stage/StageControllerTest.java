@@ -21,6 +21,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -138,6 +139,22 @@ public class StageControllerTest {
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
         assertFalse(stageRepository.findById(10L).isPresent());
         assertFalse(stageRepository.findById(11L).isPresent());
+    }
+    @Test
+    void swapStagesSequenceHttpRequest() throws Exception {
+
+        jdbc.execute(sqlAddStage1);
+
+        assertEquals(1, stageRepository.findById(10L).get().getSequence());
+        assertEquals(2, stageRepository.findById(11L).get().getSequence());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/stages")
+                .param("firstStageId", "10")
+                .param("secondStageId", "11"))
+                .andExpect(status().isOk());
+
+        assertEquals(2, stageRepository.findById(10L).get().getSequence());
+        assertEquals(1, stageRepository.findById(11L).get().getSequence());
     }
 
     @AfterEach

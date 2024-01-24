@@ -122,6 +122,25 @@ public class StageServiceTest {
         assertFalse(stageRepository.findById(11L).isPresent());
     }
 
+    @Test
+    void shouldSwapStagesSequence() {
+
+        jdbc.execute(sqlAddStage1);
+
+        assertEquals(1, stageRepository.findById(10L).get().getSequence());
+        assertEquals(2, stageRepository.findById(11L).get().getSequence());
+
+        stageService.swapStagesSequence(10L, 11L);
+
+        assertEquals(2, stageRepository.findById(10L).get().getSequence());
+        assertEquals(1, stageRepository.findById(11L).get().getSequence());
+
+        stageService.swapStagesSequence(10L, 11L);
+
+        assertEquals(1, stageRepository.findById(10L).get().getSequence());
+        assertEquals(2, stageRepository.findById(11L).get().getSequence());
+    }
+
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteStage);

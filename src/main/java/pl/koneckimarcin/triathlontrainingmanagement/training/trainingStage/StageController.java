@@ -29,4 +29,7 @@ public interface StageController {
 
     @DeleteMapping("/training-plans/{id}/stages")
     public void deleteAllStagesFromTrainingPlanById(@PathVariable Long id);
+
+    @PutMapping("/stages")
+    public void swapStagesSequence(@RequestParam Long firstStageId, @RequestParam Long secondStageId);
 }

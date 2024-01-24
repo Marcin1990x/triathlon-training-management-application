@@ -1,14 +1,11 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStage;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StageService {
 
@@ -26,5 +23,9 @@ public interface StageService {
     public void deleteStageById(Long id);
 
     public void deleteAllStagesFromTrainingPlanById(Long id);
+
+    public void swapStagesSequence(Long firstStageId, Long secondStageId);
+
+
 
 }

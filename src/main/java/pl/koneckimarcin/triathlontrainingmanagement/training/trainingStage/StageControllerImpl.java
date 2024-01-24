@@ -57,4 +57,10 @@ public class StageControllerImpl implements StageController {
         service.deleteAllStagesFromTrainingPlanById(id);
     }
 
+    @Override
+    public void swapStagesSequence(Long firstStageId, Long secondStageId) {
+
+        service.swapStagesSequence(firstStageId, secondStageId);
+    }
+
 }

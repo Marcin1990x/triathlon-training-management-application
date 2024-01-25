@@ -10,6 +10,12 @@ public class User {
 
     private String username;
 
+    private String password;
+
+    private String emailAddress;
+
+    private Role role;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Athlete athlete;
 
@@ -22,9 +28,15 @@ public class User {
 
         userEntity.setId(this.id);
         userEntity.setUsername(this.username);
-        userEntity.setAthleteEntity(this.athlete.mapToAthleteEntity());
-        userEntity.setCoachEntity(this.coach.mapToCoachEntity());
-
+        userEntity.setPassword(this.password);
+        userEntity.setEmailAddress(this.emailAddress);
+        userEntity.setRole(this.role);
+        if (this.athlete != null) {
+            userEntity.setAthleteEntity(this.athlete.mapToAthleteEntity());
+        }
+        if (this.coach != null) {
+            userEntity.setCoachEntity(this.coach.mapToCoachEntity());
+        }
         return userEntity;
     }
 
@@ -34,10 +46,13 @@ public class User {
 
         user.setId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
-        if(userEntity.getAthleteEntity() != null) {
+        user.setPassword(userEntity.getPassword());
+        user.setEmailAddress(userEntity.getEmailAddress());
+        user.setRole(userEntity.getRole());
+        if (userEntity.getAthleteEntity() != null) {
             user.setAthlete(Athlete.fromAthleteEntity(userEntity.getAthleteEntity()));
         }
-        if(userEntity.getCoachEntity() != null) {
+        if (userEntity.getCoachEntity() != null) {
             user.setCoach(Coach.fromCoachEntity(userEntity.getCoachEntity()));
         }
         return user;
@@ -57,6 +72,30 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Athlete getAthlete() {

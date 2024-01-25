@@ -1,6 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,12 @@ public class UserEntity {
     @NotEmpty
     @Size(min =  8, max = 30)
     private String password;
+
+    @Email
+    private String emailAddress;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne
     @JoinColumn(name = "athlete_id")
@@ -47,6 +54,29 @@ public class UserEntity {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public AthleteEntity getAthleteEntity() {
         return athleteEntity;

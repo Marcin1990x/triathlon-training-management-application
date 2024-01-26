@@ -21,13 +21,14 @@ public class UserEntity {
     private String username;
 
     @NotEmpty
-    @Size(min =  8, max = 30)
+    //@Size(min =  8, max = 30) // because encode
     private String password;
 
     @Email
     @NotEmpty
     private String emailAddress;
 
+    @NotNull // todo: set automatically
     @Enumerated(EnumType.STRING)
     private Role role;
 

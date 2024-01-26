@@ -25,6 +25,7 @@ public class UserEntity {
     private String password;
 
     @Email
+    @NotEmpty
     private String emailAddress;
 
     @Enumerated(EnumType.STRING)

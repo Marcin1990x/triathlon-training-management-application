@@ -10,12 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.koneckimarcin.triathlontrainingmanagement.user.RoleEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 public class TriathlonAppPasswordAuthenticationProvider implements AuthenticationProvider {
@@ -33,15 +35,21 @@ public class TriathlonAppPasswordAuthenticationProvider implements Authenticatio
         Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             if (passwordEncoder.matches(password, user.get().getPassword())) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(user.get().getRole().toString()));
-                return new UsernamePasswordAuthenticationToken(username, password, authorities);
+                return new UsernamePasswordAuthenticationToken
+                        (username, password, getGrantedAuthorities(user.get().getRoles()));
             } else {
                 throw new BadCredentialsException("Invalid password.");
             }
         } else {
             throw new BadCredentialsException("No user registered with this details");
         }
+    }
+    private List<GrantedAuthority> getGrantedAuthorities(Set<RoleEntity> roles) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for(RoleEntity role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().toString()));
+        }
+        return grantedAuthorities;
     }
 
     @Override

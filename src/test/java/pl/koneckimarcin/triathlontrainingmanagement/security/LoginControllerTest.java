@@ -14,7 +14,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.user.Role;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
@@ -106,7 +105,6 @@ public class LoginControllerTest {
         user.setUsername("testUser");
         user.setPassword("password");
         user.setEmailAddress("testEmail@address");
-        user.setRole(Role.USER);
         return user;
     }
 

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @TestPropertySource("/application-test-stage.properties")
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class StageControllerTest {
 
     @Autowired

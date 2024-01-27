@@ -8,12 +8,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.koneckimarcin.triathlontrainingmanagement.user.RoleEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TriathlonAppUserDetails implements UserDetailsService {
@@ -33,9 +35,15 @@ public class TriathlonAppUserDetails implements UserDetailsService {
         } else {
             userName = user.get().getEmailAddress();
             password = user.get().getPassword();
-            authorityList = new ArrayList<>();
-            authorityList.add(new SimpleGrantedAuthority(user.get().getRole().toString()));
+            authorityList = getGrantedAuthorities(user.get().getRoles());
         }
         return new User(userName, password, authorityList);
+    }
+    private List<GrantedAuthority> getGrantedAuthorities(Set<RoleEntity> roles) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for(RoleEntity role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().toString()));
+        }
+        return grantedAuthorities;
     }
 }

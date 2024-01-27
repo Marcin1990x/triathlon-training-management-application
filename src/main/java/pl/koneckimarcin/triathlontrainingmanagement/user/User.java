@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
 
+import java.util.Set;
+
 public class User {
 
     private Long id;
@@ -14,7 +16,7 @@ public class User {
 
     private String emailAddress;
 
-    private Role role;
+    private Set<RoleEntity> roles;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Athlete athlete;
@@ -30,7 +32,7 @@ public class User {
         userEntity.setUsername(this.username);
         userEntity.setPassword(this.password);
         userEntity.setEmailAddress(this.emailAddress);
-        userEntity.setRole(this.role);
+        userEntity.setRoles(this.roles);
         if (this.athlete != null) {
             userEntity.setAthleteEntity(this.athlete.mapToAthleteEntity());
         }
@@ -48,7 +50,7 @@ public class User {
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
         user.setEmailAddress(userEntity.getEmailAddress());
-        user.setRole(userEntity.getRole());
+        user.setRoles(userEntity.getRoles());
         if (userEntity.getAthleteEntity() != null) {
             user.setAthlete(Athlete.fromAthleteEntity(userEntity.getAthleteEntity()));
         }
@@ -90,12 +92,12 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<RoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
     }
 
     public Athlete getAthlete() {

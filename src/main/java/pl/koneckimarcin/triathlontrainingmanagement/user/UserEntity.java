@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "application_user")
 public class UserEntity {
@@ -28,9 +30,8 @@ public class UserEntity {
     @NotEmpty
     private String emailAddress;
 
-    @NotNull // todo: set automatically
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
+    private Set<RoleEntity> roles;
 
     @OneToOne
     @JoinColumn(name = "athlete_id")
@@ -72,12 +73,12 @@ public class UserEntity {
         this.emailAddress = emailAddress;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<RoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
     }
 
     public AthleteEntity getAthleteEntity() {

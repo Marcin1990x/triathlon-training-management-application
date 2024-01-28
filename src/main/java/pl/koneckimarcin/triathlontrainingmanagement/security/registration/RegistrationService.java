@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.security;
+package pl.koneckimarcin.triathlontrainingmanagement.security.registration;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 @Service
-public class LoginService {
+public class RegistrationService {
 
     @Autowired
     private UserRepository userRepository;

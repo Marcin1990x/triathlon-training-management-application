@@ -14,6 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
@@ -38,7 +39,7 @@ public class LoginControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private LoginService loginService;
+    private RegistrationService loginService;
 
     @Autowired
     private ObjectMapper mapper;

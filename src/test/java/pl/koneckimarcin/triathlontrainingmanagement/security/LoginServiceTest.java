@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.EmailAddressAlreadyExistException;
+import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
@@ -26,7 +27,7 @@ public class LoginServiceTest {
     private UserRepository userRepository;
 
     @Autowired
-    private LoginService loginService;
+    private RegistrationService loginService;
 
     @Value("${sql.script.create.athlete}")
     private String sqlAddAthlete;

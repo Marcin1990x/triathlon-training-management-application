@@ -1,10 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
-import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
-
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
 
@@ -12,17 +9,16 @@ public class User {
 
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // todo: change for test
     private String password;
 
     private String emailAddress;
 
-    private Set<RoleEntity> roles;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long athleteId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Athlete athlete;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Coach coach;
+    private Long coachId;
 
     public UserEntity mapToUserEntity() {
 
@@ -32,13 +28,6 @@ public class User {
         userEntity.setUsername(this.username);
         userEntity.setPassword(this.password);
         userEntity.setEmailAddress(this.emailAddress);
-        userEntity.setRoles(this.roles);
-        if (this.athlete != null) {
-            userEntity.setAthleteEntity(this.athlete.mapToAthleteEntity());
-        }
-        if (this.coach != null) {
-            userEntity.setCoachEntity(this.coach.mapToCoachEntity());
-        }
         return userEntity;
     }
 
@@ -50,12 +39,11 @@ public class User {
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
         user.setEmailAddress(userEntity.getEmailAddress());
-        user.setRoles(userEntity.getRoles());
-        if (userEntity.getAthleteEntity() != null) {
-            user.setAthlete(Athlete.fromAthleteEntity(userEntity.getAthleteEntity()));
+        if(userEntity.getAthleteEntity() != null) {
+            user.setAthleteId(userEntity.getAthleteEntity().getId());
         }
-        if (userEntity.getCoachEntity() != null) {
-            user.setCoach(Coach.fromCoachEntity(userEntity.getCoachEntity()));
+        if(userEntity.getCoachEntity() != null) {
+            user.setCoachId(userEntity.getCoachEntity().getId());
         }
         return user;
     }
@@ -92,27 +80,19 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    public Set<RoleEntity> getRoles() {
-        return roles;
+    public Long getAthleteId() {
+        return athleteId;
     }
 
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
+    public void setAthleteId(Long athleteId) {
+        this.athleteId = athleteId;
     }
 
-    public Athlete getAthlete() {
-        return athlete;
+    public Long getCoachId() {
+        return coachId;
     }
 
-    public void setAthlete(Athlete athlete) {
-        this.athlete = athlete;
-    }
-
-    public Coach getCoach() {
-        return coach;
-    }
-
-    public void setCoach(Coach coach) {
-        this.coach = coach;
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 }

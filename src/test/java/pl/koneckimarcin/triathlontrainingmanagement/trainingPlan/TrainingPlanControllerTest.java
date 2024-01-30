@@ -121,7 +121,7 @@ public class TrainingPlanControllerTest {
                 .andExpect(jsonPath("$.trainingType", is("SWIM")));
 
         assertThat(trainingPlanRepository.findByTrainingType(TrainingType.SWIM), hasSize(2));
-        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(3));
     }
     @Test
     void addTrainingPlanToAthleteWithDateHttpRequestExpectSetDateAndStatusPlanned() throws Exception {

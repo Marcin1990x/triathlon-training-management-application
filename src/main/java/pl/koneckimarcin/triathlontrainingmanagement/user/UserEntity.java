@@ -3,7 +3,6 @@ package pl.koneckimarcin.triathlontrainingmanagement.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
@@ -95,5 +94,18 @@ public class UserEntity {
 
     public void setCoachEntity(CoachEntity coachEntity) {
         this.coachEntity = coachEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", roles=" + roles +
+                ", athleteEntity=" + athleteEntity +
+                ", coachEntity=" + coachEntity +
+                '}';
     }
 }

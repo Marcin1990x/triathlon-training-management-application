@@ -1,14 +1,12 @@
 package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Coach {
 
@@ -19,9 +17,11 @@ public class Coach {
     @NotNull
     private String lastName;
 
-    private Set<Athlete> athletes = new HashSet<>();
+    private Set<String> athletes = new HashSet<>();
 
-    private Set<TrainingPlan> trainingPlans = new HashSet<>();
+    private Set<String> trainingPlans = new HashSet<>();
+
+    //private Set<TrainingPlan> trainingPlans = new HashSet<>();
 
     public Coach() {
     }
@@ -37,9 +37,8 @@ public class Coach {
         coachEntity.setId(this.id);
         coachEntity.setFirstName(this.firstName);
         coachEntity.setLastName(this.lastName);
-        coachEntity.setAthletes(this.athletes.stream().map(Athlete::mapToAthleteEntity).collect(Collectors.toSet()));
-        coachEntity.setTrainingPlans
-                (this.trainingPlans.stream().map(TrainingPlan::mapToTrainingPlanEntity).collect(Collectors.toSet()));
+//        coachEntity.setTrainingPlans
+//                (this.trainingPlans.stream().map(TrainingPlan::mapToTrainingPlanEntity).collect(Collectors.toSet()));
 
         return coachEntity;
     }
@@ -50,9 +49,35 @@ public class Coach {
         coach.setId(coachEntity.getId());
         coach.setFirstName(coachEntity.getFirstName());
         coach.setLastName(coachEntity.getLastName());
-        coach.setAthletes(coachEntity.getAthletes().stream().map(Athlete::fromAthleteEntity).collect(Collectors.toSet()));
-
+        if (coachEntity.getAthletes() != null) {
+            coach.setAthletes(setAthletesView(coachEntity));
+        }
+        if(coachEntity.getTrainingPlans() != null) {
+            coach.setTrainingPlans(setTrainingPlansView(coachEntity));
+        }
         return coach;
+    }
+
+    private static Set<String> setTrainingPlansView(CoachEntity coach) {
+
+        Set<String> trainingPlansTypeAndName = new HashSet<>();
+
+        Set<TrainingPlanEntity> trainingPlans = coach.getTrainingPlans();
+        for(TrainingPlanEntity plan : trainingPlans) {
+            trainingPlansTypeAndName.add(plan.getTrainingType() + ": " + plan.getName());
+        }
+        return trainingPlansTypeAndName;
+    }
+
+    private static Set<String> setAthletesView(CoachEntity coach) {
+
+        Set<String> athletesFirstAndLastName = new HashSet<>();
+
+        Set<AthleteEntity> athletes = coach.getAthletes();
+        for (AthleteEntity athlete : athletes) {
+            athletesFirstAndLastName.add(athlete.getFirstName() + " " + athlete.getLastName());
+        }
+        return athletesFirstAndLastName;
     }
 
     public String getFirstName() {
@@ -79,19 +104,19 @@ public class Coach {
         this.lastName = lastName;
     }
 
-    public Set<Athlete> getAthletes() {
-        return athletes;
-    }
-
-    public void setAthletes(Set<Athlete> athletes) {
-        this.athletes = athletes;
-    }
-
-    public Set<TrainingPlan> getTrainingPlans() {
+    public Set<String> getTrainingPlans() {
         return trainingPlans;
     }
 
-    public void setTrainingPlans(Set<TrainingPlan> trainingPlans) {
+    public void setTrainingPlans(Set<String> trainingPlans) {
         this.trainingPlans = trainingPlans;
+    }
+
+    public Set<String> getAthletes() {
+        return athletes;
+    }
+
+    public void setAthletes(Set<String> athletes) {
+        this.athletes = athletes;
     }
 }

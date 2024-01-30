@@ -15,6 +15,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 
 import java.sql.Date;
@@ -109,14 +110,17 @@ public class TrainingPlanServiceTest {
     }
 
     @Test
-    void shouldAddNewTrainingPlanToCoach() {
+    void shouldAddNewTrainingPlanToCoachWithCorrectStatus() {
 
         assertTrue(coachRepository.findById(1L).isPresent());
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(2));
 
-        trainingPlanService.addNewTrainingPlanToCoach(1L, trainingPlan);
+        TrainingPlan newPlan = trainingPlanService.addNewTrainingPlanToCoach(1L, trainingPlan);
 
+        assertEquals(TrainingPlanStatus.TEMPLATE, newPlan.getTrainingPlanStatus());
         assertThat(trainingPlanRepository.findAll(), hasSize(3));
-        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+        System.out.println(coachRepository.findById(1L).get().getTrainingPlans());
+        assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(3));
     }
 
     @Test

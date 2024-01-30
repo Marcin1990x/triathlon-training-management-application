@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteService;
-import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
@@ -66,16 +65,15 @@ public class TrainingPlanService {
         }
     }
 
-    public TrainingPlan addNewTrainingPlanToCoach(Long coachId,@Valid TrainingPlan trainingPlan) {
-
-        Coach coach;
+    public TrainingPlan addNewTrainingPlanToCoach(Long coachId, @Valid TrainingPlan trainingPlan) {
 
         if (coachService.checkIfIsNotNull(coachId)) {
             Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
-            coach = Coach.fromCoachEntity(coachEntity.get());
-            coach.getTrainingPlans().add(trainingPlan);
 
-            coachRepository.save(coach.mapToCoachEntity());
+            trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
+            coachEntity.get().getTrainingPlans().add(trainingPlan.mapToTrainingPlanEntity());
+
+            coachRepository.save(coachEntity.get());
             return trainingPlan;
         } else {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));

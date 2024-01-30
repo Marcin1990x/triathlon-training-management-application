@@ -49,7 +49,6 @@ public class AthleteService {
 
     public Athlete addNew(@Valid Athlete athlete) {
 
-
         AthleteEntity athleteEntity = athlete.mapToAthleteEntity();
         AthleteEntity savedAthleteEntity = athleteRepository.save(athleteEntity);
 

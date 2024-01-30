@@ -1,5 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
@@ -11,21 +13,24 @@ import java.util.List;
 
 public class TrainingPlan {
 
+    @JsonIgnore
     private Long id;
 
     @NotEmpty(message = "TrainingPlan name should not be empty")
     private String name;
 
     @NotNull(message = "TrainingPlan type can not be empty")
-    // todo: check if empty will pass
     private TrainingType trainingType;
 
     private TrainingPlanStatus trainingPlanStatus;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date plannedDate;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<StageEntity> stage;
 
     public TrainingPlanEntity mapToTrainingPlanEntity() {

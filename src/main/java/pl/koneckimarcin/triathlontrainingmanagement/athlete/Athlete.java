@@ -1,7 +1,9 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotEmpty;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,16 @@ public class Athlete {
 
     private Long id;
 
+    @NotEmpty
     private String firstName;
 
+    @NotEmpty
     private String lastName;
 
-    private List<TrainingRealizationEntity> trainingRealization;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TrainingRealization> trainingRealization;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TrainingPlan> trainingPlans = new ArrayList<>();
 
     public Athlete() {
@@ -34,9 +40,6 @@ public class Athlete {
         athleteEntity.setId(this.id);
         athleteEntity.setFirstName(this.firstName);
         athleteEntity.setLastName(this.lastName);
-        athleteEntity.setTrainingRealization(this.trainingRealization);
-        athleteEntity.setTrainingPlans(this.trainingPlans
-                .stream().map(TrainingPlan::mapToTrainingPlanEntity).collect(Collectors.toList()));
 
         return athleteEntity;
     }
@@ -48,10 +51,14 @@ public class Athlete {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
-        athlete.setTrainingRealization(athleteEntity.getTrainingRealization());
-        athlete.setTrainingPlans(athleteEntity.getTrainingPlans()
-                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList()));
-
+        if (athleteEntity.getTrainingRealization() != null) {
+            athlete.setTrainingRealization(athleteEntity.getTrainingRealization()
+                    .stream().map(TrainingRealization::fromTrainingRealizationEntity).collect(Collectors.toList()));
+        }
+        if (athleteEntity.getTrainingPlans() != null) {
+            athlete.setTrainingPlans(athleteEntity.getTrainingPlans()
+                    .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList()));
+        }
         return athlete;
     }
 
@@ -79,11 +86,11 @@ public class Athlete {
         this.lastName = lastName;
     }
 
-    public List<TrainingRealizationEntity> getTrainingRealization() {
+    public List<TrainingRealization> getTrainingRealization() {
         return trainingRealization;
     }
 
-    public void setTrainingRealization(List<TrainingRealizationEntity> trainingRealization) {
+    public void setTrainingRealization(List<TrainingRealization> trainingRealization) {
         this.trainingRealization = trainingRealization;
     }
 

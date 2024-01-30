@@ -1,9 +1,12 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Date;
 
 public class TrainingRealization {
 
+    @JsonIgnore
     private Long id;
 
     private String realizationDescription;

@@ -1,5 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class AthleteController implements AthleteOperations {
         return athleteService.getAthletesByCoachId(id);
     }
 
-    public Athlete addNew(Athlete athlete) {
+    public Athlete addNew(@Valid Athlete athlete) {
 
         return athleteService.addNew(athlete);
     }

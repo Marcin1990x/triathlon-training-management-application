@@ -1,6 +1,5 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -16,7 +15,7 @@ public interface TrainingPlanOperations {
     public void deleteById(@PathVariable Long id);
 
     @PostMapping("coaches/{id}/training-plans")
-    public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @Valid @RequestBody TrainingPlan trainingPlan);
+    public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @RequestBody TrainingPlan trainingPlan);
 
     @PostMapping("athletes/{athleteId}/training-plans/{trainingPlanId}")
     public TrainingPlan addTrainingPlanToAthleteWithDate(

@@ -12,13 +12,12 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/authenticate")
-    public String getUserDetailsAfterAuthenticate(Authentication authentication) {
+    @Autowired
+    private AuthenticationService authenticationService;
 
-        if (authentication.isAuthenticated()) { // todo: do with service
-            return "User with username: '" + authentication.getName() + "' successfully authenticated.";
-        } else {
-            return null;
-        }
+    @PostMapping("/authenticate")
+    public String authenticateUserAndGetToken(Authentication authentication) {
+
+        return authenticationService.authenticateUserAndGetToken(authentication);
     }
 }

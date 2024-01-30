@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.security;
+package pl.koneckimarcin.triathlontrainingmanagement.security.registration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @TestPropertySource("/application-test-security.properties")
-public class LoginServiceTest {
+public class RegistrationServiceTest {
 
     @Autowired
     private JdbcTemplate jdbc;

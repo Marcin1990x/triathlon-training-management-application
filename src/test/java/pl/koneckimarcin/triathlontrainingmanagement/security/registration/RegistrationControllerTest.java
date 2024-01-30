@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.security;
+package pl.koneckimarcin.triathlontrainingmanagement.security.registration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test-security.properties")
-public class LoginControllerTest {
+public class RegistrationControllerTest {
 
     @Autowired
     private JdbcTemplate jdbc;

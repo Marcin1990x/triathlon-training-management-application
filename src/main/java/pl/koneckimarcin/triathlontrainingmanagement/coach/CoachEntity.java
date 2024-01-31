@@ -3,7 +3,6 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 
 import java.util.Set;
 
@@ -26,6 +25,9 @@ public class CoachEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_id")
     private Set<TrainingPlanEntity> trainingPlanEntities;
+
+    @Column(name = "has_user")
+    private boolean isAssignedToUser = false;
 
     public void setId(Long id) {
         this.id = id;
@@ -65,5 +67,13 @@ public class CoachEntity {
 
     public void setTrainingPlans(Set<TrainingPlanEntity> trainingPlanEntities) {
         this.trainingPlanEntities = trainingPlanEntities;
+    }
+
+    public Boolean isAssignedToUser() {
+        return isAssignedToUser;
+    }
+
+    public void setAssignedToUser(Boolean assignedToUser) {
+        isAssignedToUser = assignedToUser;
     }
 }

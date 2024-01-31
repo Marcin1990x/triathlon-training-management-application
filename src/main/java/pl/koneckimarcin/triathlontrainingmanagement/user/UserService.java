@@ -8,7 +8,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteService;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssigned;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssignedException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -63,25 +63,47 @@ public class UserService {
 
     public User addCoachToUser(Long userId, Long coachId) {
 
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        CoachEntity coach = coachRepository.findById(coachId).get();
+
+        addCoachToUserCheckForExceptions(userToUpdate, coach, userId, coachId);
+
+        coach.setAssignedToUser(true);
+        userToUpdate.setCoachEntity(coach);
+
+        return User.fromUserEntity(userRepository.save(userToUpdate));
+    }
+
+    private void addCoachToUserCheckForExceptions(UserEntity user, CoachEntity coach, Long userId, Long coachId) {
+
         if (!checkIfIsNotNull(userId)) {
             throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
         }
         if (!coachService.checkIfIsNotNull(coachId)) {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
         }
-        UserEntity userToUpdate = userRepository.findById(userId).get();
-        if (userToUpdate.hasAssignedCoach()) { // todo: solve - what if coach is already assigned
-            throw new IsAlreadyAssigned("User", String.valueOf(userId), "Coach",
-                    String.valueOf(userToUpdate.getCoachEntity().getId()));
+        if (user.hasAssignedCoach()) {
+            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
         }
-        CoachEntity coach = coachRepository.findById(coachId).get();
+        if (coach.isAssignedToUser()) {
+            throw new IsAlreadyAssignedException("Coach", String.valueOf(coachId));
+        }
+    }
 
-        userToUpdate.setCoachEntity(coach);
+    public User addAthleteToUser(Long userId, Long athleteId) {
+
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+
+        addAthleteToUserCheckForExceptions(userToUpdate, athlete, userId, athleteId);
+
+        athlete.setAssignedToUser(true);
+        userToUpdate.setAthleteEntity(athlete);
 
         return User.fromUserEntity(userRepository.save(userToUpdate));
     }
 
-    public User addAthleteToUser(Long userId, Long athleteId) {
+    private void addAthleteToUserCheckForExceptions(UserEntity user, AthleteEntity athlete, Long userId, Long athleteId) {
 
         if (!checkIfIsNotNull(userId)) {
             throw new ResourceNotFoundException("User", "id", String.valueOf(userId));
@@ -89,15 +111,13 @@ public class UserService {
         if (!athleteService.checkIfIsNotNull(athleteId)) {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
         }
-        UserEntity userToUpdate = userRepository.findById(userId).get();
-        if (userToUpdate.hasAssignedAthlete()) { // todo: solve - what if coach is already assigned
-            throw new IsAlreadyAssigned("User", String.valueOf(userId), "Athlete",
-                    String.valueOf(userToUpdate.getAthleteEntity().getId()));
+        if (user.hasAssignedAthlete()) {
+            throw new IsAlreadyAssignedException("User", String.valueOf(userId));
         }
-        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-
-        userToUpdate.setAthleteEntity(athlete);
-
-        return User.fromUserEntity(userRepository.save(userToUpdate));
+        if (athlete.isAssignedToUser()) {
+            throw new IsAlreadyAssignedException("Athlete", String.valueOf(athleteId));
+        }
     }
 }
+
+

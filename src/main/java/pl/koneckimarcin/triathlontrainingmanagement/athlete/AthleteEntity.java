@@ -26,6 +26,9 @@ public class AthleteEntity {
     @JoinColumn(name = "athlete_id")
     private List<TrainingPlanEntity> trainingPlans;
 
+    @Column(name = "has_user")
+    private boolean isAssignedToUser = false;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +67,13 @@ public class AthleteEntity {
 
     public void setTrainingPlans(List<TrainingPlanEntity> trainingPlans) {
         this.trainingPlans = trainingPlans;
+    }
+
+    public boolean isAssignedToUser() {
+        return isAssignedToUser;
+    }
+
+    public void setAssignedToUser(boolean assignedToUser) {
+        isAssignedToUser = assignedToUser;
     }
 }

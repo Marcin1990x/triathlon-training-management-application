@@ -18,13 +18,14 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 exception.getMessage(),
                 webRequest.getDescription(false),
-                exception.getResourceName().toUpperCase() +  "_NOT_FOUND"
+                exception.getResourceName().toUpperCase() + "_NOT_FOUND"
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(IncompatibleTrainingTypeException.class)
     public ResponseEntity<ErrorDetails> handleIncompatibleTrainingTypeException(IncompatibleTrainingTypeException exception,
-                                                                        WebRequest webRequest) {
+                                                                                WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -33,6 +34,7 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(EmailAddressAlreadyExistException.class)
     public ResponseEntity<ErrorDetails> handleEmailAddressAlreadyExistException(EmailAddressAlreadyExistException exception,
                                                                                 WebRequest webRequest) {
@@ -41,6 +43,18 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 webRequest.getDescription(false),
                 "Email address already exists" // todo: is it ok?
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IsAlreadyAssignedException.class)
+    public ResponseEntity<ErrorDetails> handleIsAlreadyAssignedException(IsAlreadyAssignedException exception,
+                                                                         WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "Assign error."
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }

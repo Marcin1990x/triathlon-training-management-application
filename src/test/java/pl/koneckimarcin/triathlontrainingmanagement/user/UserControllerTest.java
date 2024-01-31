@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -34,6 +35,8 @@ public class UserControllerTest {
     private String sqlAddAthlete;
     @Value("${sql.script.create.user}")
     private String sqlAddUser;
+    @Value("${sql.script.create.user1}")
+    private String sqlAddUser1;
 
     @Value("${sql.script.delete.athlete}")
     private String sqlDeleteAthlete;
@@ -44,6 +47,17 @@ public class UserControllerTest {
     void setup() {
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddUser);
+    }
+
+    @Test
+    void getAllUsersHttpRequest() throws Exception {
+
+        jdbc.execute(sqlAddUser1);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test

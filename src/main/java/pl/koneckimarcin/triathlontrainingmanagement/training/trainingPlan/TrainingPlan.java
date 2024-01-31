@@ -1,6 +1,5 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +12,6 @@ import java.util.List;
 
 public class TrainingPlan {
 
-    @JsonIgnore
     private Long id;
 
     @NotEmpty(message = "TrainingPlan name should not be empty")

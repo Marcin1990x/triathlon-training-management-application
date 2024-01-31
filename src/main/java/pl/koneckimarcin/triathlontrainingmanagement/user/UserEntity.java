@@ -96,6 +96,13 @@ public class UserEntity {
         this.coachEntity = coachEntity;
     }
 
+    public boolean hasAssignedAthlete() {
+        return this.athleteEntity != null;
+    }
+    public boolean hasAssignedCoach() {
+        return this.coachEntity != null;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +

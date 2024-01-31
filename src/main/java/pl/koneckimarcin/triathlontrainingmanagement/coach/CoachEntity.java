@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 
 import java.util.Set;
 

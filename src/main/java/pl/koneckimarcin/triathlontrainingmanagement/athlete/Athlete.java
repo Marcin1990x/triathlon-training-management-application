@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
 
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ public class Athlete {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TrainingPlan> trainingPlans = new ArrayList<>();
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> trainings;
 
     public Athlete() {
     }
@@ -56,10 +60,24 @@ public class Athlete {
                     .stream().map(TrainingRealization::fromTrainingRealizationEntity).collect(Collectors.toList()));
         }
         if (athleteEntity.getTrainingPlans() != null) {
+            athlete.setTrainings(setTrainingPlansInformation(athleteEntity));
+        }
+        if (athleteEntity.getTrainingPlans() != null) {
             athlete.setTrainingPlans(athleteEntity.getTrainingPlans()
                     .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList()));
         }
         return athlete;
+    }
+
+    private static List<String> setTrainingPlansInformation(AthleteEntity athlete) {
+
+        List<String> trainingPlansInformation = new ArrayList<>();
+
+        List<TrainingPlanEntity> trainingPlans = athlete.getTrainingPlans();
+        for (TrainingPlanEntity plan : trainingPlans) {
+            trainingPlansInformation.add(plan.getPlannedDate() + ": " + plan.getTrainingType() + " - " + plan.getName());
+        }
+        return trainingPlansInformation;
     }
 
     public Long getId() {
@@ -100,5 +118,13 @@ public class Athlete {
 
     public void setTrainingPlans(List<TrainingPlan> trainingPlans) {
         this.trainingPlans = trainingPlans;
+    }
+
+    public List<String> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<String> trainings) {
+        this.trainings = trainings;
     }
 }

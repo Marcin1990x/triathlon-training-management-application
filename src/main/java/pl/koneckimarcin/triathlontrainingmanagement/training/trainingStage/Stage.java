@@ -1,10 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Stage {
 
-    @JsonIgnore
     private long id;
 
     private long distanceInMeters;

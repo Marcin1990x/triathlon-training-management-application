@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class TrainingPlanController implements TrainingPlanOperations {
@@ -16,6 +17,12 @@ public class TrainingPlanController implements TrainingPlanOperations {
     public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {
 
         return trainingPlanService.getTrainingPlansByAthleteId(id);
+    }
+
+    @Override
+    public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
+
+        return trainingPlanService.getTrainingPlansByCoachId(id);
     }
 
     public void deleteById(Long id) {

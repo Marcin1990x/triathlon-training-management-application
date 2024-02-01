@@ -4,6 +4,18 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage
 
 public class RunStage extends Stage {
 
+    public RunStage() {
+    }
+
+    public RunStage(int paceInSecondsPerKm) {
+        this.paceInSecondsPerKm = paceInSecondsPerKm;
+    }
+
+    public RunStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description, int paceInSecondsPerKm) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+        this.paceInSecondsPerKm = paceInSecondsPerKm;
+    }
+
     private int paceInSecondsPerKm;
 
     public RunStageEntity mapToRunStageEntity() {

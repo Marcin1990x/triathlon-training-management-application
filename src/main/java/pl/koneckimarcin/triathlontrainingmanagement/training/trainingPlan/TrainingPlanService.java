@@ -12,11 +12,13 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +39,9 @@ public class TrainingPlanService {
     @Autowired
     private AthleteService athleteService;
 
+    @Autowired
+    private StageRepository stageRepository;
+
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
@@ -50,9 +55,20 @@ public class TrainingPlanService {
 
         if (athleteService.checkIfIsNotNull(id)) {
 
-            return athleteRepository.findById(id).get().getTrainingPlans().stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
+            return athleteRepository.findById(id).get().getTrainingPlans()
+                    .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
         } else {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        }
+    }
+
+    public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
+
+        if (checkIfIsNotNull(id)) {
+            return coachRepository.findById(id).get().getTrainingPlans()
+                    .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toSet());
+        } else {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }
     }
 
@@ -92,6 +108,9 @@ public class TrainingPlanService {
 
                 trainingPlanRepository.save(copiedPlan);
 
+//                Long copiedPlanId = trainingPlanRepository.save(copiedPlan).getId();
+//                addStagesToCopiedPlan(copiedPlanId, trainingPlan); // todo: solve it
+
                 AthleteEntity athlete = athleteRepository.findById(athleteId).get();
                 athlete.getTrainingPlans().add(copiedPlan);
                 athleteRepository.save(athlete);
@@ -108,6 +127,19 @@ public class TrainingPlanService {
             }
         }
     }
+//
+//    private void addStagesToCopiedPlan(Long copiedPlanId, TrainingPlanEntity trainingPlan) { // todo: solve it
+//
+//        TrainingPlanEntity plan = trainingPlanRepository.findById(copiedPlanId).get();
+//
+//        if(trainingPlan.getStages() != null){
+//            for(StageEntity stage : trainingPlan.getStages()){
+//
+//                plan.getStages().add(stageRepository.save(copy));
+//            }
+//        }
+//        trainingPlanRepository.save(plan);
+//    }
 
     private boolean isDateCorrect(Date date) {
 
@@ -122,7 +154,15 @@ public class TrainingPlanService {
         copy.setTrainingType(original.getTrainingType());
         copy.setDescription(original.getDescription());
         copy.setName(original.getName());
-
+//        if(original.getStages() != null) {
+//
+//            List<StageEntity> stagesForCopy = new ArrayList<>();
+//
+//            for (StageEntity stage : original.getStages()) {
+//                stagesForCopy.add(stage);
+//            }
+//            copy.setStages(stagesForCopy);
+//        }
         return copy;
     }
 }

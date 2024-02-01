@@ -11,6 +11,8 @@ import pl.koneckimarcin.triathlontrainingmanagement.security.registration.Regist
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserService;
 
@@ -29,6 +31,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     private UserService userService;
     @Autowired
     private TrainingPlanService tpService;
+    @Autowired
+    private StageService stageService;
 
 
     @Override
@@ -48,9 +52,11 @@ public class DatabaseInitializer implements CommandLineRunner {
         //add athletes to coach
         coachService.addAthleteToCoach(1L, 1L);
         coachService.addAthleteToCoach(1L, 2L);
-        //add training plans to coach
+        //add training plans with stages to coach
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Easy swimming", TrainingType.SWIM, "1500m easy"));
+        stageService.addNewSwimStageToTrainingPlan(1L,
+                new SwimStage(1500, 1800, 1, 0, "easy", 120));
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Swimming intervals", TrainingType.SWIM, "100m hard/100m easy x10"));
         tpService.addNewTrainingPlanToCoach(1L,

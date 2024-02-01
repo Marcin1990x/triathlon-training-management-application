@@ -14,6 +14,17 @@ public class Stage {
 
     private String description;
 
+    public Stage() {
+    }
+
+    public Stage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description) {
+        this.distanceInMeters = distanceInMeters;
+        this.timeInSeconds = timeInSeconds;
+        this.sequence = sequence;
+        this.heartRate = heartRate;
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }

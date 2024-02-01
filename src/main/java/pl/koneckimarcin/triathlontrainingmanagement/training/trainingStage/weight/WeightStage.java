@@ -4,6 +4,13 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage
 
 public class WeightStage extends Stage {
 
+    public WeightStage() {
+    }
+
+    public WeightStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+    }
+
     public WeightStageEntity mapToWeightStageEntity() {
 
         WeightStageEntity weightStageEntity = new WeightStageEntity();

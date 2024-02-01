@@ -6,6 +6,18 @@ public class BikeStage extends Stage {
 
     private int power;
 
+    public BikeStage() {
+    }
+
+    public BikeStage(int power) {
+        this.power = power;
+    }
+
+    public BikeStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description, int power) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+        this.power = power;
+    }
+
     public BikeStageEntity mapToBikeStageEntity() {
 
         BikeStageEntity bikeStageEntity = new BikeStageEntity();

@@ -1,7 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "stage")
@@ -70,4 +69,5 @@ public abstract class StageEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

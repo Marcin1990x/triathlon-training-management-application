@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssignedException;
 
 import java.util.List;
@@ -16,8 +18,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -29,6 +30,11 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CoachRepository coachRepository;
+    @Autowired
+    private AthleteRepository athleteRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -82,6 +88,7 @@ public class UserServiceTest {
 
         User user = userService.addCoachToUser(11L, 1L);
         assertEquals(1, user.getCoachId());
+        assertTrue(coachRepository.findById(1L).get().isAssignedToUser());
     }
 
     @Test
@@ -102,6 +109,7 @@ public class UserServiceTest {
 
         User user = userService.addAthleteToUser(11L, 2L);
         assertEquals(2, user.getAthleteId());
+        assertTrue(athleteRepository.findById(2L).get().isAssignedToUser());
     }
 
     @Test

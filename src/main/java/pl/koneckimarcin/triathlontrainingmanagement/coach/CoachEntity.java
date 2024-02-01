@@ -73,7 +73,7 @@ public class CoachEntity {
         return isAssignedToUser;
     }
 
-    public void setAssignedToUser(Boolean assignedToUser) {
+    public void setAssignedToUser(boolean assignedToUser) {
         isAssignedToUser = assignedToUser;
     }
 }

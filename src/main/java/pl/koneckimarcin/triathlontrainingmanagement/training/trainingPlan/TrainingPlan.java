@@ -31,6 +31,15 @@ public class TrainingPlan {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<StageEntity> stage;
 
+    public TrainingPlan() {
+    }
+
+    public TrainingPlan(String name, TrainingType trainingType, String description) {
+        this.name = name;
+        this.trainingType = trainingType;
+        this.description = description;
+    }
+
     public TrainingPlanEntity mapToTrainingPlanEntity() {
 
         TrainingPlanEntity trainingPlanEntity = new TrainingPlanEntity();

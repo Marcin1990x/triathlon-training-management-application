@@ -20,6 +20,15 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long coachId;
 
+    public User() {
+    }
+
+    public User(String username, String password, String emailAddress) {
+        this.username = username;
+        this.password = password;
+        this.emailAddress = emailAddress;
+    }
+
     public UserEntity mapToUserEntity() {
 
         UserEntity userEntity = new UserEntity();

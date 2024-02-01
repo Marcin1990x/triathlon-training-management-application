@@ -69,6 +69,7 @@ public class UserService {
         addCoachToUserCheckForExceptions(userToUpdate, coach, userId, coachId);
 
         coach.setAssignedToUser(true);
+        coachRepository.save(coach);
         userToUpdate.setCoachEntity(coach);
 
         return User.fromUserEntity(userRepository.save(userToUpdate));
@@ -98,6 +99,7 @@ public class UserService {
         addAthleteToUserCheckForExceptions(userToUpdate, athlete, userId, athleteId);
 
         athlete.setAssignedToUser(true);
+        athleteRepository.save(athlete);
         userToUpdate.setAthleteEntity(athlete);
 
         return User.fromUserEntity(userRepository.save(userToUpdate));

@@ -12,10 +12,12 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -106,6 +108,8 @@ public class TrainingPlanService {
                 copiedPlan.setPlannedDate(date);
                 copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
 
+                trainingPlanRepository.save(trainingPlan);
+
                 trainingPlanRepository.save(copiedPlan);
 
 //                Long copiedPlanId = trainingPlanRepository.save(copiedPlan).getId();
@@ -154,15 +158,13 @@ public class TrainingPlanService {
         copy.setTrainingType(original.getTrainingType());
         copy.setDescription(original.getDescription());
         copy.setName(original.getName());
-//        if(original.getStages() != null) {
-//
-//            List<StageEntity> stagesForCopy = new ArrayList<>();
-//
-//            for (StageEntity stage : original.getStages()) {
-//                stagesForCopy.add(stage);
-//            }
-//            copy.setStages(stagesForCopy);
-//        }
+
+        if (original.getStages() != null) {
+
+            List<StageEntity> stages = new ArrayList<>();
+            copy.setStages(stages);
+            copy.getStages().addAll(original.getStages());
+        }
         return copy;
     }
 }

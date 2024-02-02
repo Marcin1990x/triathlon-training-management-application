@@ -1,6 +1,9 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
 import jakarta.persistence.*;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
+
+import java.util.List;
 
 @Entity
 @Table(name = "stage")
@@ -21,6 +24,9 @@ public abstract class StageEntity {
     private int heartRate;
 
     private String description;
+
+    @ManyToMany
+    private List<TrainingPlanEntity> trainingPlans;
 
     public long getId() {
         return id;

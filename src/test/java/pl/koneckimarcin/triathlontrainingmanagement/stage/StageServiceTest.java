@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.IncompatibleTrainingTypeException;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("/application-test-stage.properties")
+@Transactional
 public class StageServiceTest {
 
     @Autowired
@@ -40,6 +42,10 @@ public class StageServiceTest {
     private String sqlAddStage;
     @Value("${sql.script.create.stage1}")
     private String sqlAddStage1;
+    @Value("${sql.script.create.stage-training-plan}")
+    private String sqlStageTp;
+    @Value("${sql.script.create.stage-training-plan1}")
+    private String sqlStageTp1;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddTrainingPlan;
     @Value("${sql.script.create.coach}")
@@ -55,6 +61,10 @@ public class StageServiceTest {
     private String sqlDeleteCoach;
     @Value("${sql.script.delete.athlete}")
     private String sqlDeleteAthlete;
+    @Value("${sql.script.delete.stage-training-plan}")
+    private String sqlDeleteStageTp;
+
+
 
     @BeforeEach
     void setup() {
@@ -62,12 +72,14 @@ public class StageServiceTest {
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddTrainingPlan);
         jdbc.execute(sqlAddStage);
+        jdbc.execute(sqlStageTp);
     }
 
     @Test
     void shouldReturnStagesForTrainingPlanByIdInCorrectOrder() {
 
         jdbc.execute(sqlAddStage1);
+        jdbc.execute(sqlStageTp1);
 
         assertTrue(trainingPlanRepository.findById(10L).isPresent());
 
@@ -119,6 +131,7 @@ public class StageServiceTest {
     void shouldDeleteAllStagesFromTrainingPlanById() {
 
         jdbc.execute(sqlAddStage1);
+        jdbc.execute(sqlStageTp1);
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
         assertTrue(stageRepository.findById(10L).isPresent());
@@ -127,8 +140,6 @@ public class StageServiceTest {
         stageService.deleteAllStagesFromTrainingPlanById(10L);
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
-        assertFalse(stageRepository.findById(10L).isPresent());
-        assertFalse(stageRepository.findById(11L).isPresent());
     }
 
     @Test
@@ -152,6 +163,7 @@ public class StageServiceTest {
 
     @AfterEach
     void clean() {
+        jdbc.execute(sqlDeleteStageTp);
         jdbc.execute(sqlDeleteStage);
         jdbc.execute(sqlDeleteTrainingPlan);
         jdbc.execute(sqlDeleteCoach);

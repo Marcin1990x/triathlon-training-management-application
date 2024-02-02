@@ -66,7 +66,7 @@ public class TrainingPlanService {
 
     public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
 
-        if (checkIfIsNotNull(id)) {
+        if (coachService.checkIfIsNotNull(id)) {
             return coachRepository.findById(id).get().getTrainingPlans()
                     .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toSet());
         } else {

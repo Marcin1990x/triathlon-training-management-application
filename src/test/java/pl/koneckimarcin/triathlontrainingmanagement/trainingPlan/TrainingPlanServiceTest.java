@@ -75,14 +75,20 @@ public class TrainingPlanServiceTest {
         trainingPlan.setTrainingType(TrainingType.SWIM);
     }
 
-    // todo: test checkNull
-
     @Test
     void shouldGetTrainingPlansByAthleteId() {
 
         assertTrue(athleteRepository.findById(1L).isPresent());
 
         assertThat(trainingPlanService.getTrainingPlansByAthleteId(1L), hasSize(1));
+    }
+
+    @Test
+    void shouldGetTrainingPlansByCoachId() {
+
+        assertTrue(coachRepository.findById(1L).isPresent());
+
+        assertThat(trainingPlanService.getTrainingPlansByCoachId(1L), hasSize(2));
     }
 
     @Test
@@ -133,6 +139,7 @@ public class TrainingPlanServiceTest {
 
         assertEquals("Coach not found with id : '2'", exception.getMessage());
     }
+
     @Test
     void shouldAddTrainingPlanToAthleteWithDate() {
 
@@ -146,6 +153,7 @@ public class TrainingPlanServiceTest {
 
         assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(2));
     }
+
     @Test
     void shouldThrowAnExceptionWhenAddTrainingPlanToAthleteWithInvalidDate() {
 

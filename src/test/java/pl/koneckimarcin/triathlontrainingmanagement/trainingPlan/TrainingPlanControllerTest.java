@@ -24,7 +24,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,10 +85,19 @@ public class TrainingPlanControllerTest {
     @Test
     void getTrainingPlansByAthleteIdHttpRequest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}/training-plans",1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}/training-plans", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].description", is("testplan")));
+    }
+
+    @Test
+    void getTrainingPlansByCoachIdHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/coaches/{id}/training-plans", 1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].description", is("intervals")));
     }
 
     @Test
@@ -123,15 +131,17 @@ public class TrainingPlanControllerTest {
         assertThat(trainingPlanRepository.findByTrainingType(TrainingType.SWIM), hasSize(2));
         assertThat(coachRepository.findById(1L).get().getTrainingPlans(), hasSize(3));
     }
+
     @Test
     void addTrainingPlanToAthleteWithDateHttpRequestExpectSetDateAndStatusPlanned() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-plans/{id}",1 ,11)
-                .param("plannedDate", "2025-01-22"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-plans/{id}", 1, 11)
+                        .param("plannedDate", "2025-01-22"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.trainingPlanStatus", is("PLANNED")))
                 .andExpect(jsonPath("$.plannedDate", is("2025-01-22")));
     }
+
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteTrainingPlan);

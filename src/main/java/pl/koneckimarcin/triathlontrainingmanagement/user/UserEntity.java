@@ -29,7 +29,7 @@ public class UserEntity {
     @NotEmpty
     private String emailAddress;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles;
 
     @OneToOne

@@ -32,4 +32,5 @@ public class UserController implements UserOperations {
 
         return userService.addAthleteToUser(userId, athleteId);
     }
+
 }

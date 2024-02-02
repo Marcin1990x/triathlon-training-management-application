@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.koneckimarcin.triathlontrainingmanagement.user.RoleEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 

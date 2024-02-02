@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
 
 import java.util.Set;
 
@@ -22,14 +23,13 @@ public class UserEntity {
     private String username;
 
     @NotEmpty
-    //@Size(min =  8, max = 30) // because encode
     private String password;
 
     @Email
     @NotEmpty
     private String emailAddress;
 
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles;
 
     @OneToOne

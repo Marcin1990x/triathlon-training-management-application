@@ -108,12 +108,7 @@ public class TrainingPlanService {
                 copiedPlan.setPlannedDate(date);
                 copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
 
-                trainingPlanRepository.save(trainingPlan);
-
                 trainingPlanRepository.save(copiedPlan);
-
-//                Long copiedPlanId = trainingPlanRepository.save(copiedPlan).getId();
-//                addStagesToCopiedPlan(copiedPlanId, trainingPlan); // todo: solve it
 
                 AthleteEntity athlete = athleteRepository.findById(athleteId).get();
                 athlete.getTrainingPlans().add(copiedPlan);
@@ -131,19 +126,6 @@ public class TrainingPlanService {
             }
         }
     }
-//
-//    private void addStagesToCopiedPlan(Long copiedPlanId, TrainingPlanEntity trainingPlan) { // todo: solve it
-//
-//        TrainingPlanEntity plan = trainingPlanRepository.findById(copiedPlanId).get();
-//
-//        if(trainingPlan.getStages() != null){
-//            for(StageEntity stage : trainingPlan.getStages()){
-//
-//                plan.getStages().add(stageRepository.save(copy));
-//            }
-//        }
-//        trainingPlanRepository.save(plan);
-//    }
 
     private boolean isDateCorrect(Date date) {
 

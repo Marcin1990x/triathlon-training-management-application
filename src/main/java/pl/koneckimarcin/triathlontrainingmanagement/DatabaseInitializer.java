@@ -15,6 +15,8 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserService;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleService;
 
 import java.sql.Date;
 
@@ -33,6 +35,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     private TrainingPlanService tpService;
     @Autowired
     private StageService stageService;
+    @Autowired
+    private RoleService roleService;
 
 
     @Override
@@ -49,6 +53,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         userService.addAthleteToUser(2L, 1L);
         athleteService.addNew(new Athlete("Adam", "Runner"));
         userService.addAthleteToUser(3L, 2L);
+        //add roles to users
+        roleService.addRoleToUserById(1L, Role.COACH);
+        roleService.addRoleToUserById(2L, Role.ATHLETE);
+        //roleService.addRoleToUserById(3L, Role.ATHLETE); // todo: many to
         //add athletes to coach
         coachService.addAthleteToCoach(1L, 1L);
         coachService.addAthleteToCoach(1L, 2L);
@@ -57,8 +65,11 @@ public class DatabaseInitializer implements CommandLineRunner {
                 new TrainingPlan("Easy swimming", TrainingType.SWIM, "1500m easy"));
         stageService.addNewSwimStageToTrainingPlan(1L,
                 new SwimStage(1500, 1800, 1, 0, "easy", 120));
+
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Swimming intervals", TrainingType.SWIM, "100m hard/100m easy x10"));
+        addStagesForIntervals();
+
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Easy long run", TrainingType.RUN, "15k easy"));
         tpService.addNewTrainingPlanToCoach(1L,
@@ -79,5 +90,18 @@ public class DatabaseInitializer implements CommandLineRunner {
         tpService.addTrainingPlanToAthleteWithDate(2L, 3L, new Date(124, 1, 3));
         tpService.addTrainingPlanToAthleteWithDate(2L, 7L, new Date(124, 1, 4));
         tpService.addTrainingPlanToAthleteWithDate(2L, 5L, new Date(124, 1, 5));
+    }
+
+    private void addStagesForIntervals() {
+
+        for (int i = 1; i < 21; i++) {
+            if (i % 2 != 0) {
+                stageService.addNewSwimStageToTrainingPlan(2L,
+                        new SwimStage(100, 105, i, 0, "hard", 105));
+            } else {
+                stageService.addNewSwimStageToTrainingPlan(2L,
+                        new SwimStage(100, 120, i, 0, "easy", 120));
+            }
+        }
     }
 }

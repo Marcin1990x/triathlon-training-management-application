@@ -1,6 +1,9 @@
-package pl.koneckimarcin.triathlontrainingmanagement.user;
+package pl.koneckimarcin.triathlontrainingmanagement.user.role;
 
 import jakarta.persistence.*;
+import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -13,9 +16,8 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+    @ManyToMany
+    private Set<UserEntity> users;
 
     public Long getId() {
         return id;
@@ -31,13 +33,5 @@ public class RoleEntity {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
     }
 }

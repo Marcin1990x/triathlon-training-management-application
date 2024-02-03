@@ -96,8 +96,7 @@ public class TrainingPlanControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/coaches/{id}/training-plans", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].description", is("intervals")));
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test

@@ -25,9 +25,6 @@ public abstract class StageEntity {
 
     private String description;
 
-    @ManyToOne
-    private TrainingPlanEntity trainingPlan;
-
     public long getId() {
         return id;
     }

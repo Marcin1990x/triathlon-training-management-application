@@ -22,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -48,10 +49,6 @@ public class StageControllerTest {
     private String sqlAddStage;
     @Value("${sql.script.create.stage1}")
     private String sqlAddStage1;
-    @Value("${sql.script.create.stage-training-plan}")
-    private String sqlStageTp;
-    @Value("${sql.script.create.stage-training-plan1}")
-    private String sqlStageTp1;
     @Value("${sql.script.create.training-plan}")
     private String sqlAddTrainingPlan;
     @Value("${sql.script.create.coach}")
@@ -67,8 +64,6 @@ public class StageControllerTest {
     private String sqlDeleteCoach;
     @Value("${sql.script.delete.athlete}")
     private String sqlDeleteAthlete;
-    @Value("${sql.script.delete.stage-training-plan}")
-    private String sqlDeleteStageTp;
 
     @BeforeEach
     void setup() {
@@ -76,7 +71,6 @@ public class StageControllerTest {
         jdbc.execute(sqlAddAthlete);
         jdbc.execute(sqlAddTrainingPlan);
         jdbc.execute(sqlAddStage);
-        jdbc.execute(sqlStageTp);
     }
 
     @Test
@@ -120,20 +114,20 @@ public class StageControllerTest {
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(1));
     }
-//    @Test // todo: solve it!
-//    void deleteStageByIdHttpRequest() throws Exception {
-//
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/stages/{id}", 10))
-//                .andExpect(status().isOk());
-//
-//        assertFalse(stageRepository.findById(10L).isPresent());
-//    }
+
+    @Test
+    void deleteStageByIdHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/stages/{id}", 10))
+                .andExpect(status().isOk());
+
+        assertFalse(stageRepository.findById(10L).isPresent());
+    }
 
     @Test
     void deleteAllStagesFromTrainingPlanByIdHttpRequest() throws Exception {
 
         jdbc.execute(sqlAddStage1);
-        jdbc.execute(sqlStageTp1);
 
         assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(2));
 
@@ -162,7 +156,6 @@ public class StageControllerTest {
 
     @AfterEach
     void clean() {
-        jdbc.execute(sqlDeleteStageTp);
         jdbc.execute(sqlDeleteStage);
         jdbc.execute(sqlDeleteTrainingPlan);
         jdbc.execute(sqlDeleteCoach);

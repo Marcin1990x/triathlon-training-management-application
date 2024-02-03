@@ -19,4 +19,17 @@ public class SwimStageEntity extends StageEntity {
     public void setPaceInSeconds(int paceInSeconds) {
         this.paceInSeconds = paceInSeconds;
     }
+
+    public static SwimStageEntity copyStage(SwimStageEntity original) {
+
+        SwimStageEntity copy = new SwimStageEntity();
+        copy.setDistanceInMeters(original.getDistanceInMeters());
+        copy.setTimeInSeconds(original.getTimeInSeconds());
+        copy.setSequence(original.getSequence());
+        copy.setHeartRate(original.getHeartRate());
+        copy.setDescription(original.getDescription());
+        copy.setPaceInSeconds(original.getPaceInSeconds());
+
+        return copy;
+    }
 }

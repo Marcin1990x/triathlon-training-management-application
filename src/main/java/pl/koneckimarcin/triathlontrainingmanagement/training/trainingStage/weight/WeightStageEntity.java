@@ -10,5 +10,17 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage
 @DiscriminatorValue("WEIGHT")
 public class WeightStageEntity extends StageEntity {
 
+    public static WeightStageEntity copyStage(WeightStageEntity original) {
+
+        WeightStageEntity copy = new WeightStageEntity();
+        copy.setDistanceInMeters(original.getDistanceInMeters());
+        copy.setTimeInSeconds(original.getTimeInSeconds());
+        copy.setSequence(original.getSequence());
+        copy.setHeartRate(original.getHeartRate());
+        copy.setDescription(original.getDescription());
+
+        return copy;
+    }
+
 
 }

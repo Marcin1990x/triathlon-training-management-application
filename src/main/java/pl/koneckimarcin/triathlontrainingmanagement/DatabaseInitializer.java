@@ -82,15 +82,15 @@ public class DatabaseInitializer implements CommandLineRunner {
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Weight exercises plan", TrainingType.WEIGHT, "as in the plan"));
         //plan training for athletes
-        tpService.addTrainingPlanToAthleteWithDate(1L, 1L, new Date(124, 1, 2));
-        tpService.addTrainingPlanToAthleteWithDate(1L, 3L, new Date(124, 1, 3));
-        tpService.addTrainingPlanToAthleteWithDate(1L, 7L, new Date(124, 1, 4));
-        tpService.addTrainingPlanToAthleteWithDate(1L, 2L, new Date(124, 1, 5));
-        tpService.addTrainingPlanToAthleteWithDate(1L, 4L, new Date(124, 1, 6));
-        tpService.addTrainingPlanToAthleteWithDate(2L, 4L, new Date(124, 1, 2));
-        tpService.addTrainingPlanToAthleteWithDate(2L, 3L, new Date(124, 1, 3));
-        tpService.addTrainingPlanToAthleteWithDate(2L, 7L, new Date(124, 1, 4));
-        tpService.addTrainingPlanToAthleteWithDate(2L, 5L, new Date(124, 1, 5));
+        tpService.addTrainingPlanToAthleteWithDate(1L, 1L, new Date(124, 1, 3));
+        tpService.addTrainingPlanToAthleteWithDate(1L, 3L, new Date(124, 1, 4));
+        tpService.addTrainingPlanToAthleteWithDate(1L, 7L, new Date(124, 1, 5));
+        tpService.addTrainingPlanToAthleteWithDate(1L, 2L, new Date(124, 1, 6));
+        tpService.addTrainingPlanToAthleteWithDate(1L, 4L, new Date(124, 1, 7));
+        tpService.addTrainingPlanToAthleteWithDate(2L, 4L, new Date(124, 1, 3));
+        tpService.addTrainingPlanToAthleteWithDate(2L, 3L, new Date(124, 1, 4));
+        tpService.addTrainingPlanToAthleteWithDate(2L, 7L, new Date(124, 1, 5));
+        tpService.addTrainingPlanToAthleteWithDate(2L, 5L, new Date(124, 1, 6));
     }
 
     private void addStagesForIntervals() {

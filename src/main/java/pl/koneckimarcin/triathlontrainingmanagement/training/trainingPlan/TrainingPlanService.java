@@ -14,6 +14,10 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStageEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStageEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStageEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weight.WeightStageEntity;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -46,6 +50,7 @@ public class TrainingPlanService {
 
 
     public boolean checkIfIsNotNull(Long id) {
+
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
         if (trainingPlanEntity.isPresent()) {
             return true;
@@ -55,75 +60,79 @@ public class TrainingPlanService {
 
     public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {
 
-        if (athleteService.checkIfIsNotNull(id)) {
-
-            return athleteRepository.findById(id).get().getTrainingPlans()
-                    .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
-        } else {
-            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
-        }
+        checkAthleteIdException(id);
+        return athleteRepository.findById(id).get().getTrainingPlans()
+                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toList());
     }
 
     public Set<TrainingPlan> getTrainingPlansByCoachId(Long id) {
 
-        if (coachService.checkIfIsNotNull(id)) {
-            return coachRepository.findById(id).get().getTrainingPlans()
-                    .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toSet());
-        } else {
-            throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
-        }
+        checkCoachIdException(id);
+        return coachRepository.findById(id).get().getTrainingPlans()
+                .stream().map(TrainingPlan::fromTrainingPlanEntity).collect(Collectors.toSet());
     }
 
     public void deleteById(Long id) {
-
-        if (checkIfIsNotNull(id)) {
-            trainingPlanRepository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(id));
-        }
+        checkTrainingPlanIdException(id);
+        trainingPlanRepository.deleteById(id);
     }
 
     public TrainingPlan addNewTrainingPlanToCoach(Long coachId, @Valid TrainingPlan trainingPlan) {
 
-        if (coachService.checkIfIsNotNull(coachId)) {
-            Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
+        checkCoachIdException(coachId);
 
-            trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
-            coachEntity.get().getTrainingPlans().add(trainingPlan.mapToTrainingPlanEntity());
+        Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
 
-            coachRepository.save(coachEntity.get());
-            return trainingPlan;
-        } else {
-            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-        }
+        trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
+        coachEntity.get().getTrainingPlans().add(trainingPlan.mapToTrainingPlanEntity());
+
+        coachRepository.save(coachEntity.get());
+        return trainingPlan;
     }
 
     public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date date) {
 
-        if (athleteService.checkIfIsNotNull(athleteId) && checkIfIsNotNull(trainingPlanId)) {
-            if (isDateCorrect(date)) {
+        checkAthleteIdException(athleteId);
+        checkTrainingPlanIdException(trainingPlanId);
+        checkIfDateIsCorrectException(date);
 
-                TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(trainingPlanId).get();
-                TrainingPlanEntity copiedPlan = copyTrainingPlanEntity(trainingPlan);
-                copiedPlan.setPlannedDate(date);
-                copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
+        TrainingPlanEntity trainingPlan = trainingPlanRepository.findById(trainingPlanId).get();
+        TrainingPlanEntity copiedPlan = copyTrainingPlanEntity(trainingPlan);
+        copiedPlan.setPlannedDate(date);
+        copiedPlan.setTrainingPlanStatus(TrainingPlanStatus.PLANNED);
 
-                trainingPlanRepository.save(copiedPlan);
+        trainingPlanRepository.save(copiedPlan);
 
-                AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-                athlete.getTrainingPlans().add(copiedPlan);
-                athleteRepository.save(athlete);
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+        athlete.getTrainingPlans().add(copiedPlan);
+        athleteRepository.save(athlete);
 
-                return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
-            } else {
-                throw new WrongDateException(date.toString());
-            }
-        } else {
-            if (!checkIfIsNotNull(trainingPlanId)) {
-                throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(trainingPlanId));
-            } else {
-                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-            }
+        return TrainingPlan.fromTrainingPlanEntity(copiedPlan);
+    }
+
+    private void checkAthleteIdException(Long athleteId) {
+        if (!athleteService.checkIfIsNotNull(athleteId)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+        }
+    }
+
+    private void checkCoachIdException(Long coachId) {
+        if (!coachService.checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
+        }
+    }
+
+    private void checkTrainingPlanIdException(Long trainingPlanId) {
+
+        if (!checkIfIsNotNull(trainingPlanId)) {
+            throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(trainingPlanId));
+        }
+    }
+
+    private void checkIfDateIsCorrectException(Date date) {
+
+        if (!isDateCorrect(date)) {
+            throw new WrongDateException(date.toString());
         }
     }
 
@@ -141,12 +150,48 @@ public class TrainingPlanService {
         copy.setDescription(original.getDescription());
         copy.setName(original.getName());
 
-        if (original.getStages() != null) {
-
-            List<StageEntity> stages = new ArrayList<>();
-            copy.setStages(stages);
-            copy.getStages().addAll(original.getStages());
+        if (original.getStages().size() > 0) {
+            handleStagesForCopiedTrainingPlan(original, copy);
         }
         return copy;
+    }
+
+    private void handleStagesForCopiedTrainingPlan(TrainingPlanEntity original, TrainingPlanEntity copy) {
+
+        StageEntity stage = original.getStages().get(0);
+        List<StageEntity> originalStages = original.getStages();
+
+        List<StageEntity> stagesForCopy = new ArrayList<>();
+
+        if (stage instanceof BikeStageEntity)
+            handleBikeStageEntity(originalStages, stagesForCopy);
+        if (stage instanceof SwimStageEntity)
+            handleSwimStageEntity(originalStages, stagesForCopy);
+        if (stage instanceof RunStageEntity)
+            handleRunStageEntity(originalStages, stagesForCopy);
+        if (stage instanceof WeightStageEntity)
+            handleWeightStageEntity(originalStages, stagesForCopy);
+
+        copy.setStages(stagesForCopy);
+    }
+
+    private void handleWeightStageEntity(List<StageEntity> originalStages, List<StageEntity> stagesForCopy) {
+        for (StageEntity originalStage : originalStages)
+            stagesForCopy.add(WeightStageEntity.copyStage((WeightStageEntity) originalStage));
+    }
+
+    private void handleRunStageEntity(List<StageEntity> originalStages, List<StageEntity> stagesForCopy) {
+        for (StageEntity originalStage : originalStages)
+            stagesForCopy.add(RunStageEntity.copyStage((RunStageEntity) originalStage));
+    }
+
+    private void handleSwimStageEntity(List<StageEntity> originalStages, List<StageEntity> stagesForCopy) {
+        for (StageEntity originalStage : originalStages)
+            stagesForCopy.add(SwimStageEntity.copyStage((SwimStageEntity) originalStage));
+    }
+
+    private void handleBikeStageEntity(List<StageEntity> originalStages, List<StageEntity> stagesForCopy) {
+        for (StageEntity originalStage : originalStages)
+            stagesForCopy.add(BikeStageEntity.copyStage((BikeStageEntity) originalStage));
     }
 }

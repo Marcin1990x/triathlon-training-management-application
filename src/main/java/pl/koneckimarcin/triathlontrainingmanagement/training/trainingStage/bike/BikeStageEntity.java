@@ -17,4 +17,17 @@ public class BikeStageEntity extends StageEntity {
     public void setPower(int power) {
         this.power = power;
     }
+
+    public static BikeStageEntity copyStage(BikeStageEntity original) {
+
+        BikeStageEntity copy = new BikeStageEntity();
+        copy.setDistanceInMeters(original.getDistanceInMeters());
+        copy.setTimeInSeconds(original.getTimeInSeconds());
+        copy.setSequence(original.getSequence());
+        copy.setHeartRate(original.getHeartRate());
+        copy.setDescription(original.getDescription());
+        copy.setPower(original.getPower());
+
+        return copy;
+    }
 }

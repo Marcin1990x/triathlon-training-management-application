@@ -25,8 +25,8 @@ public abstract class StageEntity {
 
     private String description;
 
-    @ManyToMany
-    private List<TrainingPlanEntity> trainingPlans;
+    @ManyToOne
+    private TrainingPlanEntity trainingPlan;
 
     public long getId() {
         return id;
@@ -75,5 +75,7 @@ public abstract class StageEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 
 }

@@ -27,7 +27,8 @@ public class TrainingPlanEntity {
 
     private Date plannedDate;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stage_id")
     @OrderBy("sequence ASC")
     private List<StageEntity> stages;
 

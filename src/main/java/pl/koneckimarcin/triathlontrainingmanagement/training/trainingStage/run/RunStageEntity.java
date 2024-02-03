@@ -3,7 +3,6 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 
 @Entity
@@ -19,5 +18,18 @@ public class RunStageEntity extends StageEntity {
 
     public void setPaceInSecondsPerKm(int paceInSecondsPerKm) {
         this.paceInSecondsPerKm = paceInSecondsPerKm;
+    }
+
+    public static RunStageEntity copyStage(RunStageEntity original) {
+
+        RunStageEntity copy = new RunStageEntity();
+        copy.setDistanceInMeters(original.getDistanceInMeters());
+        copy.setTimeInSeconds(original.getTimeInSeconds());
+        copy.setSequence(original.getSequence());
+        copy.setHeartRate(original.getHeartRate());
+        copy.setDescription(original.getDescription());
+        copy.setPaceInSecondsPerKm(original.getPaceInSecondsPerKm());
+
+        return copy;
     }
 }

@@ -103,6 +103,8 @@ public class UserEntity {
         return this.coachEntity != null;
     }
 
+
+
     @Override
     public String toString() {
         return "UserEntity{" +

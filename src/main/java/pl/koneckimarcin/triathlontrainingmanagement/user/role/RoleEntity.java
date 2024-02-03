@@ -16,7 +16,7 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, mappedBy = "roles")
     private Set<UserEntity> users;
 
     public Long getId() {
@@ -33,5 +33,13 @@ public class RoleEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserEntity> users) {
+        this.users = users;
     }
 }

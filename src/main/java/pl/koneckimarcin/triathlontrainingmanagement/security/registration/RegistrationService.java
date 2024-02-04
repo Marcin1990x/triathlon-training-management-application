@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.EmailAddressAlreadyExistException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.UsernameAlreadyExistException;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
@@ -24,12 +25,13 @@ public class RegistrationService {
 
         ResponseEntity<String> response;
 
-        if(userRepository.findByEmailAddress(user.getEmailAddress()).isEmpty()) {
-            response = handleSaveUser(user);
-        } else {
+        if (userRepository.findByEmailAddress(user.getEmailAddress()).isPresent()) {
             throw new EmailAddressAlreadyExistException(user.getEmailAddress());
         }
-
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistException(user.getUsername());
+        }
+        response = handleSaveUser(user);
         return response;
     }
 

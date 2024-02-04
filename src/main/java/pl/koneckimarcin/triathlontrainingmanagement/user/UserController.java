@@ -1,7 +1,10 @@
 package pl.koneckimarcin.triathlontrainingmanagement.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.triathlontrainingmanagement.security.authentication.AuthenticatedUserService;
 
 import java.util.List;
 
@@ -10,6 +13,9 @@ public class UserController implements UserOperations {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticatedUserService authenticatedUserService;
 
     @Override
     public List<User> getAllUsers() {
@@ -33,4 +39,9 @@ public class UserController implements UserOperations {
         return userService.addAthleteToUser(userId, athleteId);
     }
 
+    @GetMapping("/test")
+    public Object test(){
+
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 }

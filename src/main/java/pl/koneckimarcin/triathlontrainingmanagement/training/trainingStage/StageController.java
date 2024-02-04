@@ -9,7 +9,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weigh
 import java.util.List;
 
 public interface StageController {
-    @GetMapping("/training-plans/{id}/stages")
+    @GetMapping("/training-plans/{id}/stages") // todo : check if tp is owned by coach
     public List<Stage> getStagesForTrainingPlanById(@PathVariable Long id);
 
     @PostMapping("/training-plans/{id}/stages=bike")

@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class TriathlonAppUserDetails implements UserDetailsService {
+public class TriathlonAppUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;

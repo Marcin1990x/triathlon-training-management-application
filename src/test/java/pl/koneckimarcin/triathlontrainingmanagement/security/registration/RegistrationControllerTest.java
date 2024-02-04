@@ -14,7 +14,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
@@ -94,6 +93,21 @@ public class RegistrationControllerTest {
         assertTrue(userRepository.findByEmailAddress("testEmail@address").isPresent());
     }
 
+    @Test
+    void registerUserHttpRequestExistingUsername() throws Exception {
+
+        String responseMessage = "This username: '" + user.getUsername() + "' is already in use. ";
+
+        loginService.registerUser(user);
+
+        user.setEmailAddress("newAddress@address");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is(responseMessage)));
+    }
 
     @AfterEach
     void clean() {

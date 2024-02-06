@@ -73,6 +73,7 @@ public class TrainingPlanService {
     }
 
     public void deleteById(Long id) {
+
         checkTrainingPlanIdException(id);
         trainingPlanRepository.deleteById(id);
     }

@@ -2,6 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 
 import java.sql.Date;
 import java.util.List;
@@ -12,6 +13,9 @@ public class TrainingPlanController implements TrainingPlanOperations {
 
     @Autowired
     private TrainingPlanService trainingPlanService;
+
+    @Autowired
+    private CoachRepository coachRepository;
 
     @Override
     public List<TrainingPlan> getTrainingPlansByAthleteId(Long id) {

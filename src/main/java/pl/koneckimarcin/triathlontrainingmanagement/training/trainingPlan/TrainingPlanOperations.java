@@ -17,14 +17,17 @@ public interface TrainingPlanOperations {
     @GetMapping("coaches/{id}/training-plans")
     public Set<TrainingPlan> getTrainingPlansByCoachId(@PathVariable Long id);
 
-    @DeleteMapping("training-plans/{id}") // todo
+    //@PreAuthorize("@authenticatedUserService.hasItInItsResources(#id)") // todo: does not work
+    @DeleteMapping("training-plans/{id}")
     public void deleteById(@PathVariable Long id);
 
     @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
     @PostMapping("coaches/{id}/training-plans")
     public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @RequestBody TrainingPlan trainingPlan);
 
-    @PostMapping("athletes/{athleteId}/training-plans/{trainingPlanId}") // todo
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#athleteId)" +
+            "AND @authenticatedUserService.hasItInItsResources(#trainingPlanId)")
+    @PostMapping("athletes/{athleteId}/training-plans/{trainingPlanId}")
     public TrainingPlan addTrainingPlanToAthleteWithDate(
             @PathVariable Long athleteId, @PathVariable Long trainingPlanId, @RequestParam Date plannedDate);
 }

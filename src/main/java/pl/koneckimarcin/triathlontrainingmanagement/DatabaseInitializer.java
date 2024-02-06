@@ -20,7 +20,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleService;
 
 import java.sql.Date;
 
-//@Component
+@Component
 public class DatabaseInitializer implements CommandLineRunner {
 
     @Autowired

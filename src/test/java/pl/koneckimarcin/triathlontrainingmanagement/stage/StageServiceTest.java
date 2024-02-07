@@ -77,7 +77,7 @@ public class StageServiceTest {
         List<Stage> stages = stageService.getStagesForTrainingPlanById(10L);
         assertThat(stages, hasSize(2));
 
-        stageService.swapStagesSequence(10L, 11L);
+        stageService.swapStagesSequence(10L, 10L, 11L);
         assertEquals(1, stages.get(0).getSequence());
         assertEquals(2, stages.get(1).getSequence());
     }
@@ -131,9 +131,9 @@ public class StageServiceTest {
 
         stageService.deleteAllStagesFromTrainingPlanById(10L);
 
-        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
         assertFalse(stageRepository.findById(10L).isPresent());
         assertFalse(stageRepository.findById(11L).isPresent());
+        assertThat(trainingPlanRepository.findById(10L).get().getStages(), hasSize(0));
     }
 
     @Test
@@ -144,12 +144,12 @@ public class StageServiceTest {
         assertEquals(1, stageRepository.findById(10L).get().getSequence());
         assertEquals(2, stageRepository.findById(11L).get().getSequence());
 
-        stageService.swapStagesSequence(10L, 11L);
+        stageService.swapStagesSequence(10L, 10L, 11L);
 
         assertEquals(2, stageRepository.findById(10L).get().getSequence());
         assertEquals(1, stageRepository.findById(11L).get().getSequence());
 
-        stageService.swapStagesSequence(10L, 11L);
+        stageService.swapStagesSequence(10L, 10L, 11L);
 
         assertEquals(1, stageRepository.findById(10L).get().getSequence());
         assertEquals(2, stageRepository.findById(11L).get().getSequence());

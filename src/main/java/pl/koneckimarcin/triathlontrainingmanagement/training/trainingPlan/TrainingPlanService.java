@@ -11,6 +11,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.WrongDateException;
+import pl.koneckimarcin.triathlontrainingmanagement.security.authentication.AuthenticatedUserService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageRepository;
@@ -48,6 +49,9 @@ public class TrainingPlanService {
     @Autowired
     private StageRepository stageRepository;
 
+    @Autowired
+    private AuthenticatedUserService authenticatedUserService;
+
 
     public boolean checkIfIsNotNull(Long id) {
 
@@ -75,6 +79,7 @@ public class TrainingPlanService {
     public void deleteById(Long id) {
 
         checkTrainingPlanIdException(id);
+
         trainingPlanRepository.deleteById(id);
     }
 

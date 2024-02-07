@@ -10,6 +10,7 @@ import java.util.List;
 public interface StageService {
 
     public boolean checkIfIsNotNull(Long id);
+
     public List<Stage> getStagesForTrainingPlanById(Long id);
 
     public Stage addNewBikeStageToTrainingPlan(Long id, BikeStage bikeStage);
@@ -24,5 +25,5 @@ public interface StageService {
 
     public void deleteAllStagesFromTrainingPlanById(Long id);
 
-    public void swapStagesSequence(Long firstStageId, Long secondStageId);
+    public void swapStagesSequence(Long planId, Long firstStageId, Long secondStageId);
 }

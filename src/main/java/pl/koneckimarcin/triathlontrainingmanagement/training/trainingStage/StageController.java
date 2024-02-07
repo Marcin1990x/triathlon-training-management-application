@@ -1,7 +1,7 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.bike.BikeStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.run.RunStage;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
@@ -9,34 +9,58 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.weigh
 
 import java.util.List;
 
-public interface StageController {
+@RestController
+public class StageController implements StageOperations {
 
-    @PreAuthorize("hasAnyAuthority('COACH', 'ATHLETE') AND @authenticatedUserService.hasItInItsResources(#id)")
-    @GetMapping("/training-plans/{id}/stages")
-    public List<Stage> getStagesForTrainingPlanById(@PathVariable Long id);
+    @Autowired
+    private StageServiceImpl service;
 
-    @PostMapping("/training-plans/{id}/stages=bike")
-    public Stage addNewBikeStageToTrainingPlan(@PathVariable Long id, @RequestBody BikeStage bikeStage);
+    @Override
+    public List<Stage> getStagesForTrainingPlanById(Long id) {
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasItInItsResources(#id)")
-    @PostMapping("/training-plans/{id}/stages=run")
-    public Stage addNewRunStageToTrainingPlan(@PathVariable Long id, @RequestBody RunStage runStage);
+        return service.getStagesForTrainingPlanById(id);
+    }
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasItInItsResources(#id)")
-    @PostMapping("/training-plans/{id}/stages=swim")
-    public Stage addNewSwimStageToTrainingPlan(@PathVariable Long id, @RequestBody SwimStage swimStage);
+    @Override
+    public Stage addNewBikeStageToTrainingPlan(Long id, BikeStage bikeStage) {
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasItInItsResources(#id)")
-    @PostMapping("/training-plans/{id}/stages=weight")
-    public Stage addNewWeightStageToTrainingPlan(@PathVariable Long id, @RequestBody WeightStage weightStage);
+        return service.addNewBikeStageToTrainingPlan(id, bikeStage);
+    }
 
-    @DeleteMapping("/stages/{id}") // todo: preauthorize
-    public void deleteStageById(@PathVariable Long id);
+    @Override
+    public Stage addNewRunStageToTrainingPlan(Long id, RunStage runStage) {
 
-    @DeleteMapping("/training-plans/{id}/stages") // todo: preauthorize
-    public void deleteAllStagesFromTrainingPlanById(@PathVariable Long id);
+        return service.addNewRunStageToTrainingPlan(id, runStage);
+    }
 
-    @PreAuthorize("hasAuthority('COACH')")
-    @PutMapping("/stages") // todo: preauthorize if coach owns it
-    public void swapStagesSequence(@RequestParam Long firstStageId, @RequestParam Long secondStageId);
+    @Override
+    public Stage addNewSwimStageToTrainingPlan(Long id, SwimStage swimStage) {
+
+        return service.addNewSwimStageToTrainingPlan(id, swimStage);
+    }
+
+    @Override
+    public Stage addNewWeightStageToTrainingPlan(Long id, WeightStage weightStage) {
+
+        return service.addNewWeightStageToTrainingPlan(id, weightStage);
+    }
+
+    @Override
+    public void deleteStageById(Long id) {
+
+        service.deleteStageById(id);
+    }
+
+    @Override
+    public void deleteAllStagesFromTrainingPlanById(Long id) {
+
+        service.deleteAllStagesFromTrainingPlanById(id);
+    }
+
+    @Override
+    public void swapStagesSequence(Long id, Long firstStageId, Long secondStageId) {
+
+        service.swapStagesSequence(id, firstStageId, secondStageId);
+    }
+
 }

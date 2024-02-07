@@ -12,7 +12,8 @@ public interface TrainingRealizationOperations {
     @GetMapping("athletes/{id}/training-realizations")
     public List<TrainingRealization> getTrainingRealizationsByAthleteId(@PathVariable Long id);
 
-    @DeleteMapping("training-realizations/{id}") // todo
+    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
+    @DeleteMapping("training-realizations/{id}")
     public void deleteById(@PathVariable Long id);
 
     @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")

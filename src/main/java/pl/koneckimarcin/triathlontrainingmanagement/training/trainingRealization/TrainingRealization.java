@@ -14,6 +14,16 @@ public class TrainingRealization {
 
     private int rpeLevel;
 
+    public TrainingRealization() {
+    }
+
+    public TrainingRealization(String realizationDescription, Date realizationDate, Feelings fellings, int rpeLevel) {
+        this.realizationDescription = realizationDescription;
+        this.realizationDate = realizationDate;
+        this.fellings = fellings;
+        this.rpeLevel = rpeLevel;
+    }
+
     public TrainingRealizationEntity mapToTrainingRealizationEntity() {
 
         TrainingRealizationEntity trainingRealizationEntity = new TrainingRealizationEntity();

@@ -11,6 +11,9 @@ import pl.koneckimarcin.triathlontrainingmanagement.security.registration.Regist
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
@@ -37,6 +40,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     private StageService stageService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private TrainingRealizationService trService;
 
 
     @Override
@@ -91,6 +96,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         tpService.addTrainingPlanToAthleteWithDate(2L, 3L, new Date(124, 3, 4));
         tpService.addTrainingPlanToAthleteWithDate(2L, 7L, new Date(124, 3, 5));
         tpService.addTrainingPlanToAthleteWithDate(2L, 5L, new Date(124, 3, 6));
+        //add training realization for athlete
+        trService.addNewTrainingRealizationToAthlete(1L,
+                new TrainingRealization("Done.", new Date(124, 3, 6), Feelings.NORMAL, 3));
+
     }
 
     private void addStagesForIntervals() {

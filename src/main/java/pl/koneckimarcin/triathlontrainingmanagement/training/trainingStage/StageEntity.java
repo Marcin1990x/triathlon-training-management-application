@@ -1,9 +1,6 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage;
 
 import jakarta.persistence.*;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
-
-import java.util.List;
 
 @Entity
 @Table(name = "stage")
@@ -25,7 +22,7 @@ public abstract class StageEntity {
 
     private String description;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -72,7 +69,6 @@ public abstract class StageEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
 
 }

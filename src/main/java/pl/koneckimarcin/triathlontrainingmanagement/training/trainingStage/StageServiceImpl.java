@@ -83,11 +83,10 @@ public class StageServiceImpl implements StageService {
     @Override
     public void deleteStageById(Long id) {
 
-        if (checkIfIsNotNull(id)) {
-            stageRepository.deleteById(id);
-        } else {
+        if (!checkIfIsNotNull(id)) {
             throw new ResourceNotFoundException("Stage", "id", String.valueOf(id));
         }
+        stageRepository.deleteById(id);
     }
 
     @Override
@@ -95,83 +94,86 @@ public class StageServiceImpl implements StageService {
 
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
 
-        if(trainingPlanEntity.isPresent()){
-
-            trainingPlanEntity.get().getStages().clear();
-            trainingPlanRepository.save(trainingPlanEntity.get());
-        } else {
+        if (trainingPlanEntity.isEmpty()) {
             throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(id));
         }
+        trainingPlanEntity.get().getStages().clear();
+        trainingPlanRepository.save(trainingPlanEntity.get());
     }
 
     @Override
-    public void swapStagesSequence(Long firstStageId, Long secondStageId) {
+    public void swapStagesSequence(Long planId, Long firstStageId, Long secondStageId) { //todo: do I need this functionality here?
 
-        swapSequenceAndSave(firstStageId, secondStageId);
+        swapSequenceAndSave(planId, firstStageId, secondStageId);
     }
 
-    private void swapSequenceAndSave(Long firstStageId, Long secondStageId) {
+    private void swapSequenceAndSave(Long planId, Long firstStageId, Long secondStageId) {
 
-        Optional <StageEntity> firstStage = stageRepository.findById(firstStageId);
-        Optional <StageEntity> secondStage = stageRepository.findById(secondStageId);
+        Optional<StageEntity> firstStage = stageRepository.findById(firstStageId);
+        Optional<StageEntity> secondStage = stageRepository.findById(secondStageId);
 
-        if(firstStage.isPresent()){
-            if(secondStage.isPresent()) {
-                int tempSequence = firstStage.get().getSequence();
-                firstStage.get().setSequence(secondStage.get().getSequence());
-                secondStage.get().setSequence(tempSequence);
-
-                stageRepository.save(firstStage.get());
-                stageRepository.save(secondStage.get());
-            } else {
-                throw new ResourceNotFoundException("Stage", "id", String.valueOf(secondStageId));
-            }
-        } else {
+        if (firstStage.isEmpty()) {
             throw new ResourceNotFoundException("Stage", "id", String.valueOf(firstStageId));
         }
+        if (secondStage.isEmpty()) {
+            throw new ResourceNotFoundException("Stage", "id", String.valueOf(secondStageId));
+        }
+        if (bothStagesFromOneTrainingPlan(planId, firstStage.get(), secondStage.get())) {
+            int tempSequence = firstStage.get().getSequence();
+            firstStage.get().setSequence(secondStage.get().getSequence());
+            secondStage.get().setSequence(tempSequence);
+
+            stageRepository.save(firstStage.get());
+            stageRepository.save(secondStage.get());
+        }
     }
+
+    private boolean bothStagesFromOneTrainingPlan(Long planId, StageEntity firstStage, StageEntity secondStage) {
+
+        List<Long> stagesIds = trainingPlanRepository.findById(planId).get().getStages().stream().map(StageEntity::getId).toList();
+        return stagesIds.contains(firstStage.getId()) && stagesIds.contains(secondStage.getId());
+    }
+
     private Stage addStageDependingOnType(Long id, Stage stage) {
 
         Optional<TrainingPlanEntity> trainingPlanEntity = trainingPlanRepository.findById(id);
 
-        if (trainingPlanEntity.isPresent()) {
-
-            TrainingType trainingType = trainingPlanEntity.get().getTrainingType();
-            List<StageEntity> stages = trainingPlanEntity.get().getStages();
-
-            if (stage instanceof BikeStage) {
-                if (trainingType == TrainingType.BIKE) {
-                    stages.add(((BikeStage) stage).mapToBikeStageEntity());
-                } else {
-                    throw new IncompatibleTrainingTypeException(stage, TrainingType.BIKE);
-                }
-            }
-            if (stage instanceof RunStage) {
-                if (trainingType == TrainingType.RUN) {
-                    stages.add(((RunStage) stage).mapToRunStageEntity());
-                } else {
-                    throw new IncompatibleTrainingTypeException(stage, TrainingType.RUN);
-                }
-            }
-            if (stage instanceof SwimStage) {
-                if (trainingType == TrainingType.SWIM) {
-                    stages.add(((SwimStage) stage).mapToSwimStageEntity());
-                } else {
-                    throw new IncompatibleTrainingTypeException(stage, TrainingType.SWIM);
-                }
-            }
-            if (stage instanceof WeightStage) {
-                if (trainingType == TrainingType.WEIGHT) {
-                    stages.add(((WeightStage) stage).mapToWeightStageEntity());
-                } else {
-                    throw new IncompatibleTrainingTypeException(stage, TrainingType.WEIGHT);
-                }
-            }
-            trainingPlanRepository.save(trainingPlanEntity.get());
-            return stage;
-        } else {
+        if (trainingPlanEntity.isEmpty()) {
             throw new ResourceNotFoundException("TrainingPlan", "id", String.valueOf(id));
         }
+        TrainingType trainingType = trainingPlanEntity.get().getTrainingType();
+        List<StageEntity> stages = trainingPlanEntity.get().getStages();
+
+        if (stage instanceof BikeStage) {
+            if (trainingType == TrainingType.BIKE) {
+                stages.add(((BikeStage) stage).mapToBikeStageEntity());
+            } else {
+                throw new IncompatibleTrainingTypeException(stage, TrainingType.BIKE);
+            }
+        }
+        if (stage instanceof RunStage) {
+            if (trainingType == TrainingType.RUN) {
+                stages.add(((RunStage) stage).mapToRunStageEntity());
+            } else {
+                throw new IncompatibleTrainingTypeException(stage, TrainingType.RUN);
+            }
+        }
+        if (stage instanceof SwimStage) {
+            if (trainingType == TrainingType.SWIM) {
+                stages.add(((SwimStage) stage).mapToSwimStageEntity());
+            } else {
+                throw new IncompatibleTrainingTypeException(stage, TrainingType.SWIM);
+            }
+        }
+        if (stage instanceof WeightStage) {
+            if (trainingType == TrainingType.WEIGHT) {
+                stages.add(((WeightStage) stage).mapToWeightStageEntity());
+            } else {
+                throw new IncompatibleTrainingTypeException(stage, TrainingType.WEIGHT);
+            }
+        }
+        trainingPlanRepository.save(trainingPlanEntity.get());
+        return stage;
     }
 
     private List<Stage> getStagesForTrainingType(List<StageEntity> stageEntities) {

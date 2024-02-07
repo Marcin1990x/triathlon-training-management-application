@@ -145,7 +145,7 @@ public class StageControllerTest {
         assertEquals(1, stageRepository.findById(10L).get().getSequence());
         assertEquals(2, stageRepository.findById(11L).get().getSequence());
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/stages")
+        mockMvc.perform(MockMvcRequestBuilders.put("/training-plans/{id}/stages", 10)
                         .param("firstStageId", "10")
                         .param("secondStageId", "11"))
                 .andExpect(status().isOk());

@@ -29,7 +29,10 @@ public class WebSecurity {
                 .addFilterBefore(new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/register", "/authenticate", "/h2-console/**").permitAll()
+                                .requestMatchers(
+                                        "/register",
+                                        "/authenticate",
+                                        "/h2-console/**").permitAll()
                                 .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .httpBasic(Customizer.withDefaults());

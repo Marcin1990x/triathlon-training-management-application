@@ -2,5 +2,5 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.const
 
 public enum TrainingType {
 
-    RUN, BIKE, SWIM, WEIGHT
+    RUN, BIKE, SWIM, WEIGHT, UNKNOWN
 }

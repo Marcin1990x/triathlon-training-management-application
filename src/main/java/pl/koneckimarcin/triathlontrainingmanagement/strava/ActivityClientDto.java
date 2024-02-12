@@ -1,6 +1,11 @@
 package pl.koneckimarcin.triathlontrainingmanagement.strava;
 
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaEntity;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class ActivityClientDto {
 
@@ -130,13 +135,44 @@ public class ActivityClientDto {
         trainingRealizationStrava.setName(this.getName());
         trainingRealizationStrava.setDistanceInMeters(this.getDistance());
         trainingRealizationStrava.setTimeInSeconds(this.getMoving_time());
-        //trainingRealizationStrava.setType(); add function to set type
-        //trainingRealizationStrava.setRealizationDate(this.start_date); add function to set date
+        trainingRealizationStrava.setType(setTypeFromStrava(this.type));
+        trainingRealizationStrava.setRealizationDate(setDateFromStrava(this.start_date));
         trainingRealizationStrava.setAverageWatts(this.getAverage_watts());
         trainingRealizationStrava.setMaxWatts(this.getMax_watts());
         trainingRealizationStrava.setAverageHeartrate(this.getAverage_heartrate());
         trainingRealizationStrava.setMaxHeartrate(this.getMax_heartrate());
 
         return trainingRealizationStrava;
+    }
+
+    private Date setDateFromStrava(String dateToConvert) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date sqlDate = null;
+        try {
+            java.util.Date date = dateFormat.parse(dateToConvert);
+            sqlDate = new Date(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sqlDate;
+    }
+
+    private TrainingType setTypeFromStrava(String stravaType) {
+
+        switch (stravaType) {
+            case "Ride" -> {
+                return TrainingType.BIKE;
+            }
+            case "Run" -> {
+                return TrainingType.RUN;
+            }
+            case "WeightTraining" -> {
+                return TrainingType.WEIGHT;
+            }
+            case "Swim" -> {
+                return TrainingType.SWIM;
+            }
+        }
+        return TrainingType.UNKNOWN; // todo: throw exception instead of unknown
     }
 }

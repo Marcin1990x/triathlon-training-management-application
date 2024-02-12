@@ -26,6 +26,7 @@ public class TrainingRealizationStravaEntity {
 
     private Integer timeInSeconds;
 
+    @Enumerated(EnumType.STRING)
     private TrainingType type;
 
     private Date realizationDate;

@@ -29,12 +29,20 @@ public class Athlete {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> trainings;
 
+    private Long stravaId;
+
     public Athlete() {
     }
 
     public Athlete(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Athlete(String firstName, String lastName, Long stravaId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.stravaId = stravaId;
     }
 
     public AthleteEntity mapToAthleteEntity() {
@@ -44,6 +52,7 @@ public class Athlete {
         athleteEntity.setId(this.id);
         athleteEntity.setFirstName(this.firstName);
         athleteEntity.setLastName(this.lastName);
+        athleteEntity.setStravaId(this.stravaId);
 
         return athleteEntity;
     }
@@ -126,5 +135,13 @@ public class Athlete {
 
     public void setTrainings(List<String> trainings) {
         this.trainings = trainings;
+    }
+
+    public Long getStravaId() {
+        return stravaId;
+    }
+
+    public void setStravaId(Long stravaId) {
+        this.stravaId = stravaId;
     }
 }

@@ -54,7 +54,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         //add coach, two athletes and assign to users
         coachService.addNew(new Coach("Bob", "Coach"));
         userService.addCoachToUser(1L, 1L);
-        athleteService.addNew(new Athlete("John", "Triathlete"));
+        athleteService.addNew(new Athlete("John", "Triathlete", 14748685L));
         userService.addAthleteToUser(2L, 1L);
         athleteService.addNew(new Athlete("Adam", "Runner"));
         userService.addAthleteToUser(3L, 2L);

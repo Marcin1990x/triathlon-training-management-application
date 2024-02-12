@@ -29,10 +29,10 @@ public class StravaController {
             System.out.println(activity);
         }
     }
-    @PreAuthorize("hasAnyAuthority('ATHLETE', 'COACH')")
+    @PreAuthorize("hasAuthority('ATHLETE')")
     @PostMapping("/strava/synchronize")
-    public void synchronizeActivitiesForAthlete() {
+    public void synchronizeActivitiesForAthlete(@RequestParam Long athleteId) {
 
-        stravaService.synchronizeActivitiesForAthlete();
+        stravaService.synchronizeActivitiesForAthlete(athleteId);
     }
 }

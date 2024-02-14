@@ -28,6 +28,14 @@ public class AuthenticatedUserService {
         return dbUser.getId().equals(id);
     }
 
+    public boolean hasValidAthleteId(Long id) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        UserEntity dbUser = userRepository.findByUsername(username).get();
+
+        return dbUser.getAthleteEntity().getId().equals(id);
+    }
+
     public boolean hasTrainingPlanInItsResources(Long id) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -52,7 +60,7 @@ public class AuthenticatedUserService {
         UserEntity user = userRepository.findByUsername(username).get();
         entityManager.clear();
 
-        return user.getAthleteEntity().getTrainingRealization()
+        return user.getAthleteEntity().getTrainingRealizations()
                 .stream().anyMatch(tr -> tr.getId().equals(id));
     }
 

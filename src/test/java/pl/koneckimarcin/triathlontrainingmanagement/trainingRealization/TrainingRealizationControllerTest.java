@@ -14,9 +14,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -37,7 +36,7 @@ public class TrainingRealizationControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private TrainingRealizationService trainingRealizationService;
+    private TrainingRealizationStravaService trainingRealizationService;
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
     @Autowired

@@ -10,9 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -26,7 +25,7 @@ public class TrainingRealizationServiceTest {
     private JdbcTemplate jdbc;
 
     @Autowired
-    private TrainingRealizationService trainingRealizationService;
+    private TrainingRealizationStravaService trainingRealizationService;
 
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;

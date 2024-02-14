@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStrava;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Athlete {
     private String lastName;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TrainingRealization> trainingRealization;
+    private List<TrainingRealizationStrava> trainingRealizations;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TrainingPlan> trainingPlans = new ArrayList<>();
@@ -64,9 +64,9 @@ public class Athlete {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
-        if (athleteEntity.getTrainingRealization() != null) {
-            athlete.setTrainingRealization(athleteEntity.getTrainingRealization()
-                    .stream().map(TrainingRealization::fromTrainingRealizationEntity).collect(Collectors.toList()));
+        if (athleteEntity.getTrainingRealizations() != null) {
+            athlete.setTrainingRealizations(athleteEntity.getTrainingRealizations()
+                    .stream().map(TrainingRealizationStrava::fromTrainingRealizationStravaEntity).collect(Collectors.toList()));
         }
         if (athleteEntity.getTrainingPlans() != null) {
             athlete.setTrainings(setTrainingPlansInformation(athleteEntity));
@@ -113,12 +113,12 @@ public class Athlete {
         this.lastName = lastName;
     }
 
-    public List<TrainingRealization> getTrainingRealization() {
-        return trainingRealization;
+    public List<TrainingRealizationStrava> getTrainingRealizations() {
+        return trainingRealizations;
     }
 
-    public void setTrainingRealization(List<TrainingRealization> trainingRealization) {
-        this.trainingRealization = trainingRealization;
+    public void setTrainingRealizations(List<TrainingRealizationStrava> trainingRealizations) {
+        this.trainingRealizations = trainingRealizations;
     }
 
     public List<TrainingPlan> getTrainingPlans() {

@@ -1,7 +1,8 @@
-package pl.koneckimarcin.triathlontrainingmanagement.athlete;
+package pl.koneckimarcin.triathlontrainingmanagement.athlete.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
 
 import java.util.Set;
 

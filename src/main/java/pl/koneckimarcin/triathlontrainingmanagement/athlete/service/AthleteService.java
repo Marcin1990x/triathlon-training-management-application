@@ -1,8 +1,11 @@
-package pl.koneckimarcin.triathlontrainingmanagement.athlete;
+package pl.koneckimarcin.triathlontrainingmanagement.athlete.service;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 

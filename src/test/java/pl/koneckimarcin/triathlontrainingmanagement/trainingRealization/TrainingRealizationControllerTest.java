@@ -13,9 +13,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaService;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -36,7 +37,7 @@ public class TrainingRealizationControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private TrainingRealizationStravaService trainingRealizationService;
+    private TrainingRealizationService trainingRealizationService;
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
     @Autowired
@@ -74,7 +75,7 @@ public class TrainingRealizationControllerTest {
     @Test
     void deleteTrainingPlanByIdHttpRequestValidAndNonValidId() throws Exception {
 
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(1));
+        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(1));
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/training-realizations/{id}", 10))
                 .andExpect(status().isOk());
@@ -90,7 +91,7 @@ public class TrainingRealizationControllerTest {
         trainingRealization.setRealizationDescription("Done.");
 
         assertThat(trainingRealizationRepository.findAll(), hasSize(1));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(1));
+        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(1));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-realizations", 10)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +100,7 @@ public class TrainingRealizationControllerTest {
                 .andExpect(jsonPath("$.realizationDescription", is("Done.")));
 
         assertThat(trainingRealizationRepository.findAll(), hasSize(2));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(2));
+        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(2));
     }
 
     @AfterEach

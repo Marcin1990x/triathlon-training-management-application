@@ -1,7 +1,7 @@
-package pl.koneckimarcin.triathlontrainingmanagement.strava;
+package pl.koneckimarcin.triathlontrainingmanagement.strava.dto;
 
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -126,23 +126,23 @@ public class ActivityClientDto {
                 '}';
     }
 
-    public TrainingRealizationStravaEntity mapToRealizationStravaEntity() {
+    public TrainingRealizationEntity mapToRealizationEntity() {
 
-        TrainingRealizationStravaEntity trainingRealizationStrava = new TrainingRealizationStravaEntity();
+        TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
 
-        trainingRealizationStrava.setStravaId(this.getId());
-        trainingRealizationStrava.setStravaAthleteId(this.getAthlete().getId());
-        trainingRealizationStrava.setName(this.getName());
-        trainingRealizationStrava.setDistanceInMeters(this.getDistance());
-        trainingRealizationStrava.setTimeInSeconds(this.getMoving_time());
-        trainingRealizationStrava.setType(setTypeFromStrava(this.type));
-        trainingRealizationStrava.setRealizationDate(setDateFromStrava(this.start_date));
-        trainingRealizationStrava.setAverageWatts(this.getAverage_watts());
-        trainingRealizationStrava.setMaxWatts(this.getMax_watts());
-        trainingRealizationStrava.setAverageHeartrate(this.getAverage_heartrate());
-        trainingRealizationStrava.setMaxHeartrate(this.getMax_heartrate());
+        trainingRealization.setStravaId(this.getId());
+        trainingRealization.setStravaAthleteId(this.getAthlete().getId());
+        trainingRealization.setName(this.getName());
+        trainingRealization.setDistanceInMeters(this.getDistance());
+        trainingRealization.setTimeInSeconds(this.getMoving_time());
+        trainingRealization.setType(setTypeFromStrava(this.type));
+        trainingRealization.setRealizationDate(setDateFromStrava(this.start_date));
+        trainingRealization.setAverageWatts(this.getAverage_watts());
+        trainingRealization.setMaxWatts(this.getMax_watts());
+        trainingRealization.setAverageHeartrate(this.getAverage_heartrate());
+        trainingRealization.setMaxHeartrate(this.getMax_heartrate());
 
-        return trainingRealizationStrava;
+        return trainingRealization;
     }
 
     private Date setDateFromStrava(String dateToConvert) {

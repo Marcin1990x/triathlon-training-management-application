@@ -2,7 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.athlete;
 
 import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public class AthleteEntity {
     private String lastName;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "athlete_id")
-    private List<TrainingRealizationStravaEntity> trainingRealizations;
+    @JoinColumn(name = "athlete_id")
+    private List<TrainingRealizationEntity> trainingRealizations;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "athlete_id")
@@ -55,11 +55,11 @@ public class AthleteEntity {
         this.lastName = lastName;
     }
 
-    public List<TrainingRealizationStravaEntity> getTrainingRealizations() {
+    public List<TrainingRealizationEntity> getTrainingRealizations() {
         return trainingRealizations;
     }
 
-    public void setTrainingRealizations(List<TrainingRealizationStravaEntity> trainingRealizations) {
+    public void setTrainingRealizations(List<TrainingRealizationEntity> trainingRealizations) {
         this.trainingRealizations = trainingRealizations;
     }
 

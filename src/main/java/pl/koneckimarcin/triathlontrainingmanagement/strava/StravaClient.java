@@ -2,6 +2,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.strava;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

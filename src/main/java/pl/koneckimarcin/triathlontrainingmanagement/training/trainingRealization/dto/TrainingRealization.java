@@ -1,23 +1,18 @@
-package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava;
+package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto;
 
-import jakarta.persistence.*;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 
 import java.sql.Date;
 
-@Entity
-@Table(name = "training_realization_strava")
-public class TrainingRealizationStravaEntity {
+public class TrainingRealization {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long stravaId;
 
     private Long stravaAthleteId;
-
-    private Long athleteId;
 
     private String name;
 
@@ -25,7 +20,6 @@ public class TrainingRealizationStravaEntity {
 
     private Integer timeInSeconds;
 
-    @Enumerated(EnumType.STRING)
     private TrainingType type;
 
     private Date realizationDate;
@@ -40,10 +34,52 @@ public class TrainingRealizationStravaEntity {
 
     private String realizationDescription;
 
-    @Enumerated(EnumType.STRING)
     private Feelings feelings;
 
     private int rpeLevel;
+
+    public TrainingRealizationEntity mapToTrainingRealizationEntity() {
+
+        TrainingRealizationEntity trainingRealization = new TrainingRealizationEntity();
+
+        trainingRealization.setId(this.id);
+        trainingRealization.setName(this.name);
+        trainingRealization.setDistanceInMeters(this.distanceInMeters);
+        trainingRealization.setTimeInSeconds(this.timeInSeconds);
+        trainingRealization.setType(this.type);
+        trainingRealization.setRealizationDate(this.realizationDate);
+        trainingRealization.setAverageWatts(this.averageWatts);
+        trainingRealization.setMaxWatts(this.maxWatts);
+        trainingRealization.setAverageHeartrate(this.averageHeartrate);
+        trainingRealization.setMaxHeartrate(this.maxHeartrate);
+        trainingRealization.setRealizationDescription(this.realizationDescription);
+        trainingRealization.setFeelings(this.feelings);
+        trainingRealization.setRpeLevel(this.rpeLevel);
+
+        return trainingRealization;
+    }
+
+    public static TrainingRealization fromTrainingRealizationEntity
+            (TrainingRealizationEntity stravaEntity) {
+
+        TrainingRealization trainingRealization = new TrainingRealization();
+
+        trainingRealization.setId(stravaEntity.getId());
+        trainingRealization.setName(stravaEntity.getName());
+        trainingRealization.setDistanceInMeters(stravaEntity.getDistanceInMeters());
+        trainingRealization.setTimeInSeconds(stravaEntity.getTimeInSeconds());
+        trainingRealization.setType(stravaEntity.getType());
+        trainingRealization.setRealizationDate(stravaEntity.getRealizationDate());
+        trainingRealization.setAverageWatts(stravaEntity.getAverageWatts());
+        trainingRealization.setMaxWatts(stravaEntity.getMaxWatts());
+        trainingRealization.setAverageHeartrate(stravaEntity.getAverageHeartrate());
+        trainingRealization.setMaxHeartrate(stravaEntity.getMaxHeartrate());
+        trainingRealization.setRealizationDescription(stravaEntity.getRealizationDescription());
+        trainingRealization.setFeelings(stravaEntity.getFeelings());
+        trainingRealization.setRpeLevel(stravaEntity.getRpeLevel());
+
+        return trainingRealization;
+    }
 
     public Long getId() {
         return id;
@@ -67,14 +103,6 @@ public class TrainingRealizationStravaEntity {
 
     public void setStravaAthleteId(Long stravaAthleteId) {
         this.stravaAthleteId = stravaAthleteId;
-    }
-
-    public Long getAthleteId() {
-        return athleteId;
-    }
-
-    public void setAthleteId(Long athleteId) {
-        this.athleteId = athleteId;
     }
 
     public String getName() {

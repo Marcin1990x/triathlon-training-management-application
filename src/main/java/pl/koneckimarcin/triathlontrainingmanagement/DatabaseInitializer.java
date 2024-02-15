@@ -3,15 +3,14 @@ package pl.koneckimarcin.triathlontrainingmanagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.Athlete;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteService;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
@@ -38,9 +37,6 @@ public class DatabaseInitializer implements CommandLineRunner {
     private StageService stageService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private TrainingRealizationStravaService trService;
-
 
     @Override
     public void run(String... args) throws Exception {

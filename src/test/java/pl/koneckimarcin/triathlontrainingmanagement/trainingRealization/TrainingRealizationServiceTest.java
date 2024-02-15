@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizationStrava.TrainingRealizationStravaService;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -25,7 +26,7 @@ public class TrainingRealizationServiceTest {
     private JdbcTemplate jdbc;
 
     @Autowired
-    private TrainingRealizationStravaService trainingRealizationService;
+    private TrainingRealizationService trainingRealizationService;
 
     @Autowired
     private TrainingRealizationRepository trainingRealizationRepository;
@@ -67,12 +68,12 @@ public class TrainingRealizationServiceTest {
 
         assertTrue(trainingRealizationRepository.findById(10L).isPresent());
         assertTrue(athleteRepository.findById(10L).isPresent());
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(1));
+        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(1));
 
         trainingRealizationService.deleteById(10L);
 
         assertFalse(trainingRealizationRepository.findById(10L).isPresent());
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(0));
+        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(0));
     }
 
     @Test
@@ -85,19 +86,6 @@ public class TrainingRealizationServiceTest {
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> trainingRealizationService.deleteById(nonValidId));
         assertEquals("TrainingRealization not found with id : '" + nonValidId + "'", exception.getMessage());
-    }
-
-    @Test
-    void shouldAddNewTrainingRealizationToAthlete() {
-
-        assertTrue(athleteRepository.findById(10L).isPresent());
-        assertThat(trainingRealizationRepository.findAll(), hasSize(1));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(1));
-
-        trainingRealizationService.addNewTrainingRealizationToAthlete(10L, trainingRealization);
-
-        assertThat(trainingRealizationRepository.findAll(), hasSize(2));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealization(), hasSize(2));
     }
 
     @AfterEach

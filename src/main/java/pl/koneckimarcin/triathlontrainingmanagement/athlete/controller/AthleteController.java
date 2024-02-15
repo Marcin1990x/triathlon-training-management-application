@@ -1,8 +1,10 @@
-package pl.koneckimarcin.triathlontrainingmanagement.athlete;
+package pl.koneckimarcin.triathlontrainingmanagement.athlete.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
 
 import java.util.Set;
 

@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanRepository;

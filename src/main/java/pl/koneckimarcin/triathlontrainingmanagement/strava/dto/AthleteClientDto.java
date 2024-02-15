@@ -1,4 +1,4 @@
-package pl.koneckimarcin.triathlontrainingmanagement.strava;
+package pl.koneckimarcin.triathlontrainingmanagement.strava.dto;
 
 public class AthleteClientDto {
 

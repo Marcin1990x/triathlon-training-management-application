@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 

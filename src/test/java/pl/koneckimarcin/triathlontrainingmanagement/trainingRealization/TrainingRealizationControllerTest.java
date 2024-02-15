@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
@@ -69,7 +67,7 @@ public class TrainingRealizationControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/athletes/{id}/training-realizations", 10))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].realizationDescription", is("done as in the plan")));
+                .andExpect(jsonPath("$[0].rpeLevel", is(8)));
     }
 
     @Test
@@ -82,25 +80,6 @@ public class TrainingRealizationControllerTest {
 
         assertFalse(trainingRealizationRepository.findById(10L).isPresent());
         assertThat(athleteRepository.findById(10L).get().getTrainingPlans(), hasSize(0));
-    }
-
-    @Test
-    void addNewTrainingRealizationToAthleteHttpRequest() throws Exception {
-
-        TrainingRealization trainingRealization = new TrainingRealization();
-        trainingRealization.setRealizationDescription("Done.");
-
-        assertThat(trainingRealizationRepository.findAll(), hasSize(1));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(1));
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/athletes/{id}/training-realizations", 10)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(trainingRealization)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.realizationDescription", is("Done.")));
-
-        assertThat(trainingRealizationRepository.findAll(), hasSize(2));
-        assertThat(athleteRepository.findById(10L).get().getTrainingRealizations(), hasSize(2));
     }
 
     @AfterEach

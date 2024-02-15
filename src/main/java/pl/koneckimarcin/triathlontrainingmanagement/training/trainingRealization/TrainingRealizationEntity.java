@@ -6,7 +6,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.consta
 import java.sql.Date;
 
 @Entity
-@Table(name = "training_realization_strava")
+@Table(name = "training_realization")
 public class TrainingRealizationEntity {
 
     @Id

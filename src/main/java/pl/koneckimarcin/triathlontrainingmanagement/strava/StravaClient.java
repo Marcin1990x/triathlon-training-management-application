@@ -40,7 +40,8 @@ public class StravaClient {
 
         String accessToken = StravaPropertyReader.getValue("strava_access_token");
 
-        return rest.getForObject(STRAVA_URL + "athlete/activities?access_token={accessToken}&after={after}",
+        return rest.getForObject(STRAVA_URL +
+                        "athlete/activities?access_token={accessToken}&after={after}&per_page=100",
                 ActivityClientDto[].class, accessToken, after.toEpochSecond());
     }
 }

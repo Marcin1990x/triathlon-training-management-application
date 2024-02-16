@@ -3,6 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealizatio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
 import java.util.List;
@@ -26,5 +27,10 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     @Override
     public void synchronizeActivitiesForAthlete(Long id) {
         trainingRealizationService.synchronizeActivitiesForAthlete(id);
+    }
+
+    @Override
+    public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
+        return trainingRealizationService.updateTrainingRealizationById(id, request);
     }
 }

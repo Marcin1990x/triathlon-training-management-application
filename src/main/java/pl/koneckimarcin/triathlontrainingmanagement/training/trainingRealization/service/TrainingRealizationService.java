@@ -10,6 +10,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaClient;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
 
 import java.util.ArrayList;
@@ -102,4 +103,23 @@ public class TrainingRealizationService {
                 .stream().map(TrainingRealizationEntity::getStravaId).toList();
     }
 
+    public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
+
+        if (!checkIfIsNotNull(id)) {
+            throw new ResourceNotFoundException("TrainingRealization", "id", String.valueOf(id));
+        }
+        return updateTrainingRealization(id, request);
+    }
+
+    private TrainingRealization updateTrainingRealization(Long id, TrainingRealizationRequest request) {
+
+        TrainingRealizationEntity trainingRealizationToUpdate = trainingRealizationRepository.findById(id).get();
+        trainingRealizationToUpdate.setRealizationDescription(request.getRealizationDescription());
+        trainingRealizationToUpdate.setRpeLevel(request.getRpeLevel());
+        trainingRealizationToUpdate.setFeelings(request.getFeelings());
+
+        TrainingRealizationEntity updated = trainingRealizationRepository.save(trainingRealizationToUpdate);
+
+        return TrainingRealization.fromTrainingRealizationEntity(updated);
+    }
 }

@@ -21,4 +21,10 @@ public class TrainingRealizationRequest {
     public int getRpeLevel() {
         return rpeLevel;
     }
+
+    public TrainingRealizationRequest(String realizationDescription, Feelings feelings, int rpeLevel) {
+        this.realizationDescription = realizationDescription;
+        this.feelings = feelings;
+        this.rpeLevel = rpeLevel;
+    }
 }

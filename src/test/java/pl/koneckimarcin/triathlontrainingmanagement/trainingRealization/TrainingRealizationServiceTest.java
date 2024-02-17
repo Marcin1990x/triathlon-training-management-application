@@ -10,7 +10,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
@@ -88,9 +91,33 @@ public class TrainingRealizationServiceTest {
         assertEquals("TrainingRealization not found with id : '" + nonValidId + "'", exception.getMessage());
     }
 
+    @Test
+    void shouldUpdateTrainingRealizationById() {
+
+        assertTrue(trainingRealizationRepository.findById(10L).isPresent());
+
+        trainingRealizationService.updateTrainingRealizationById(10L, getRequest());
+
+        TrainingRealizationEntity updatedTraining = trainingRealizationRepository.findById(10L).get();
+
+        assertEquals(updatedTraining.getRealizationDescription(), getRequest().getRealizationDescription());
+        assertEquals(updatedTraining.getFeelings(), getRequest().getFeelings());
+        assertEquals(updatedTraining.getRpeLevel(), getRequest().getRpeLevel());
+    }
+
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteTrainingRealization);
         jdbc.execute(sqlDeleteAthlete);
+    }
+
+    private TrainingRealizationRequest getRequest() {
+
+        TrainingRealizationRequest request = new TrainingRealizationRequest(
+                "Done.",
+                Feelings.WEAK,
+                6
+        );
+        return request;
     }
 }

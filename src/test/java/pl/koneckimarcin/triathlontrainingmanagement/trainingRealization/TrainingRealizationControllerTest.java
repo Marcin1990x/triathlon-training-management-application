@@ -8,18 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.Feelings;
+import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service.TrainingRealizationService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,6 +36,9 @@ public class TrainingRealizationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Autowired
     private TrainingRealizationService trainingRealizationService;
@@ -81,10 +87,34 @@ public class TrainingRealizationControllerTest {
         assertFalse(trainingRealizationRepository.findById(10L).isPresent());
         assertThat(athleteRepository.findById(10L).get().getTrainingPlans(), hasSize(0));
     }
+    @Test
+    void updateTrainingRealizationByIdHttpRequest() throws Exception {
+
+        assertTrue(trainingRealizationRepository.findById(10L).isPresent());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/training-realizations/{id}", 10)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(getRequest())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rpeLevel", is(6)))
+                .andExpect(jsonPath("$.realizationDescription", is("Done.")))
+                .andExpect(jsonPath("$.feelings", is("WEAK")));
+
+        assertEquals(trainingRealizationRepository.findById(10L).get().getRpeLevel(), 6);
+    }
 
     @AfterEach
     void clean() {
         jdbc.execute(sqlDeleteTrainingRealization);
         jdbc.execute(sqlDeleteAthlete);
+    }
+
+    private TrainingRealizationRequest getRequest() {
+        TrainingRealizationRequest request = new TrainingRealizationRequest(
+                "Done.",
+                Feelings.WEAK,
+                6
+        );
+        return request;
     }
 }

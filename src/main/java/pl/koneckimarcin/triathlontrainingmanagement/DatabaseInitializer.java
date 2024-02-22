@@ -8,6 +8,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteServi
 import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaPropertyReader;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlan;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
@@ -41,9 +42,14 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        //prepare triathlete user
+        String stravaRefreshToken = StravaPropertyReader.getValue("strava_refresh_token");
+        User triathlete = new User("Triathlete", "triathlete", "triathlete@app.com");
+        triathlete.setStravaRefreshToken(stravaRefreshToken);
+
         //add users - for coach and for two athletes
         registrationService.registerUser(new User("Coach", "coach", "coach@app.com"));
-        registrationService.registerUser(new User("Triathlete", "triathlete", "triathlete@app.com"));
+        registrationService.registerUser(triathlete);
         registrationService.registerUser(new User("Runner", "runner", "runner@app.com"));
         //add coach, two athletes and assign to users
         coachService.addNew(new Coach("Bob", "Coach"));

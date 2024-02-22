@@ -20,6 +20,8 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long coachId;
 
+    private String stravaRefreshToken;
+
     public User() {
     }
 
@@ -37,6 +39,7 @@ public class User {
         userEntity.setUsername(this.username);
         userEntity.setPassword(this.password);
         userEntity.setEmailAddress(this.emailAddress);
+        userEntity.setStravaRefreshToken(this.stravaRefreshToken);
         return userEntity;
     }
 
@@ -103,5 +106,13 @@ public class User {
 
     public void setCoachId(Long coachId) {
         this.coachId = coachId;
+    }
+
+    public String getStravaRefreshToken() {
+        return stravaRefreshToken;
+    }
+
+    public void setStravaRefreshToken(String stravaRefreshToken) {
+        this.stravaRefreshToken = stravaRefreshToken;
     }
 }

@@ -40,6 +40,12 @@ public class UserEntity {
     @JoinColumn(name = "coach_id")
     private CoachEntity coachEntity;
 
+    @Column(name = "refresh")
+    private String stravaRefreshToken;
+
+    @Column(name = "access")
+    private String stravaAccessToken;
+
     public Long getId() {
         return id;
     }
@@ -94,6 +100,22 @@ public class UserEntity {
 
     public void setCoachEntity(CoachEntity coachEntity) {
         this.coachEntity = coachEntity;
+    }
+
+    public String getStravaRefreshToken() {
+        return stravaRefreshToken;
+    }
+
+    public void setStravaRefreshToken(String stravaRefreshToken) {
+        this.stravaRefreshToken = stravaRefreshToken;
+    }
+
+    public String getStravaAccessToken() {
+        return stravaAccessToken;
+    }
+
+    public void setStravaAccessToken(String stravaAccessToken) {
+        this.stravaAccessToken = stravaAccessToken;
     }
 
     public boolean hasAssignedAthlete() {

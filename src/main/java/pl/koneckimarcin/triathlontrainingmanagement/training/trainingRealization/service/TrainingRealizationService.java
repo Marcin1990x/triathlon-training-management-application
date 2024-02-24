@@ -1,17 +1,20 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
-import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaClient;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.client.StravaClient;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.TrainingRealizationEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealization;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.dto.TrainingRealizationRequest;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingRealization.repository.TrainingRealizationRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,9 @@ public class TrainingRealizationService {
 
     @Autowired
     private AthleteRepository athleteRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private StravaClient stravaClient;
@@ -61,12 +67,19 @@ public class TrainingRealizationService {
 
     public void synchronizeActivitiesForAthlete(Long athleteId) {
 
+        String accessToken = getAccessTokenForUser();
         List<Long> existingIds = retrieveTrainingRealizationsIdsForAthlete(athleteId);
-        ActivityClientDto[] activitiesFromStrava = stravaClient.getAllActivities(); // temp: activities from 01/02/2024
+
+        ActivityClientDto[] activitiesFromStrava = stravaClient.getAllActivities(accessToken); // temp: activities from 01/02/2024
 
         List<ActivityClientDto> nonDuplicatedActivities = checkForDuplicatedIds(existingIds, activitiesFromStrava);
 
         mapAndSaveToDb(nonDuplicatedActivities, athleteId);
+    }
+
+    private String getAccessTokenForUser() {
+
+        return retrieveLoggedUser().getStravaAccessToken();
     }
 
     private void mapAndSaveToDb(List<ActivityClientDto> activities, Long athleteId) {
@@ -121,5 +134,10 @@ public class TrainingRealizationService {
         TrainingRealizationEntity updated = trainingRealizationRepository.save(trainingRealizationToUpdate);
 
         return TrainingRealization.fromTrainingRealizationEntity(updated);
+    }
+
+    private UserEntity retrieveLoggedUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return userRepository.findByUsername(username).get();
     }
 }

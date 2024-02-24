@@ -9,7 +9,9 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssignedException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.client.StravaClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,9 @@ public class UserService {
 
     @Autowired
     private AthleteRepository athleteRepository;
+
+    @Autowired
+    private StravaClient stravaClient;
 
     public boolean checkIfIsNotNull(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -119,6 +124,32 @@ public class UserService {
         if (athlete.isAssignedToUser()) {
             throw new IsAlreadyAssignedException("Athlete", String.valueOf(athleteId));
         }
+    }
+
+    public void refreshAccessTokenForUser(Long userId) {
+
+        UserEntity userToUpdate = userRepository.findById(userId).get();
+        String userRefreshToken = getRefreshTokenForUser(userToUpdate);
+
+        String accessToken = stravaClient.refreshAccessToken(userRefreshToken);
+
+        updateUserWithNewToken(userToUpdate, accessToken);
+    }
+
+    private void updateUserWithNewToken(UserEntity userToUpdate, String accessToken) {
+
+        userToUpdate.setStravaAccessToken(accessToken);
+        userRepository.save(userToUpdate);
+    }
+
+    private String getRefreshTokenForUser(UserEntity user) {
+
+        String refreshToken = user.getStravaRefreshToken();
+
+        if (refreshToken == null) {
+            throw new RefreshTokenNotFoundException(user.getId());
+        }
+        return refreshToken;
     }
 }
 

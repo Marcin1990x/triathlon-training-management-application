@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.JsonMapperException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.RefreshTokenResponseDto;
 
@@ -65,7 +67,7 @@ public class StravaClient {
         if (response.getStatusCode() == HttpStatus.OK) {
             return retrieveTokenFromResponse(response.getBody());
         } else {
-            throw new RuntimeException(); // todo: throw new custom exception
+            throw new RefreshTokenException(response.getStatusCode(), "Test");
         }
     }
 
@@ -77,7 +79,7 @@ public class StravaClient {
                     .readValue(tokenString, RefreshTokenResponseDto.class);
             return tokenResponse.getAccess_token();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e); // todo: deal with it
+            throw new JsonMapperException();
         }
     }
 

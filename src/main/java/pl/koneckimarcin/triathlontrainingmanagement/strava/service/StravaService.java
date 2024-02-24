@@ -3,7 +3,7 @@ package pl.koneckimarcin.triathlontrainingmanagement.strava.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
+import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaClient;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
@@ -36,11 +36,11 @@ public class StravaService {
     private String getRefreshTokenForUser() {
 
         String refreshToken = retrieveLoggedUser().getStravaRefreshToken();
-        if (refreshToken != null) {
-            return refreshToken;
-        } else {
-            throw new ResourceNotFoundException("Refresh Token", "Refresh Token", "Refresh Token"); // todo: new exception
+
+        if (refreshToken == null) {
+            throw new RefreshTokenNotFoundException();
         }
+        return refreshToken;
     }
 
     private UserEntity retrieveLoggedUser() {

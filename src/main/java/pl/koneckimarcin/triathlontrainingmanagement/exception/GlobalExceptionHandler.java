@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameAlreadyExistException.class)
     public ResponseEntity<ErrorDetails> handleUsernameAlreadyExistException(UsernameAlreadyExistException exception,
-                                                                                WebRequest webRequest) {
+                                                                            WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -67,6 +67,30 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 webRequest.getDescription(false),
                 "Assign error."
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleRefreshTokenNotFoundException(RefreshTokenNotFoundException exception,
+                                                                            WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "Refresh token not found."
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<ErrorDetails> handleRefreshTokenException(RefreshTokenException exception,
+                                                                    WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "Refresh token error."
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }

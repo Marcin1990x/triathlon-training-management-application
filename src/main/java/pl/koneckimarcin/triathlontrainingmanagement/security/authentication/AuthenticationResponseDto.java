@@ -10,6 +10,8 @@ public class AuthenticationResponseDto {
     // access token validation expiration
 
 
+    public AuthenticationResponseDto() {
+    }
     public AuthenticationResponseDto(Long userId, Long athleteId) {
         this.userId = userId;
         this.athleteId = athleteId;

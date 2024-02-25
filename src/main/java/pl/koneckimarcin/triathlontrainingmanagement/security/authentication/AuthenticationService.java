@@ -25,8 +25,13 @@ public class AuthenticationService {
 
         UserEntity authenticatedUser = userRepository.findByUsername(username).get();
 
-        return new AuthenticationResponseDto(authenticatedUser.getId(),
-                authenticatedUser.getAthleteEntity().getId());
+        AuthenticationResponseDto authenticationResponseDto = new AuthenticationResponseDto();
+        authenticationResponseDto.setUserId(authenticatedUser.getId());
+
+        if (authenticatedUser.getAthleteEntity() != null) {
+            authenticationResponseDto.setAthleteId(authenticatedUser.getAthleteEntity().getId());
+        }
+        return authenticationResponseDto;
     }
 
 }

@@ -50,7 +50,9 @@ public class TrainingRealizationService {
     public List<TrainingRealization> getTrainingRealizationsByAthleteId(Long id) {
 
         if (athleteService.checkIfIsNotNull(id)) {
-            return athleteRepository.findById(id).get().getTrainingRealizations().stream().map(TrainingRealization::fromTrainingRealizationEntity).collect(Collectors.toList());
+            return athleteRepository.findById(id).get().getTrainingRealizations()
+                    .stream().map(TrainingRealization::fromTrainingRealizationEntity)
+                    .collect(Collectors.toList());
         } else {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }

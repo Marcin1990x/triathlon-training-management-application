@@ -20,10 +20,12 @@ public class AthleteEntity {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "athlete_id")
+    @OrderBy("realizationDate DESC")
     private List<TrainingRealizationEntity> trainingRealizations;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "athlete_id")
+    @OrderBy("plannedDate DESC")
     private List<TrainingPlanEntity> trainingPlans;
 
     @Column(name = "has_user")

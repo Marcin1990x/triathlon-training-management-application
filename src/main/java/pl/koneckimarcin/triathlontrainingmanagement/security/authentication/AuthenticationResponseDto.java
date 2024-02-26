@@ -4,6 +4,8 @@ public class AuthenticationResponseDto {
 
     private Long userId;
     private Long athleteId;
+    private boolean hasRefreshToken;
+    private String stravaAccessExpiresAt;
     // todo: below to be done
     // private Long coachId
     // private boolean isStravaAuthenticated
@@ -11,10 +13,6 @@ public class AuthenticationResponseDto {
 
 
     public AuthenticationResponseDto() {
-    }
-    public AuthenticationResponseDto(Long userId, Long athleteId) {
-        this.userId = userId;
-        this.athleteId = athleteId;
     }
 
     public Long getUserId() {
@@ -31,5 +29,21 @@ public class AuthenticationResponseDto {
 
     public void setAthleteId(Long athleteId) {
         this.athleteId = athleteId;
+    }
+
+    public boolean isHasRefreshToken() {
+        return hasRefreshToken;
+    }
+
+    public void setHasRefreshToken(boolean hasRefreshToken) {
+        this.hasRefreshToken = hasRefreshToken;
+    }
+
+    public String getStravaAccessExpiresAt() {
+        return stravaAccessExpiresAt;
+    }
+
+    public void setStravaAccessExpiresAt(String stravaAccessExpiresAt) {
+        this.stravaAccessExpiresAt = stravaAccessExpiresAt;
     }
 }

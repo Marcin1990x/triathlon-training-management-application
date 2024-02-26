@@ -21,15 +21,21 @@ public class AuthenticationService {
         }
     }
 
-    private AuthenticationResponseDto createResponse(String username) {
+    private AuthenticationResponseDto createResponse(String username) { // todo: simplify this!
 
         UserEntity authenticatedUser = userRepository.findByUsername(username).get();
 
         AuthenticationResponseDto authenticationResponseDto = new AuthenticationResponseDto();
-        authenticationResponseDto.setUserId(authenticatedUser.getId());
 
-        if (authenticatedUser.getAthleteEntity() != null) {
+        authenticationResponseDto.setUserId(authenticatedUser.getId());
+        if(authenticatedUser.getAthleteEntity() != null) {
             authenticationResponseDto.setAthleteId(authenticatedUser.getAthleteEntity().getId());
+        }
+        if(authenticatedUser.getStravaRefreshToken() != null) {
+            authenticationResponseDto.setHasRefreshToken(true);
+            authenticationResponseDto.setStravaAccessExpiresAt(authenticatedUser.getStravaAccessTokenExpirationTime());
+        } else {
+            authenticationResponseDto.setHasRefreshToken(false);
         }
         return authenticationResponseDto;
     }

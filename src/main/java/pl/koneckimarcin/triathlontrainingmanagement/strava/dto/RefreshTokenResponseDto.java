@@ -31,4 +31,8 @@ public class RefreshTokenResponseDto {
     public String getAccess_token() {
         return access_token;
     }
+
+    public String getExpires_at() {
+        return expires_at;
+    }
 }

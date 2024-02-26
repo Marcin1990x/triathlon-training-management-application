@@ -10,18 +10,19 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.JsonMapperException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaPropertyReader;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.RefreshTokenResponseDto;
 
 @Service
 public class StravaClientService {
 
-    public String retrieveTokenFromResponse(String tokenString) {
+    public AccessTokenDto retrieveTokenFromResponse(String responseBody) {
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             RefreshTokenResponseDto tokenResponse = mapper
-                    .readValue(tokenString, RefreshTokenResponseDto.class);
-            return tokenResponse.getAccess_token();
+                    .readValue(responseBody, RefreshTokenResponseDto.class);
+            return new AccessTokenDto(tokenResponse.getAccess_token(), tokenResponse.getExpires_at());
         } catch (JsonProcessingException e) {
             throw new JsonMapperException();
         }

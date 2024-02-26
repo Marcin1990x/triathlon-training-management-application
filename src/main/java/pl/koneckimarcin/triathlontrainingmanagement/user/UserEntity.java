@@ -46,6 +46,9 @@ public class UserEntity {
     @Column(name = "access")
     private String stravaAccessToken;
 
+    @Column(name = "access_expiration")
+    private String stravaAccessTokenExpirationTime;
+
     public Long getId() {
         return id;
     }
@@ -118,14 +121,21 @@ public class UserEntity {
         this.stravaAccessToken = stravaAccessToken;
     }
 
+    public String getStravaAccessTokenExpirationTime() {
+        return stravaAccessTokenExpirationTime;
+    }
+
+    public void setStravaAccessTokenExpirationTime(String stravaAccessTokenExpirationTime) {
+        this.stravaAccessTokenExpirationTime = stravaAccessTokenExpirationTime;
+    }
+
     public boolean hasAssignedAthlete() {
         return this.athleteEntity != null;
     }
+
     public boolean hasAssignedCoach() {
         return this.coachEntity != null;
     }
-
-
 
     @Override
     public String toString() {

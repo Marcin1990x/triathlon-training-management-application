@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenException;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.ActivityClientDto;
 
 import java.time.ZoneId;
@@ -43,7 +44,7 @@ public class StravaClient {
                 ActivityClientDto[].class, accessToken, after.toEpochSecond());
     }
 
-    public String refreshAccessToken(String refreshToken) {
+    public AccessTokenDto refreshAccessToken(String refreshToken) {
 
         HttpEntity<MultiValueMap<String, String>> requestBody = stravaClientService.createRequestBody(refreshToken);
 

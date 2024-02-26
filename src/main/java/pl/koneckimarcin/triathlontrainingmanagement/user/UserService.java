@@ -12,6 +12,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssignedE
 import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.client.StravaClient;
+import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,14 +132,16 @@ public class UserService {
         UserEntity userToUpdate = userRepository.findById(userId).get();
         String userRefreshToken = getRefreshTokenForUser(userToUpdate);
 
-        String accessToken = stravaClient.refreshAccessToken(userRefreshToken);
+        AccessTokenDto accessTokenDto = stravaClient.refreshAccessToken(userRefreshToken);
 
-        updateUserWithNewToken(userToUpdate, accessToken);
+        updateUserWithNewToken(userToUpdate, accessTokenDto);
     }
 
-    private void updateUserWithNewToken(UserEntity userToUpdate, String accessToken) {
+    private void updateUserWithNewToken(UserEntity userToUpdate, AccessTokenDto accessTokenDto) {
 
-        userToUpdate.setStravaAccessToken(accessToken);
+        userToUpdate.setStravaAccessToken(accessTokenDto.getAccessToken());
+        userToUpdate.setStravaAccessTokenExpirationTime(accessTokenDto.getExpiresAt());
+
         userRepository.save(userToUpdate);
     }
 

@@ -10,7 +10,7 @@ of four types (running, cycling, swimming, weight training).
 Backend is developing using Java with Spring Boot.
 Frontend is developing using ReactJS.
 
-Temporary I use H2 for persistence.
+Temporarily H2 is used for persistence.
 
 ## Application functionalities
 
@@ -41,10 +41,9 @@ https://github.com/Marcin1990x/triathlon-training-management-ui
 <p align="left">
     <img src="https://ultimateqa.com/wp-content/uploads/2020/12/Java-logo-icon-1.png" alt="java" width="80" height="50"/> 
     <img src="https://e4developer.com/wp-content/uploads/2018/01/spring-boot.png" alt="spring" width="90" height="50"/> 
-    <img src="https://s3.ap-southeast-1.amazonaws.com/arrowhitech.com/wp-content/uploads/2021/09/01031030/ReactJS.png" alt="java" width="" height="50"/>
+    <img src="https://faq.o2switch.fr/_media/tuto-rapide/o2switch-deployer-react.js.png" alt="java" width="" height="50"/>
     <img src="https://jaki-jezyk-programowania.pl/img/technologies/javascript.png" alt="java" width="" height="50"/>
-    <img src="https://junit.org/junit4/images/junit5-banner.png" alt="java" width="90" height="50"/>
-    <img src="https://javadoc.io/static/org.mockito/mockito-core/1.9.5/org/mockito/logo.jpg" alt="java" width="90" height="50"/>
+    <img src="https://junit.org/junit4/images/junit5-banner.png" alt="java" width="" height="50"/>
+	   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqvMgiH1EtBx1yqq1YurzOCwZKPzHDotG_2A&usqp=CAU.jpg" alt="strava" width="" height="50"/>
+    <img src="https://javadoc.io/static/org.mockito/mockito-core/1.9.5/org/mockito/logo.jpg" alt="java" width="" height="50"/>
 </p>
-
-

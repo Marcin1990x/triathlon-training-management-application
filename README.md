@@ -23,8 +23,17 @@ Temporarily H2 is used for persistence.
 - athlete can retrieve all his training realizations from Strava after correct authentication
 - athlete can update training realization with his feelings and description
 
-## Development comments
+## To run the application, follow these steps
+- install Docker on your computer
+- run Docker
+- clone both backend and frontend repositories from links in section below
+- create folder structure like below (cut docker-compose.yaml file from backend repository)
+  <img src="https://github.com/Marcin1990x/triathlon-training-management-application/blob/master/folderStructReadme.png?raw=true"/>
+- in the terminal go to folder with docker-compose.yaml file and run command docker-compose up
+- open localhost:3000 to see UI client or work with postman with the help of source code
+- run command docker-compose down to stop the application and remove containers
 
+## Development comments
 Application development is in progress.
 
 To do:

@@ -30,6 +30,15 @@ public class AuthenticationService {
         authenticationResponseDto.setUserId(authenticatedUser.getId());
         if(authenticatedUser.getAthleteEntity() != null) {
             authenticationResponseDto.setAthleteId(authenticatedUser.getAthleteEntity().getId());
+            authenticationResponseDto.setAthlete(true);
+        } else {
+            authenticationResponseDto.setAthlete(false);
+        }
+        if(authenticatedUser.getCoachEntity() != null) {
+            authenticationResponseDto.setCoachId(authenticatedUser.getCoachEntity().getId());
+            authenticationResponseDto.setCoach(true);
+        } else {
+            authenticationResponseDto.setCoach(false);
         }
         if(authenticatedUser.getStravaRefreshToken() != null) {
             authenticationResponseDto.setHasRefreshToken(true);

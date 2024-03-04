@@ -4,10 +4,12 @@ public class AuthenticationResponseDto {
 
     private Long userId;
     private Long athleteId;
+    private boolean isAthlete;
     private boolean hasRefreshToken;
     private String stravaAccessExpiresAt;
+    private Long coachId;
+    private boolean isCoach;
     // todo: below to be done
-    // private Long coachId
     // private boolean isStravaAuthenticated
     // access token validation expiration
 
@@ -31,6 +33,14 @@ public class AuthenticationResponseDto {
         this.athleteId = athleteId;
     }
 
+    public boolean isAthlete() {
+        return isAthlete;
+    }
+
+    public void setAthlete(boolean athlete) {
+        isAthlete = athlete;
+    }
+
     public boolean isHasRefreshToken() {
         return hasRefreshToken;
     }
@@ -45,5 +55,21 @@ public class AuthenticationResponseDto {
 
     public void setStravaAccessExpiresAt(String stravaAccessExpiresAt) {
         this.stravaAccessExpiresAt = stravaAccessExpiresAt;
+    }
+
+    public Long getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
+    }
+
+    public boolean isCoach() {
+        return isCoach;
+    }
+
+    public void setCoach(boolean coach) {
+        isCoach = coach;
     }
 }

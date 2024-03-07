@@ -37,9 +37,8 @@ Temporarily H2 is used for persistence.
 Application development is in progress.
 
 To do:
- - use another relation database MySQL / PostgreSQL
- - dockerize application
- - finish UI
+ - use relational database MySQL / PostgreSQL
+ - create UI to reflect API functionality
 
 ## Backend repository
 https://github.com/Marcin1990x/triathlon-training-management-application

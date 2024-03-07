@@ -9,7 +9,8 @@ import java.util.Set;
 
 public interface TrainingPlanOperations {
 
-    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)")
+    @PreAuthorize("(hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)) " +
+            "OR (hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#id))")
     @GetMapping("athletes/{id}/training-plans")
     public List<TrainingPlan> getTrainingPlansByAthleteId(@PathVariable Long id);
 

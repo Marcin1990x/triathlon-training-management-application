@@ -33,7 +33,9 @@ public class AuthenticatedUserService {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity dbUser = userRepository.findByUsername(username).get();
 
-        return dbUser.getAthleteEntity().getId().equals(id);
+        if(dbUser.getAthleteEntity() != null) {
+            return dbUser.getAthleteEntity().getId().equals(id);
+        } else return false;
     }
 
     public boolean hasTrainingPlanInItsResources(Long id) {

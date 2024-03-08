@@ -43,4 +43,10 @@ public class TrainingPlanController implements TrainingPlanOperations {
 
         return trainingPlanService.addTrainingPlanToAthleteWithDate(athleteId, trainingPlanId, plannedDate);
     }
+
+    @Override
+    public void removeTrainingPlanFromAthlete(Long athleteId, Long trainingPlanId) {
+
+        trainingPlanService.removeTrainingPlanFromAthlete(athleteId, trainingPlanId);
+    }
 }

@@ -200,4 +200,11 @@ public class TrainingPlanService {
         for (StageEntity originalStage : originalStages)
             stagesForCopy.add(BikeStageEntity.copyStage((BikeStageEntity) originalStage));
     }
+    public void removeTrainingPlanFromAthlete(Long athleteId, Long trainingPlanId) {
+
+        checkAthleteIdException(athleteId);
+        checkTrainingPlanIdException(trainingPlanId);
+
+        trainingPlanRepository.deleteById(trainingPlanId);
+    }
 }

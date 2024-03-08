@@ -31,4 +31,8 @@ public interface TrainingPlanOperations {
     @PostMapping("athletes/{athleteId}/training-plans/{trainingPlanId}")
     public TrainingPlan addTrainingPlanToAthleteWithDate(
             @PathVariable Long athleteId, @PathVariable Long trainingPlanId, @RequestParam Date plannedDate);
+
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasAssignedAthlete(#athleteId)")
+    @PutMapping("athletes/{athleteId}/training-plans/{trainingPlanId}")
+    public void removeTrainingPlanFromAthlete(@PathVariable Long athleteId, @PathVariable Long trainingPlanId);
 }

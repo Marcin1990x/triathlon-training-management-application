@@ -140,6 +140,15 @@ public class TrainingPlanControllerTest {
                 .andExpect(jsonPath("$.trainingPlanStatus", is("PLANNED")))
                 .andExpect(jsonPath("$.plannedDate", is("2025-01-22")));
     }
+    @Test
+    void removeTrainingPlanFromAthleteHttpRequest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/athletes/{id}/training-plans/{id}", 1, 10))
+                .andExpect(status().isOk());
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(0));
+        assertFalse(trainingPlanRepository.findById(10L).isPresent());
+    }
 
     @AfterEach
     void clean() {

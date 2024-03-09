@@ -166,6 +166,16 @@ public class TrainingPlanServiceTest {
 
         assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
     }
+    @Test
+    void shouldRemovePlannedTrainingPlanFromAthleteById() {
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(1));
+
+        trainingPlanService.removeTrainingPlanFromAthlete(1L, 10L);
+
+        assertThat(athleteRepository.findById(1L).get().getTrainingPlans(), hasSize(0));
+        assertFalse(trainingPlanRepository.findById(10L).isPresent());
+    }
 
 
     @AfterEach

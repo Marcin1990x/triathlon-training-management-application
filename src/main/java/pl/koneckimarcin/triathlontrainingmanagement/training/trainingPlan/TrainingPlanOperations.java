@@ -19,6 +19,10 @@ public interface TrainingPlanOperations {
     public Set<TrainingPlan> getTrainingPlansByCoachId(@PathVariable Long id);
 
     @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasTrainingPlanInItsResources(#id)")
+    @GetMapping("training-plans/{id}")
+    public TrainingPlan getTrainingPlanById(@PathVariable Long id);
+
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasTrainingPlanInItsResources(#id)")
     @DeleteMapping("training-plans/{id}")
     public void deleteById(@PathVariable Long id);
 

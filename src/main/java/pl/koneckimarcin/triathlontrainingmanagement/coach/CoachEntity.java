@@ -22,7 +22,7 @@ public class CoachEntity {
     @JoinColumn(name = "coach_id")
     private Set<AthleteEntity> athletes;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_id")
     private Set<TrainingPlanEntity> trainingPlanEntities;
 

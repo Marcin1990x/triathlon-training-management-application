@@ -29,6 +29,12 @@ public class TrainingPlanController implements TrainingPlanOperations {
         return trainingPlanService.getTrainingPlansByCoachId(id);
     }
 
+    @Override
+    public TrainingPlan getTrainingPlanById(Long id) {
+
+        return trainingPlanService.getTrainingPlanById(id);
+    }
+
     public void deleteById(Long id) {
 
         trainingPlanService.deleteById(id);

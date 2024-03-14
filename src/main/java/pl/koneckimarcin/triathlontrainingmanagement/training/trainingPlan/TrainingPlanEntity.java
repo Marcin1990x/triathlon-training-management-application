@@ -1,6 +1,8 @@
 package pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingPlanStatus;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageEntity;
@@ -16,13 +18,16 @@ public class TrainingPlanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TrainingType trainingType;
     @Enumerated(EnumType.STRING)
     private TrainingPlanStatus trainingPlanStatus;
 
+    @NotEmpty
     private String description;
 
     private Date plannedDate;

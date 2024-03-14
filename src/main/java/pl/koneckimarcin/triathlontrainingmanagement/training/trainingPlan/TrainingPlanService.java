@@ -90,10 +90,13 @@ public class TrainingPlanService {
         Optional<CoachEntity> coachEntity = coachRepository.findById(coachId);
 
         trainingPlan.setTrainingPlanStatus(TrainingPlanStatus.TEMPLATE);
-        coachEntity.get().getTrainingPlans().add(trainingPlan.mapToTrainingPlanEntity());
 
+        TrainingPlanEntity savedPlan = trainingPlanRepository.save(trainingPlan.mapToTrainingPlanEntity());
+
+        coachEntity.get().getTrainingPlans().add(savedPlan);
         coachRepository.save(coachEntity.get());
-        return trainingPlan;
+
+        return TrainingPlan.fromTrainingPlanEntity(savedPlan);
     }
 
     public TrainingPlan addTrainingPlanToAthleteWithDate(Long athleteId, Long trainingPlanId, Date date) {
@@ -200,11 +203,19 @@ public class TrainingPlanService {
         for (StageEntity originalStage : originalStages)
             stagesForCopy.add(BikeStageEntity.copyStage((BikeStageEntity) originalStage));
     }
+
     public void removeTrainingPlanFromAthlete(Long athleteId, Long trainingPlanId) {
 
         checkAthleteIdException(athleteId);
         checkTrainingPlanIdException(trainingPlanId);
 
         trainingPlanRepository.deleteById(trainingPlanId);
+    }
+
+    public TrainingPlan getTrainingPlanById(Long id) {
+
+        checkTrainingPlanIdException(id);
+
+        return TrainingPlan.fromTrainingPlanEntity(trainingPlanRepository.findById(id).get());
     }
 }

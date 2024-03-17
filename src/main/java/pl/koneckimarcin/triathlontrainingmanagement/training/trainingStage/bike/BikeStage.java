@@ -13,8 +13,9 @@ public class BikeStage extends Stage {
         this.power = power;
     }
 
-    public BikeStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description, int power) {
-        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+    public BikeStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate,
+                     String description, int power, int repeat) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description, repeat);
         this.power = power;
     }
 
@@ -29,6 +30,7 @@ public class BikeStage extends Stage {
         bikeStageEntity.setHeartRate(this.getHeartRate());
         bikeStageEntity.setDescription(this.getDescription());
         bikeStageEntity.setPower(this.getPower());
+        bikeStageEntity.setRepeat(this.getRepeat());
 
         return bikeStageEntity;
     }
@@ -44,6 +46,7 @@ public class BikeStage extends Stage {
         bikeStage.setHeartRate(bikeStageEntity.getHeartRate());
         bikeStage.setDescription(bikeStageEntity.getDescription());
         bikeStage.setPower(bikeStageEntity.getPower());
+        bikeStage.setRepeat(bikeStageEntity.getRepeat());
 
         return bikeStage;
     }

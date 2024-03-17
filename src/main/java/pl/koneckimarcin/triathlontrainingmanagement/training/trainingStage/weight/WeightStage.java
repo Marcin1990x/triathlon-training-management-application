@@ -7,8 +7,9 @@ public class WeightStage extends Stage {
     public WeightStage() {
     }
 
-    public WeightStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description) {
-        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+    public WeightStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate,
+                       String description, int repeat) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description, repeat);
     }
 
     public WeightStageEntity mapToWeightStageEntity() {
@@ -21,6 +22,7 @@ public class WeightStage extends Stage {
         weightStageEntity.setSequence(this.getSequence());
         weightStageEntity.setHeartRate(this.getHeartRate());
         weightStageEntity.setDescription(this.getDescription());
+        weightStageEntity.setRepeat(this.getRepeat());
 
         return weightStageEntity;
     }
@@ -35,6 +37,7 @@ public class WeightStage extends Stage {
         weightStage.setSequence(weightStageEntity.getSequence());
         weightStage.setHeartRate(weightStageEntity.getHeartRate());
         weightStage.setDescription(weightStageEntity.getDescription());
+        weightStage.setRepeat(weightStageEntity.getRepeat());
 
         return weightStage;
     }

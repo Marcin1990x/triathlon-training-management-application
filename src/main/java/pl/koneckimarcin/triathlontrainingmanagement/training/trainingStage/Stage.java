@@ -14,15 +14,19 @@ public class Stage {
 
     private String description;
 
+    private int repeat;
+
     public Stage() {
     }
 
-    public Stage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description) {
+    public Stage(long distanceInMeters, long timeInSeconds, int sequence,
+                 int heartRate, String description, int repeat) {
         this.distanceInMeters = distanceInMeters;
         this.timeInSeconds = timeInSeconds;
         this.sequence = sequence;
         this.heartRate = heartRate;
         this.description = description;
+        this.repeat = repeat;
     }
 
     public long getId() {
@@ -73,14 +77,24 @@ public class Stage {
         this.description = description;
     }
 
+    public int getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
+    }
+
     @Override
     public String toString() {
         return "Stage{" +
                 "id=" + id +
                 ", distanceInMeters=" + distanceInMeters +
                 ", timeInSeconds=" + timeInSeconds +
+                ", sequence=" + sequence +
                 ", heartRate=" + heartRate +
                 ", description='" + description + '\'' +
+                ", repeat=" + repeat +
                 '}';
     }
 }

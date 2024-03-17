@@ -22,6 +22,8 @@ public abstract class StageEntity {
 
     private String description;
 
+    private int repeat;
+
     public Long getId() {
         return id;
     }
@@ -70,5 +72,15 @@ public abstract class StageEntity {
         this.description = description;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public int getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
+    }
 }

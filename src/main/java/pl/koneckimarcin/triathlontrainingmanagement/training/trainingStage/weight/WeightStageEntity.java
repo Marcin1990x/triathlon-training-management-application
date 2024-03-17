@@ -18,6 +18,7 @@ public class WeightStageEntity extends StageEntity {
         copy.setSequence(original.getSequence());
         copy.setHeartRate(original.getHeartRate());
         copy.setDescription(original.getDescription());
+        copy.setRepeat(original.getRepeat());
 
         return copy;
     }

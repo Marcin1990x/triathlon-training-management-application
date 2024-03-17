@@ -29,6 +29,7 @@ public class RunStageEntity extends StageEntity {
         copy.setHeartRate(original.getHeartRate());
         copy.setDescription(original.getDescription());
         copy.setPaceInSecondsPerKm(original.getPaceInSecondsPerKm());
+        copy.setRepeat(original.getRepeat());
 
         return copy;
     }

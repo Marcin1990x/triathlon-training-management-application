@@ -11,8 +11,9 @@ public class RunStage extends Stage {
         this.paceInSecondsPerKm = paceInSecondsPerKm;
     }
 
-    public RunStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description, int paceInSecondsPerKm) {
-        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+    public RunStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate,
+                    String description, int paceInSecondsPerKm, int repeat) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description, repeat);
         this.paceInSecondsPerKm = paceInSecondsPerKm;
     }
 
@@ -29,6 +30,7 @@ public class RunStage extends Stage {
         runStageEntity.setHeartRate(this.getHeartRate());
         runStageEntity.setDescription(this.getDescription());
         runStageEntity.setPaceInSecondsPerKm(this.getPaceInSecondsPerKm());
+        runStageEntity.setRepeat(this.getRepeat());
 
         return runStageEntity;
     }
@@ -44,6 +46,7 @@ public class RunStage extends Stage {
         runStage.setHeartRate(runStageEntity.getHeartRate());
         runStage.setDescription(runStageEntity.getDescription());
         runStage.setPaceInSecondsPerKm(runStageEntity.getPaceInSecondsPerKm());
+        runStage.setRepeat(runStageEntity.getRepeat());
 
         return runStage;
     }

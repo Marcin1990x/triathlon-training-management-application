@@ -27,6 +27,7 @@ public class BikeStageEntity extends StageEntity {
         copy.setHeartRate(original.getHeartRate());
         copy.setDescription(original.getDescription());
         copy.setPower(original.getPower());
+        copy.setRepeat(original.getRepeat());
 
         return copy;
     }

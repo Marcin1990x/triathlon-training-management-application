@@ -10,8 +10,9 @@ public class SwimStage extends Stage {
     public SwimStage(int paceInSeconds) {
         this.paceInSeconds = paceInSeconds;
     }
-    public SwimStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate, String description, int paceInSeconds) {
-        super(distanceInMeters, timeInSeconds, sequence, heartRate, description);
+    public SwimStage(long distanceInMeters, long timeInSeconds, int sequence, int heartRate,
+                     String description, int paceInSeconds, int repeat) {
+        super(distanceInMeters, timeInSeconds, sequence, heartRate, description, repeat);
         this.paceInSeconds = paceInSeconds;
     }
 
@@ -28,6 +29,7 @@ public class SwimStage extends Stage {
         swimStageEntity.setHeartRate(this.getHeartRate());
         swimStageEntity.setDescription(this.getDescription());
         swimStageEntity.setPaceInSeconds(this.getPaceInSeconds());
+        swimStageEntity.setRepeat(this.getRepeat());
 
         return swimStageEntity;
     }
@@ -43,6 +45,7 @@ public class SwimStage extends Stage {
         swimStage.setHeartRate(swimStageEntity.getHeartRate());
         swimStage.setDescription(swimStageEntity.getDescription());
         swimStage.setPaceInSeconds(swimStageEntity.getPaceInSeconds());
+        swimStage.setRepeat(swimStageEntity.getRepeat());
 
         return swimStage;
     }

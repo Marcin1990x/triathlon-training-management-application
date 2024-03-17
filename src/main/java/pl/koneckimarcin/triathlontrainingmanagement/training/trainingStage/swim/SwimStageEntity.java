@@ -29,6 +29,7 @@ public class SwimStageEntity extends StageEntity {
         copy.setHeartRate(original.getHeartRate());
         copy.setDescription(original.getDescription());
         copy.setPaceInSeconds(original.getPaceInSeconds());
+        copy.setRepeat(original.getRepeat());
 
         return copy;
     }

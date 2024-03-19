@@ -18,11 +18,11 @@ public interface UserOperations {
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable Long userId);
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PutMapping("/users/{userId}/coaches/{coachId}/add")
     public User addCoachToUser(@PathVariable Long userId, @PathVariable Long coachId);
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PutMapping("/users/{userId}/athletes/{athleteId}/add")
     public User addAthleteToUser(@PathVariable Long userId, @PathVariable Long athleteId);
 

@@ -58,11 +58,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         userService.addAthleteToUser(2L, 1L);
         athleteService.addNew(new Athlete("Adam", "Runner"));
         userService.addAthleteToUser(3L, 2L);
-        //add roles to users
-        roleService.addRoleToUserById(1L, Role.COACH);
-        roleService.addRoleToUserById(1L, Role.ATHLETE);
-        roleService.addRoleToUserById(2L, Role.ATHLETE);
-        roleService.addRoleToUserById(3L, Role.ATHLETE); // todo: many to
         //add athletes to coach
         coachService.addAthleteToCoach(1L, 1L);
         coachService.addAthleteToCoach(1L, 2L);

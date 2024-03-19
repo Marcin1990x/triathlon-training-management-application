@@ -8,7 +8,7 @@ public interface CoachOperations {
     @GetMapping("coaches/{id}")
     @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
     public Coach getById(@PathVariable Long id);
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("coaches")
     public Coach addNew(@RequestBody Coach coach);
 

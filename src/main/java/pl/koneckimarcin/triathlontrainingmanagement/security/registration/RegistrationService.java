@@ -11,12 +11,18 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.UsernameAlreadyExi
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleRepository;
 
 @Service
 public class RegistrationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,7 +50,9 @@ public class RegistrationService {
             String hashPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashPassword);
 
-            savedUserEntity = userRepository.save(user.mapToUserEntity());
+            UserEntity userEntityToSave = addInitialRole(user);
+
+            savedUserEntity = userRepository.save(userEntityToSave);
             if (savedUserEntity.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
@@ -56,5 +64,14 @@ public class RegistrationService {
                     .body("An exception occured due to " + exception.getMessage());
         }
         return response;
+    }
+    private UserEntity addInitialRole(User user) {
+
+        RoleEntity roleToAdd = roleRepository.findByRole(Role.NEW);
+
+        UserEntity userEntity = user.mapToUserEntity();
+        userEntity.getRoles().add(roleToAdd);
+
+        return userEntity;
     }
 }

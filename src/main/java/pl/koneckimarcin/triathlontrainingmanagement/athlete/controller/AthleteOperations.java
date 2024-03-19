@@ -16,7 +16,7 @@ public interface AthleteOperations {
     @GetMapping("coaches/{id}/athletes")
     public Set<Athlete> getAthletesByCoachId(@PathVariable Long id);
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("athletes")
     public Athlete addNew(@RequestBody Athlete athlete);
 

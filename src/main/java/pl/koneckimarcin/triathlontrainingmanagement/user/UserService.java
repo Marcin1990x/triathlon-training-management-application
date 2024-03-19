@@ -13,6 +13,9 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenNotFou
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.client.StravaClient;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,9 @@ public class UserService {
 
     @Autowired
     private CoachRepository coachRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private CoachService coachService;
@@ -78,6 +84,8 @@ public class UserService {
         coachRepository.save(coach);
         userToUpdate.setCoachEntity(coach);
 
+        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.COACH);
+
         return User.fromUserEntity(userRepository.save(userToUpdate));
     }
 
@@ -108,7 +116,9 @@ public class UserService {
         athleteRepository.save(athlete);
         userToUpdate.setAthleteEntity(athlete);
 
-        return User.fromUserEntity(userRepository.save(userToUpdate));
+        UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.ATHLETE);
+
+        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
     }
 
     private void addAthleteToUserCheckForExceptions(UserEntity user, AthleteEntity athlete, Long userId, Long athleteId) {
@@ -153,6 +163,16 @@ public class UserService {
             throw new RefreshTokenNotFoundException(user.getId());
         }
         return refreshToken;
+    }
+
+    private UserEntity updateRoles(UserEntity user, Role role) {
+
+        RoleEntity roleToAdd = roleRepository.findByRole(role);
+
+        user.getRoles().removeIf(roleToDelete -> roleToDelete.getRole() == Role.NEW);
+        user.getRoles().add(roleToAdd);
+
+        return user;
     }
 }
 

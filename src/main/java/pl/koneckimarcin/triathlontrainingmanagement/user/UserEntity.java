@@ -8,6 +8,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,7 +31,7 @@ public class UserEntity {
     private String emailAddress;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<RoleEntity> roles;
+    private Set<RoleEntity> roles = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "athlete_id")

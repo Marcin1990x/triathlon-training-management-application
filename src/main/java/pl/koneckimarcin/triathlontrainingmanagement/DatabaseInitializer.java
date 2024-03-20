@@ -16,7 +16,6 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.Stage
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
 import pl.koneckimarcin.triathlontrainingmanagement.user.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserService;
-import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleService;
 
 import java.sql.Date;
@@ -65,7 +64,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Easy swimming", TrainingType.SWIM, "1500m easy"));
         stageService.addNewSwimStageToTrainingPlan(1L,
-                new SwimStage(1500, 1800, 1, 0, "easy", 120,1));
+                new SwimStage(1500, 1800, 1, 0, "easy", 120, 1));
 
         tpService.addNewTrainingPlanToCoach(1L,
                 new TrainingPlan("Swimming intervals", TrainingType.SWIM, "100m hard/100m easy x10"));

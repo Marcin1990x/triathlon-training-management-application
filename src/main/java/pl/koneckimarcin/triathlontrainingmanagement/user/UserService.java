@@ -86,7 +86,7 @@ public class UserService {
 
         UserEntity userWithUpdatedRoles = updateRoles(userToUpdate, Role.COACH);
 
-        return User.fromUserEntity(userRepository.save(userToUpdate));
+        return User.fromUserEntity(userRepository.save(userWithUpdatedRoles));
     }
 
     private void addCoachToUserCheckForExceptions(UserEntity user, CoachEntity coach, Long userId, Long coachId) {

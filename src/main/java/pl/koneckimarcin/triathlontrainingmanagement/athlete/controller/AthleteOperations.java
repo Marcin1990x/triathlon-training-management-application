@@ -12,7 +12,7 @@ public interface AthleteOperations {
     @GetMapping("athletes/{id}")
     public Athlete getById(@PathVariable Long id);
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
     @GetMapping("coaches/{id}/athletes")
     public Set<Athlete> getAthletesByCoachId(@PathVariable Long id);
 

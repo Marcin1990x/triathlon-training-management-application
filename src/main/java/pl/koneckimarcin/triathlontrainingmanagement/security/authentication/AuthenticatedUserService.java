@@ -37,6 +37,15 @@ public class AuthenticatedUserService {
             return dbUser.getAthleteEntity().getId().equals(id);
         } else return false;
     }
+    public boolean hasValidCoachId(Long id) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        UserEntity dbUser = userRepository.findByUsername(username).get();
+
+        if(dbUser.getCoachEntity() != null) {
+            return dbUser.getCoachEntity().getId().equals(id);
+        } else return false;
+    }
 
     public boolean hasTrainingPlanInItsResources(Long id) {
 

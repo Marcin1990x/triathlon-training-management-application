@@ -14,7 +14,7 @@ public interface TrainingPlanOperations {
     @GetMapping("athletes/{id}/training-plans")
     public List<TrainingPlan> getTrainingPlansByAthleteId(@PathVariable Long id);
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
     @GetMapping("coaches/{id}/training-plans")
     public Set<TrainingPlan> getTrainingPlansByCoachId(@PathVariable Long id);
 
@@ -26,7 +26,7 @@ public interface TrainingPlanOperations {
     @DeleteMapping("training-plans/{id}")
     public void deleteById(@PathVariable Long id);
 
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
+    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
     @PostMapping("coaches/{id}/training-plans")
     public TrainingPlan addNewTrainingPlan(@PathVariable Long id, @RequestBody TrainingPlan trainingPlan);
 

@@ -4,11 +4,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
-import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.AthleteResponseDto;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,5 +68,19 @@ public class AthleteService {
         } else {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }
+    }
+
+    public List<AthleteResponseDto> getByLastname(String lastName) {
+
+        List<AthleteEntity> athleteEntities = athleteRepository.findByLastNameContainingIgnoreCase(lastName);
+
+        List<AthleteResponseDto> athletes = new ArrayList<>();
+
+        if (athleteEntities.size() > 0) {
+            for (AthleteEntity athleteEntity : athleteEntities) {
+                athletes.add(AthleteResponseDto.fromAthleteEntity(athleteEntity));
+            }
+        }
+        return athletes;
     }
 }

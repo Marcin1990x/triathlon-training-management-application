@@ -4,8 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
+import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.AthleteResponseDto;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -17,6 +19,12 @@ public class AthleteController implements AthleteOperations {
     public Athlete getById(Long id) {
 
         return athleteService.getById(id);
+    }
+
+    @Override
+    public List<AthleteResponseDto> getByLastname(String lastname) {
+
+        return athleteService.getByLastname(lastname);
     }
 
     @Override

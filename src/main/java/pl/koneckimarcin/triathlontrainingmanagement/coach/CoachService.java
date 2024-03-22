@@ -59,21 +59,19 @@ public class CoachService {
 
     public Coach addAthleteToCoach(Long coachId, Long athleteId) {
 
-        if (checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
-
-            AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-
-            CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
-            coachToUpdate.getAthletes().add(athlete);
-
-            return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
-        } else {
-            if (!checkIfIsNotNull(coachId)) {
-                throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-            } else {
-                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-            }
+        if (!checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
         }
+        if (!athleteService.checkIfIsNotNull(athleteId)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+        }
+
+        AthleteEntity athlete = athleteRepository.findById(athleteId).get();
+
+        CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
+        coachToUpdate.getAthletes().add(athlete);
+
+        return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
     }
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {

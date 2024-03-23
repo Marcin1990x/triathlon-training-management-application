@@ -67,8 +67,10 @@ public class CoachService {
         }
 
         AthleteEntity athlete = athleteRepository.findById(athleteId).get();
-
         CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
+
+        setAssignmentForAthlete(athlete);
+
         coachToUpdate.getAthletes().add(athlete);
 
         return Coach.fromCoachEntity(coachRepository.save(coachToUpdate));
@@ -83,6 +85,8 @@ public class CoachService {
 
             athletes.removeIf(athlete -> athlete.getId() == athleteId);
 
+            //add setAssignedToCoach(false)
+
             coachRepository.save(coach);
 
             //todo: remove also training-plans with coachId?
@@ -96,5 +100,10 @@ public class CoachService {
                 throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
             }
         }
+    }
+    private void setAssignmentForAthlete(AthleteEntity athlete) {
+
+        athlete.setAssignedToCoach(true);
+        athleteRepository.save(athlete);
     }
 }

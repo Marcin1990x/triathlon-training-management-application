@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AthleteRepository extends JpaRepository <AthleteEntity, Long> {
 
-    public List<AthleteEntity> findByLastNameContainingIgnoreCase(String lastName);
+    public List<AthleteEntity> findByLastNameContainingIgnoreCaseAndIsAssignedToCoachIsFalse(String lastName);
 }

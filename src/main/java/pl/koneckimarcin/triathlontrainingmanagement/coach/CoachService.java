@@ -80,29 +80,26 @@ public class CoachService {
 
     public Coach removeAthleteFromCoach(Long coachId, Long athleteId) {
 
-        if (checkIfIsNotNull(coachId) && athleteService.checkIfIsNotNull(athleteId)) {
-
-            CoachEntity coach = coachRepository.findById(coachId).get();
-            Set<AthleteEntity> athletes = coach.getAthletes();
-
-            athletes.removeIf(athlete -> athlete.getId() == athleteId);
-
-            //add setAssignedToCoach(false)
-
-            coachRepository.save(coach);
-
-            //todo: remove also training-plans with coachId?
-
-            return Coach.fromCoachEntity(coach);
-
-        } else {
-            if (!checkIfIsNotNull(coachId)) {
-                throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
-            } else {
-                throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
-            }
+        if (!checkIfIsNotNull(coachId)) {
+            throw new ResourceNotFoundException("Coach", "id", String.valueOf(coachId));
         }
+        if (!athleteService.checkIfIsNotNull(athleteId)) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(athleteId));
+        }
+        CoachEntity coach = coachRepository.findById(coachId).get();
+        Set<AthleteEntity> athletes = coach.getAthletes();
+
+        athletes.removeIf(athlete -> athlete.getId() == athleteId);
+
+        setCoachIdForAthlete(athleteRepository.findById(athleteId).get(), null);
+
+        coachRepository.save(coach);
+
+        //todo: remove also training-plans with coachId?
+
+        return Coach.fromCoachEntity(coach);
     }
+
     private void setCoachIdForAthlete(AthleteEntity athlete, Long coachId) {
 
         athlete.setCoachId(coachId);

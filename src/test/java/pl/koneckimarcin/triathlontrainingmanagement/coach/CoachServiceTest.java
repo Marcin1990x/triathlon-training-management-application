@@ -11,6 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.Coach;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -60,7 +61,7 @@ public class CoachServiceTest {
     @Test
     void shouldReturnCoachById() {
 
-        Coach coach = coachService.findById(1L);
+        CoachResponseDto coach = coachService.findById(1L);
         assertNotNull(coach);
         assertEquals("Coach", coach.getFirstName());
         assertEquals("Best", coach.getLastName());

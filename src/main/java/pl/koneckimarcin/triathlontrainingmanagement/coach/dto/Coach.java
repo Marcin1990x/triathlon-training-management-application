@@ -1,7 +1,8 @@
-package pl.koneckimarcin.triathlontrainingmanagement.coach;
+package pl.koneckimarcin.triathlontrainingmanagement.coach.dto;
 
 import jakarta.validation.constraints.NotNull;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.TrainingPlanEntity;
 
 import java.util.HashSet;

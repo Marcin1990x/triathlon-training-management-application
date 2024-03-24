@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.Coach;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.CoachResponseDto;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import java.util.Optional;
@@ -31,12 +33,12 @@ public class CoachService {
         return false;
     }
 
-    public Coach findById(Long id) {
+    public CoachResponseDto findById(Long id) {
 
         Optional<CoachEntity> coachEntity = coachRepository.findById(id);
 
         if (coachEntity.isPresent()) {
-            return Coach.fromCoachEntity(coachEntity.get());
+            return CoachResponseDto.fromCoachEntity(coachEntity.get());
         } else {
             throw new ResourceNotFoundException("Coach", "id", String.valueOf(id));
         }

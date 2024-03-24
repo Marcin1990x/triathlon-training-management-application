@@ -16,7 +16,7 @@ public class AthleteController implements AthleteOperations {
     @Autowired
     AthleteService athleteService;
 
-    public Athlete getById(Long id) {
+    public AthleteResponseDto getById(Long id) {
 
         return athleteService.getById(id);
     }

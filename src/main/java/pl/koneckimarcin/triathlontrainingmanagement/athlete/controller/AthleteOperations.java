@@ -10,9 +10,9 @@ import java.util.Set;
 
 public interface AthleteOperations {
 
-    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")
+    @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id)")
     @GetMapping("athletes/{id}")
-    public Athlete getById(@PathVariable Long id);
+    public AthleteResponseDto getById(@PathVariable Long id);
 
     @PreAuthorize("hasAuthority('COACH')")
     @GetMapping("athletes")

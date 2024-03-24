@@ -2,12 +2,14 @@ package pl.koneckimarcin.triathlontrainingmanagement.coach;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.Coach;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.CoachResponseDto;
 
 public interface CoachOperations {
 
     @GetMapping("coaches/{id}")
-    @PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidId(#id)")
-    public Coach getById(@PathVariable Long id);
+    //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
+    public CoachResponseDto getById(@PathVariable Long id); //allow athlete to see his coach
     @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("coaches")
     public Coach addNew(@RequestBody Coach coach);

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.Coach;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 
 import static org.hamcrest.MatcherAssert.assertThat;

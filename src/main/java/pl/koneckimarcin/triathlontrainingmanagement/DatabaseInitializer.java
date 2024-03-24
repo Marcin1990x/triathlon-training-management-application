@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.dto.Athlete;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.service.AthleteService;
-import pl.koneckimarcin.triathlontrainingmanagement.coach.Coach;
+import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.Coach;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachService;
 import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.StravaPropertyReader;

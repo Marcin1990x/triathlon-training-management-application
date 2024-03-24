@@ -33,12 +33,12 @@ public class AthleteService {
         return false;
     }
 
-    public Athlete getById(Long id) {
+    public AthleteResponseDto getById(Long id) {
 
         Optional<AthleteEntity> athleteEntity = athleteRepository.findById(id);
 
         if (athleteEntity.isPresent()) {
-            return Athlete.fromAthleteEntity(athleteEntity.get());
+            return AthleteResponseDto.fromAthleteEntity(athleteEntity.get());
         } else {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }

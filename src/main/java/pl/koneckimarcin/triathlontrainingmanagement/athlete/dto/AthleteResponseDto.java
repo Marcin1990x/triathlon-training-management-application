@@ -7,6 +7,7 @@ public class AthleteResponseDto {
     private Long id;
     private String firstName;
     private String lastName;
+    private Long coachId;
 
     public static AthleteResponseDto fromAthleteEntity(AthleteEntity athleteEntity) {
 
@@ -15,6 +16,7 @@ public class AthleteResponseDto {
         athlete.setId(athleteEntity.getId());
         athlete.setFirstName(athleteEntity.getFirstName());
         athlete.setLastName(athleteEntity.getLastName());
+        athlete.setCoachId(athleteEntity.getCoachId());
 
         return athlete;
     }
@@ -41,5 +43,13 @@ public class AthleteResponseDto {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public Long getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 }

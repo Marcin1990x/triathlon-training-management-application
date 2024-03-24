@@ -33,6 +33,8 @@ public class AuthenticatedUserService {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity dbUser = userRepository.findByUsername(username).get();
 
+        Long temp = dbUser.getAthleteEntity().getId();
+
         if(dbUser.getAthleteEntity() != null) {
             return dbUser.getAthleteEntity().getId().equals(id);
         } else return false;

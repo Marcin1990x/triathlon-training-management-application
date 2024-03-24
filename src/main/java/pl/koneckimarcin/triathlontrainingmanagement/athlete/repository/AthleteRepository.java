@@ -5,7 +5,8 @@ import pl.koneckimarcin.triathlontrainingmanagement.athlete.AthleteEntity;
 
 import java.util.List;
 
-public interface AthleteRepository extends JpaRepository <AthleteEntity, Long> {
+public interface AthleteRepository extends JpaRepository<AthleteEntity, Long> {
 
-    public List<AthleteEntity> findByLastNameContainingIgnoreCaseAndIsAssignedToCoachIsFalse(String lastName);
+    public List<AthleteEntity> findByLastNameContainingIgnoreCaseAndCoachIdIsNull(String lastName);
+
 }

@@ -69,7 +69,7 @@ public class CoachService {
         AthleteEntity athlete = athleteRepository.findById(athleteId).get();
         CoachEntity coachToUpdate = coachRepository.findById(coachId).get();
 
-        setAssignmentForAthlete(athlete);
+        setCoachIdForAthlete(athlete, coachId);
 
         coachToUpdate.getAthletes().add(athlete);
 
@@ -101,9 +101,9 @@ public class CoachService {
             }
         }
     }
-    private void setAssignmentForAthlete(AthleteEntity athlete) {
+    private void setCoachIdForAthlete(AthleteEntity athlete, Long coachId) {
 
-        athlete.setAssignedToCoach(true);
+        athlete.setCoachId(coachId);
         athleteRepository.save(athlete);
     }
 }

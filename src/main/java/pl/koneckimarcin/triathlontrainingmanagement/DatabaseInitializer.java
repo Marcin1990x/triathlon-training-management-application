@@ -46,17 +46,20 @@ public class DatabaseInitializer implements CommandLineRunner {
         User triathlete = new User("Triathlete", "triathlete", "triathlete@app.com");
         triathlete.setStravaRefreshToken(stravaRefreshToken);
 
-        //add users - for coach and for two athletes
+        //add users - for coach and for three athletes
         registrationService.registerUser(new User("Coach", "coach", "coach@app.com"));
         registrationService.registerUser(triathlete);
         registrationService.registerUser(new User("Runner", "runner", "runner@app.com"));
-        //add coach, two athletes and assign to users
+        registrationService.registerUser(new User("Ultrarunner", "Ultrarunner", "ultrarunner@app.com"));
+        //add coach, three athletes and assign to users
         coachService.addNew(new Coach("Bob", "Coach"));
         userService.addCoachToUser(1L, 1L);
         athleteService.addNew(new Athlete("John", "Triathlete", 14748685L));
         userService.addAthleteToUser(2L, 1L);
         athleteService.addNew(new Athlete("Adam", "Runner"));
         userService.addAthleteToUser(3L, 2L);
+        athleteService.addNew(new Athlete("Mike", "Ultrarunner"));
+        userService.addAthleteToUser(4L, 3L);
         //add athletes to coach
         coachService.addAthleteToCoach(1L, 1L);
         coachService.addAthleteToCoach(1L, 2L);

@@ -73,7 +73,7 @@ public class AthleteService {
     public List<AthleteResponseDto> getByLastname(String lastName) {
 
         List<AthleteEntity> athleteEntities =
-                athleteRepository.findByLastNameContainingIgnoreCaseAndIsAssignedToCoachIsFalse(lastName);
+                athleteRepository.findByLastNameContainingIgnoreCaseAndCoachIdIsNull(lastName);
 
         List<AthleteResponseDto> athletes = new ArrayList<>();
 

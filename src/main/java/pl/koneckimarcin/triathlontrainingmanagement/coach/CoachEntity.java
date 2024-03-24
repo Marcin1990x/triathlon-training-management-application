@@ -19,7 +19,6 @@ public class CoachEntity {
     private String lastName;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "coach_id")
     private Set<AthleteEntity> athletes;
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

@@ -31,8 +31,7 @@ public class AthleteEntity {
     @Column(name = "has_user")
     private boolean isAssignedToUser = false;
 
-    @Column(name = "has_coach")
-    private boolean isAssignedToCoach = false;
+    private Long coachId;
 
     private Long stravaId;
 
@@ -92,11 +91,11 @@ public class AthleteEntity {
         this.stravaId = stravaId;
     }
 
-    public boolean isAssignedToCoach() {
-        return isAssignedToCoach;
+    public Long getCoachId() {
+        return coachId;
     }
 
-    public void setAssignedToCoach(boolean assignedToCoach) {
-        isAssignedToCoach = assignedToCoach;
+    public void setCoachId(Long coachId) {
+        this.coachId = coachId;
     }
 }

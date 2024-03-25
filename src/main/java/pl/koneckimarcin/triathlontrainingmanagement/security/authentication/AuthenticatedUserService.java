@@ -101,4 +101,17 @@ public class AuthenticatedUserService {
         }
         return result;
     }
+    public boolean hasAthleteValidCoachId(Long id) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        UserEntity dbUser = userRepository.findByUsername(username).get();
+
+        if(dbUser.getAthleteEntity() == null) {
+            return false;
+        }
+        if(dbUser.getAthleteEntity().getCoachId() == null){
+            return false;
+        }
+        return dbUser.getAthleteEntity().getCoachId().equals(id);
+    }
 }

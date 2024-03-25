@@ -8,7 +8,8 @@ import pl.koneckimarcin.triathlontrainingmanagement.coach.dto.CoachResponseDto;
 public interface CoachOperations {
 
     @GetMapping("coaches/{id}")
-    //@PreAuthorize("hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)")
+    @PreAuthorize("(hasAuthority('COACH') AND @authenticatedUserService.hasValidCoachId(#id)) OR" +
+            "(hasAuthority('ATHLETE') AND @authenticatedUserService.hasAthleteValidCoachId(#id))")
     public CoachResponseDto getById(@PathVariable Long id); //allow athlete to see his coach
     @PreAuthorize("hasAnyAuthority('ADMIN', 'NEW')")
     @PostMapping("coaches")

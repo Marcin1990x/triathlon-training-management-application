@@ -20,7 +20,7 @@ public interface TrainingRealizationOperations {
 
     @PreAuthorize("hasAuthority('ATHLETE')")
     @PutMapping("athletes/{id}/training-realizations")
-    public void synchronizeActivitiesForAthlete(@PathVariable Long id);
+    public Integer synchronizeActivitiesForAthlete(@PathVariable Long id);
 
     @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasTrainingRealizationInItsResources(#id)")
     @PutMapping("training-realizations/{id}")

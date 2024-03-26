@@ -25,8 +25,8 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     }
 
     @Override
-    public void synchronizeActivitiesForAthlete(Long id) {
-        trainingRealizationService.synchronizeActivitiesForAthlete(id);
+    public Integer synchronizeActivitiesForAthlete(Long id) {
+        return trainingRealizationService.synchronizeActivitiesForAthlete(id);
     }
 
     @Override

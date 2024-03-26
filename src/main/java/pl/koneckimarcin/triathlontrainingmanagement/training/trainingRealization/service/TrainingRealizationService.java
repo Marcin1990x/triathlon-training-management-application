@@ -67,7 +67,7 @@ public class TrainingRealizationService {
         }
     }
 
-    public void synchronizeActivitiesForAthlete(Long athleteId) {
+    public Integer synchronizeActivitiesForAthlete(Long athleteId) {
 
         String accessToken = getAccessTokenForUser();
         List<Long> existingIds = retrieveTrainingRealizationsIdsForAthlete(athleteId);
@@ -77,6 +77,8 @@ public class TrainingRealizationService {
         List<ActivityClientDto> nonDuplicatedActivities = checkForDuplicatedIds(existingIds, activitiesFromStrava);
 
         mapAndSaveToDb(nonDuplicatedActivities, athleteId);
+
+        return nonDuplicatedActivities.size();
     }
 
     private String getAccessTokenForUser() {

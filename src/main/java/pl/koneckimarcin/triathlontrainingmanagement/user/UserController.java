@@ -3,6 +3,8 @@ package pl.koneckimarcin.triathlontrainingmanagement.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import pl.koneckimarcin.triathlontrainingmanagement.security.authentication.AuthenticatedUserService;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.UserStravaDto;
 
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class UserController implements UserOperations {
     }
 
     @Override
-    public void refreshAccessTokenForUser(Long id) {
+    public UserStravaDto refreshAccessTokenForUser(Long id) {
 
-        userService.refreshAccessTokenForUser(id);
+        return userService.refreshAccessTokenForUser(id);
     }
 }

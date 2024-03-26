@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.UserStravaDto;
 
 import java.util.List;
 
@@ -28,6 +30,6 @@ public interface UserOperations {
 
     @PreAuthorize("hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidId(#id)")
     @PostMapping("/users/{id}/refreshAccessToken")
-    public void refreshAccessTokenForUser(@PathVariable Long id);
+    public UserStravaDto refreshAccessTokenForUser(@PathVariable Long id);
 }
 

@@ -13,6 +13,8 @@ import pl.koneckimarcin.triathlontrainingmanagement.exception.RefreshTokenNotFou
 import pl.koneckimarcin.triathlontrainingmanagement.exception.ResourceNotFoundException;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.client.StravaClient;
 import pl.koneckimarcin.triathlontrainingmanagement.strava.dto.AccessTokenDto;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.UserStravaDto;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleRepository;
@@ -137,7 +139,7 @@ public class UserService {
         }
     }
 
-    public void refreshAccessTokenForUser(Long userId) {
+    public UserStravaDto refreshAccessTokenForUser(Long userId) {
 
         UserEntity userToUpdate = userRepository.findById(userId).get();
         String userRefreshToken = getRefreshTokenForUser(userToUpdate);
@@ -145,6 +147,8 @@ public class UserService {
         AccessTokenDto accessTokenDto = stravaClient.refreshAccessToken(userRefreshToken);
 
         updateUserWithNewToken(userToUpdate, accessTokenDto);
+
+        return new UserStravaDto(accessTokenDto.getExpiresAt());
     }
 
     private void updateUserWithNewToken(UserEntity userToUpdate, AccessTokenDto accessTokenDto) {

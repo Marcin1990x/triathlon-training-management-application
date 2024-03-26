@@ -1,7 +1,8 @@
-package pl.koneckimarcin.triathlontrainingmanagement.user;
+package pl.koneckimarcin.triathlontrainingmanagement.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 
 public class User {
 

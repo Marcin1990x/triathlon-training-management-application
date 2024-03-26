@@ -14,7 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.koneckimarcin.triathlontrainingmanagement.user.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 import static org.hamcrest.Matchers.is;

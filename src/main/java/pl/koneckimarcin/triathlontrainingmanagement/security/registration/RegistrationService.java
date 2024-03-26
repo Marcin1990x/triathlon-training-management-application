@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.EmailAddressAlreadyExistException;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.UsernameAlreadyExistException;
-import pl.koneckimarcin.triathlontrainingmanagement.user.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;

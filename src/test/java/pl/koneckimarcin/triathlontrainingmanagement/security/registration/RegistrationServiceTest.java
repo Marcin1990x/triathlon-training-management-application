@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.EmailAddressAlreadyExistException;
-import pl.koneckimarcin.triathlontrainingmanagement.security.registration.RegistrationService;
-import pl.koneckimarcin.triathlontrainingmanagement.user.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

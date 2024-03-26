@@ -14,7 +14,7 @@ import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.Traini
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingPlan.constant.TrainingType;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.StageService;
 import pl.koneckimarcin.triathlontrainingmanagement.training.trainingStage.swim.SwimStage;
-import pl.koneckimarcin.triathlontrainingmanagement.user.User;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.UserService;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.RoleService;
 

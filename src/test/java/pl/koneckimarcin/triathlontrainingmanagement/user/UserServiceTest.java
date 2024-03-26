@@ -10,9 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import pl.koneckimarcin.triathlontrainingmanagement.athlete.repository.AthleteRepository;
-import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachEntity;
 import pl.koneckimarcin.triathlontrainingmanagement.coach.CoachRepository;
 import pl.koneckimarcin.triathlontrainingmanagement.exception.IsAlreadyAssignedException;
+import pl.koneckimarcin.triathlontrainingmanagement.user.dto.User;
 import pl.koneckimarcin.triathlontrainingmanagement.user.role.Role;
 
 import java.util.List;

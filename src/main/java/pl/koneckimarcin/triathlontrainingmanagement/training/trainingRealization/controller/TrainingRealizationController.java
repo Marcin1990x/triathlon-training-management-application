@@ -33,4 +33,9 @@ public class TrainingRealizationController implements TrainingRealizationOperati
     public TrainingRealization updateTrainingRealizationById(Long id, TrainingRealizationRequest request) {
         return trainingRealizationService.updateTrainingRealizationById(id, request);
     }
+
+    @Override
+    public TrainingRealization addNewTrainingRealizationForAthlete(Long id, TrainingRealization trainingRealization) {
+        return trainingRealizationService.addNewTrainingRealizationForAthlete(id, trainingRealization);
+    }
 }

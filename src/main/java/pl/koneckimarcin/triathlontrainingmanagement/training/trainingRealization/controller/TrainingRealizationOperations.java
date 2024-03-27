@@ -26,4 +26,9 @@ public interface TrainingRealizationOperations {
     @PutMapping("training-realizations/{id}")
     public TrainingRealization updateTrainingRealizationById(@PathVariable Long id,
             @RequestBody TrainingRealizationRequest request);
+
+    @PreAuthorize("(hasAuthority('ATHLETE') AND @authenticatedUserService.hasValidAthleteId(#id))")
+    @PostMapping("athletes/{id}/training-realizations")
+    public TrainingRealization addNewTrainingRealizationForAthlete
+            (@PathVariable Long id, @RequestBody TrainingRealization trainingRealization);
 }

@@ -144,4 +144,15 @@ public class TrainingRealizationService {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return userRepository.findByUsername(username).get();
     }
+
+    public TrainingRealization addNewTrainingRealizationForAthlete(Long id, TrainingRealization trainingRealization) {
+
+        if(!athleteRepository.findById(id).isPresent()) {
+            throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
+        }
+        TrainingRealizationEntity savedTrainingRealization = trainingRealizationRepository
+                .save(trainingRealization.mapToTrainingRealizationEntity());
+
+        return TrainingRealization.fromTrainingRealizationEntity(savedTrainingRealization);
+    }
 }

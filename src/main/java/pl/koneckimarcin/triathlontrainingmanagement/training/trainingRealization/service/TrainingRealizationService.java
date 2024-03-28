@@ -147,12 +147,18 @@ public class TrainingRealizationService {
 
     public TrainingRealization addNewTrainingRealizationForAthlete(Long id, TrainingRealization trainingRealization) {
 
-        if(!athleteRepository.findById(id).isPresent()) {
+        AthleteEntity athlete;
+
+        if (!athleteRepository.findById(id).isPresent()) {
             throw new ResourceNotFoundException("Athlete", "id", String.valueOf(id));
         }
-        TrainingRealizationEntity savedTrainingRealization = trainingRealizationRepository
-                .save(trainingRealization.mapToTrainingRealizationEntity());
+        athlete = athleteRepository.findById(id).get();
 
-        return TrainingRealization.fromTrainingRealizationEntity(savedTrainingRealization);
+        TrainingRealizationEntity trainingEntity = trainingRealization.mapToTrainingRealizationEntity();
+
+        athlete.getTrainingRealizations().add(trainingEntity);
+        athleteRepository.save(athlete);
+
+        return TrainingRealization.fromTrainingRealizationEntity(trainingEntity);
     }
 }

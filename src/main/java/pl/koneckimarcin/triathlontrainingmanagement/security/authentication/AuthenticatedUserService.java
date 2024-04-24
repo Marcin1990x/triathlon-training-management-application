@@ -35,16 +35,17 @@ public class AuthenticatedUserService {
 
         Long temp = dbUser.getAthleteEntity().getId();
 
-        if(dbUser.getAthleteEntity() != null) {
+        if (dbUser.getAthleteEntity() != null) {
             return dbUser.getAthleteEntity().getId().equals(id);
         } else return false;
     }
+
     public boolean hasValidCoachId(Long id) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity dbUser = userRepository.findByUsername(username).get();
 
-        if(dbUser.getCoachEntity() != null) {
+        if (dbUser.getCoachEntity() != null) {
             return dbUser.getCoachEntity().getId().equals(id);
         } else return false;
     }
@@ -101,15 +102,16 @@ public class AuthenticatedUserService {
         }
         return result;
     }
+
     public boolean hasAthleteValidCoachId(Long id) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         UserEntity dbUser = userRepository.findByUsername(username).get();
 
-        if(dbUser.getAthleteEntity() == null) {
+        if (dbUser.getAthleteEntity() == null) {
             return false;
         }
-        if(dbUser.getAthleteEntity().getCoachId() == null){
+        if (dbUser.getAthleteEntity().getCoachId() == null) {
             return false;
         }
         return dbUser.getAthleteEntity().getCoachId().equals(id);
